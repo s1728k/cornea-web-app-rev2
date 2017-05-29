@@ -21,15 +21,16 @@ md-toolbar{
 }
 
 .example-sidenav-fab-container {
-  width: 20%;
-  height: 80vh;
+  width: 100%;
+  height: 90vh;
   border: 1px solid rgba(0, 0, 0, 0.5);
   margin-top: 5%; /* Add a top margin to avoid content overlay */
 }
 
 .example-sidenav-fab-container md-sidenav {
-  max-width: 100%;
-  width:100%;
+  max-width: 20%;
+  width:15%;
+  border-right: 1px solid rgba(0, 0, 0, 0.5);
 }
 
 .example-sidenav-fab-container .mat-sidenav-content,

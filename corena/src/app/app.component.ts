@@ -6,6 +6,6 @@ import {Component} from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  links: any[] = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh'];
+  links: any[] = ['Dashboard', 'Purchase Order', 'Site', 'Accounts', 'Finance'];
   up: boolean[] = [false, false, false, false, false, false, false];
 }
