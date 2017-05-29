@@ -1,0 +1,50 @@
+md-toolbar{
+  position: fixed;
+  top:0px;
+  left:0px;
+  z-index: 3;
+  box-shadow: 0px 3px 3px #888888;
+}
+
+.roundimg{
+    border-radius: 40px;
+    width: 40px;
+    height: 40px;
+}
+
+.example-icon {
+  padding: 0 14px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.example-sidenav-fab-container {
+  width: 20%;
+  height: 80vh;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  margin-top: 5%; /* Add a top margin to avoid content overlay */
+}
+
+.example-sidenav-fab-container md-sidenav {
+  max-width: 100%;
+  width:100%;
+}
+
+.example-sidenav-fab-container .mat-sidenav-content,
+.example-sidenav-fab-container md-sidenav {
+  display: flex;
+  overflow: visible;
+}
+
+.example-scrolling-content {
+  overflow: auto;
+  width: 100%
+}
+
+.example-fab {
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+}
