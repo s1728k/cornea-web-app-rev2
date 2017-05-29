@@ -1,6 +1,7 @@
 .my-drop-zone {
   border: dotted 3px lightgray;
   text-align: center;
+    margin-top: 2%; /* Add a top margin to avoid content overlay */
 }
 
 .nv-file-over {
