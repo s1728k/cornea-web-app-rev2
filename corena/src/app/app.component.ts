@@ -7,4 +7,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app works!';
+
+  links:any[]=["first","second","third","fourth","fifth","sixth","seventh"]
+  up:boolean[]=[false,false,false,false,false,false,false]
 }

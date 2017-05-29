@@ -1,3 +1,65 @@
-<h1>
-  {{title}}
-</h1>
+
+<md-toolbar color="primary">
+    <button md-button>
+       <md-icon>domain</md-icon> Cornea
+    </button>
+
+    <button md-button [mdMenuTriggerFor]="menu1">Menu1</button>
+    <md-menu #menu1="mdMenu">
+      <button md-menu-item>
+        <md-icon> dialpad </md-icon>
+        <span> Redial </span>
+      </button>
+      <button md-menu-item disabled>
+        <md-icon> voicemail </md-icon>
+        <span> Check voicemail </span>
+      </button>
+      <button md-menu-item>
+        <md-icon> notifications_off </md-icon>
+        <span> Disable alerts </span>
+      </button>
+    </md-menu>
+
+    <button md-button [mdMenuTriggerFor]="menu2">Menu2</button>
+    <md-menu #menu2="mdMenu">
+      <button md-menu-item>
+        <md-icon> dialpad </md-icon>
+        <span> Redial </span>
+      </button>
+      <button md-menu-item disabled>
+        <md-icon> voicemail </md-icon>
+        <span> Check voicemail </span>
+      </button>
+      <button md-menu-item>
+        <md-icon> notifications_off </md-icon>
+        <span> Disable alerts </span>
+      </button>
+    </md-menu>
+
+    <span class="example-spacer"></span>
+    <button md-icon-button [mdMenuTriggerFor]="appMenu">
+       <md-icon>more_vert</md-icon>
+    </button>
+    <md-menu #appMenu="mdMenu" yPosition="above">
+      <button md-menu-item> Settings </button>
+      <button md-menu-item> Help </button>
+    </md-menu>
+    <img md-list-avatar src="http://mdepinet.org/wp-content/uploads/person-placeholder.jpg" alt="..." class="roundimg">
+</md-toolbar>
+
+<md-sidenav-container class="example-sidenav-fab-container">
+  <md-sidenav #sidenav mode="side" opened="true">
+    <div class="example-scrolling-content">
+        <md-nav-list dense>
+          <ng-container *ngFor="let link of links; let i=index">
+          <md-list-item>
+             <a md-line href="..."><b>{{ link }}</b></a>
+             <md-icon *ngIf="up[i]" (click)="up[i]=false">keyboard_arrow_up</md-icon>
+             <md-icon *ngIf="!up[i]" (click)="up[i]=true">keyboard_arrow_down</md-icon>
+          </md-list-item>
+          <md-divider></md-divider>
+          </ng-container>
+        </md-nav-list>
+    </div>
+  </md-sidenav>
+</md-sidenav-container>
