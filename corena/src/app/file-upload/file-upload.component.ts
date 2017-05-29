@@ -5,8 +5,8 @@ const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
 
 @Component({
   selector: 'app-file-upload',
-  templateUrl: './file-upload.component.html',
-  styleUrls: ['./file-upload.component.css']
+  templateUrl: './file-upload.component.html'
+  // styleUrls: ['./file-upload.component.css']
 })
 export class FileUploadComponent implements OnInit {
   public uploader: FileUploader = new FileUploader({url: URL});
