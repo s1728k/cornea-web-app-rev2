@@ -4,7 +4,7 @@ import {Component, OnInit} from '@angular/core';
   selector: 'app-project-hierarchy',
   template: '<div id="org_chart" [chartData]="org_ChartData" [chartOptions] = "org_ChartOptions" chartType="OrgChart" GoogleChart></div>',
   // templateUrl: './project-hierarchy.component.html',
-  styleUrls: ['./project-hierarchy.component.css']
+  // styleUrls: ['./project-hierarchy.component.css']
 })
 export class ProjectHierarchyComponent implements OnInit {
   public org_ChartData = [
