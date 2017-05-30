@@ -5,16 +5,18 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {FileUploadModule} from 'ng2-file-upload';
-import {MaterialModule, MdNativeDateModule} from '@angular/material';
+import {MaterialModule, MdNativeDateModule, MdButtonModule} from '@angular/material';
 import 'hammerjs';
 
 import {AppComponent} from './app.component';
 import {FileUploadComponent} from './file-upload/file-upload.component';
+import { ProjectHierarchyComponent } from './project-hierarchy/project-hierarchy.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FileUploadComponent
+    FileUploadComponent,
+    ProjectHierarchyComponent
   ],
   imports: [
     BrowserModule,
@@ -26,6 +28,7 @@ import {FileUploadComponent} from './file-upload/file-upload.component';
     HttpModule,
     MaterialModule,
     MdNativeDateModule,
+    MdButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
