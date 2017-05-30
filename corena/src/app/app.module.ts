@@ -5,7 +5,7 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {FileUploadModule} from 'ng2-file-upload';
-import {MaterialModule, MdNativeDateModule} from '@angular/material';
+import {MaterialModule, MdNativeDateModule, MdButtonModule} from '@angular/material';
 import 'hammerjs';
 
 import {AppComponent} from './app.component';
@@ -28,6 +28,7 @@ import { ProjectHierarchyComponent } from './project-hierarchy/project-hierarchy
     HttpModule,
     MaterialModule,
     MdNativeDateModule,
+    MdButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
