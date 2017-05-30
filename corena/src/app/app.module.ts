@@ -10,11 +10,13 @@ import 'hammerjs';
 
 import {AppComponent} from './app.component';
 import {FileUploadComponent} from './file-upload/file-upload.component';
+import { ProjectHierarchyComponent } from './project-hierarchy/project-hierarchy.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FileUploadComponent
+    FileUploadComponent,
+    ProjectHierarchyComponent
   ],
   imports: [
     BrowserModule,
