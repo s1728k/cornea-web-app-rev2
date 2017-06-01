@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {UserModel} from '../model/UserModel';
 import * as Constants from '../shared/Constants';
-import {showWarningOnce} from 'tslint/lib/error';
+import {RestApiServiceService} from '../services/rest-api-service.service';
+import {executive} from '../shared/Constants';
 
 @Component({
   selector: 'app-project-hierarchy',
@@ -11,25 +12,25 @@ import {showWarningOnce} from 'tslint/lib/error';
 export class ProjectHierarchyComponent implements OnInit {
 
   user: UserModel;
-
+  userList1: UserModel[];
   execList: UserModel[] = [
     {
-      'first_name': 'executive',
-      'last_name': '1',
+      'first_name': 'Ravi',
+      'last_name': ' Shankar',
       'id': 1,
       'email': 'executive1@gmail.com',
       'role': 3
     },
     {
-      'first_name': 'executive',
-      'last_name': '2',
+      'first_name': 'dev',
+      'last_name': 'bhojak',
       'id': 2,
       'email': 'executive2@gmail.com',
       'role': 3
     },
     {
-      'first_name': 'executive',
-      'last_name': '3',
+      'first_name': 'Harsh',
+      'last_name': 'Bhojak',
       'id': 3,
       'email': 'executive3@gmail.com',
       'role': 3,
@@ -94,6 +95,7 @@ export class ProjectHierarchyComponent implements OnInit {
   request_pm = Constants.projectManager;
   request_sup = Constants.supervisor;
   request_exec = Constants.executive;
+  selectedUsers: number[];
   pm_id = Constants.projectManagerId;
   sup_id = Constants.supervisorId;
   exec_id = Constants.executiveId;
@@ -102,28 +104,52 @@ export class ProjectHierarchyComponent implements OnInit {
   supervisorUsers: UserModel[] = [];
   executives: UserModel[] = [];
 
+  constructor(private restApiService: RestApiServiceService) {
+    this.user = new UserModel();
+  }
+
+  private getUserList(): void {
+
+    const url = Constants.USER_END_POINT + Constants.USER_SERVICE_NAME + Constants.ACTION_ALL;
+    // this.restApiService.makeHttpReuqest(Constants.GET_METHOD, url, this.user)
+    //   .subscribe();
+  }
+
   allowDropFunction(roleId: number): any {
     console.log('data returned in param', roleId);
     return (dragData: any) => dragData.role === roleId;
   }
 
+
   addItems($event: any) {
     console.log('add itemm in box one', $event.dragData, event);
     switch ($event.dragData.role) {
       case Constants.projectManagerId:
-        console.log('roleId', $event.dragData.role);
-        this.projectManagerUsers.push($event.dragData);
+        console.log('condition in ts project hierarchy',
+          this.projectManagerUsers.length <= this.pmList.length && this.projectManagerUsers.includes($event.dragData));
+        if (this.projectManagerUsers.length <= this.pmList.length && !this.projectManagerUsers.includes($event.dragData)) {
+          console.log('roleId', $event.dragData.role);
+          this.projectManagerUsers.push($event.dragData);
+          this.selectedUsers.push($event.dragData.id);
+        }
         break;
       case Constants.supervisorId:
         console.log('roleId', $event.dragData.role);
-        this.supervisorUsers.push($event.dragData);
+        if (this.supervisorUsers.length <= this.superList.length && !this.supervisorUsers.includes($event.dragData)) {
+          this.supervisorUsers.push($event.dragData);
+          this.selectedUsers.push($event.dragData.id);
+        }
         break;
       case Constants.executiveId:
         console.log('roleId', $event.dragData.role);
-        this.executives.push($event.dragData);
+        if (this.executives.length <= this.execList.length && !this.executives.includes($event.dragData)) {
+          this.executives.push($event.dragData);
+          this.selectedUsers.push($event.dragData.id);
+        }
         break;
       default:
         this.executives.push($event.dragData);
+        this.selectedUsers.push($event.dragData.id);
         break;
     }
   }
@@ -155,9 +181,7 @@ export class ProjectHierarchyComponent implements OnInit {
   //   allowHtml: true
   // };
 
-  constructor() {
-    this.user = new UserModel();
-  }
+
   ngOnInit() {
   }
 

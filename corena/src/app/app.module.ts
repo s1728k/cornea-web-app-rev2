@@ -1,13 +1,13 @@
 import {RouterModule, Routes} from '@angular/router';
 // dependency for RestApiServiceService
-import {RestApiServiceService} from './shared/services/rest-api-service.service';
+import {RestApiServiceService} from './services/rest-api-service.service';
 // module to support rendering on browser
 import {BrowserModule} from '@angular/platform-browser';
 // dependency for material module
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 // angular dependency to bind the  components
 import {NgModule} from '@angular/core';
-// moduel to create form's
+// module to create form's
 import {FormsModule} from '@angular/forms';
 // dependency to implement http calls to network  angular buit-in
 import {HttpModule} from '@angular/http';
@@ -28,8 +28,6 @@ import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from './app-routing.module';
 // dependency for local storage
 // import { LocalStorageModule } from 'angular-2-local-storage';
-
-
 
 @NgModule({
   declarations: [

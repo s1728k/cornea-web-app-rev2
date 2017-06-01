@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {DndModule} from 'ng2-dnd';
 
 @NgModule({
@@ -10,4 +10,5 @@ import {DndModule} from 'ng2-dnd';
   exports: [DndModule],
   declarations: []
 })
-export class SharedModule { }
+export class SharedModule {
+}
