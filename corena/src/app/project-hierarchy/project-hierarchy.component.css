@@ -12,3 +12,15 @@
 h3{
     border-bottom: 1px solid grey;
 }
+.panel-danger .panel-heading{
+    background-color: #B71C1C;
+    color: white;
+}
+.panel-warning .panel-heading{
+    background-color: #1B5E20;
+    color: white;
+}
+.panel-primary .panel-heading{
+    background-color: #0D47A1;
+    color: white;
+}

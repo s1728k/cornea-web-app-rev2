@@ -14,24 +14,24 @@ export class ProjectHierarchyComponent implements OnInit {
 
   execList: UserModel[] = [
     {
-      'first_name': 'RajniKanth',
-      'last_name': 'SupperStar',
+      'first_name': 'executive',
+      'last_name': '1',
       'id': 1,
-      'email': 'rajnikanth@gmail.com',
+      'email': 'executive1@gmail.com',
       'role': 3
     },
     {
-      'first_name': 'AmithaBacchan',
-      'last_name': 'SupperStar',
+      'first_name': 'executive',
+      'last_name': '2',
       'id': 2,
-      'email': 'amitabacchan@gmail.com',
+      'email': 'executive2@gmail.com',
       'role': 3
     },
     {
-      'first_name': 'Chiranjeevi',
-      'last_name': 'MegaStar',
+      'first_name': 'executive',
+      'last_name': '3',
       'id': 3,
-      'email': 'chiranjeevi@gmail.com',
+      'email': 'executive3@gmail.com',
       'role': 3,
     }
   ];
