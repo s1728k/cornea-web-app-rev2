@@ -66,7 +66,7 @@ export class AppComponent {
    if (!this.div.nativeElement.contains(event.target) && this.img.nativeElement !== event.target){
      this.userBool = false;
    }
-   this.loginBool = this.sharedService.loginBool;
+   //this.loginBool = this.sharedService.loginBool;
   }
 
 }

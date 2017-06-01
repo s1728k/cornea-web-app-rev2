@@ -12,7 +12,62 @@ export class ProjectHierarchyComponent implements OnInit {
 
   user: UserModel;
 
-  userList: UserModel[] = [
+  execList: UserModel[] = [
+    {
+      'first_name': 'RajniKanth',
+      'last_name': 'SupperStar',
+      'id': 1,
+      'email': 'rajnikanth@gmail.com',
+      'role': 3
+    },
+    {
+      'first_name': 'AmithaBacchan',
+      'last_name': 'SupperStar',
+      'id': 2,
+      'email': 'amitabacchan@gmail.com',
+      'role': 3
+    },
+    {
+      'first_name': 'Chiranjeevi',
+      'last_name': 'MegaStar',
+      'id': 3,
+      'email': 'chiranjeevi@gmail.com',
+      'role': 3,
+    }
+  ];
+
+  superList: UserModel[] = [
+    {
+      'first_name': 'Sunil Kumar',
+      'last_name': 'Thimma Reddy',
+      'id': 1,
+      'email': 'sunil.kumar@codebakerz.in',
+      'role': 2
+    },
+    {
+      'first_name': 'Ronney',
+      'last_name': 'Ismail',
+      'id': 2,
+      'email': 'ronney@codebakerz.in',
+      'role': 2
+    },
+    {
+      'first_name': 'Jyothiranjan',
+      'last_name': 'mohanty',
+      'id': 3,
+      'email': 'Jyothiranjan.mohanty@codebakerz.com',
+      'role': 2,
+    },
+    {
+      'first_name': 'Soumya',
+      'last_name': 'sanchitabhuyan',
+      'id': 3,
+      'email': 'soumya.sanchitabhuyan@codebakerz.com',
+      'role': 2,
+    }
+  ];
+
+  pmList: UserModel[] = [
     {
       'first_name': 'Arun',
       'last_name': 'Bangar',
@@ -25,16 +80,17 @@ export class ProjectHierarchyComponent implements OnInit {
       'last_name': 'ASHISH',
       'id': 2,
       'email': 'dev@nomail.com',
-      'role': 2
+      'role': 1
     },
     {
       'first_name': 'Rahul',
       'last_name': 'SS',
       'id': 3,
       'email': 'rahul@nomail.com',
-      'role': 3,
+      'role': 1,
     }
   ];
+
   request_pm = Constants.projectManager;
   request_sup = Constants.supervisor;
   request_exec = Constants.executive;

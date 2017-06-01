@@ -1,42 +1,46 @@
 <!--<div style="margin-top:2%"></div>-->
-<div class="row screenMargin">
-  <div class="col-sm-3">
-    <div class="panel panel-success">
-      <div class="panel-heading">Tier: Manager</div>
-      <div class="panel-body">
-        <div *ngFor="let item of userList" class="panel panel-default" dnd-draggable [dragData]="item">
-          <div class="panel-body">{{item.first_name + item.last_name}}</div>
+<div class="container-fluid screenMargin">
+  <div class="row hding">
+    <h3>List of Employees</h3>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="panel panel-danger">
+        <div class="panel-heading">Tier: Project Manager</div>
+        <div class="panel-body">
+          <div *ngFor="let item of pmList" class="panel panel-default" dnd-draggable [dragData]="item">
+            <div class="panel-body">{{item.first_name + item.last_name}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-warning">
+        <div class="panel-heading">Tier: Supervisor</div>
+        <div class="panel-body">
+          <div *ngFor="let item of superList" class="panel panel-default" dnd-draggable [dragData]="item">
+            <div class="panel-body">{{item.first_name + item.last_name}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-primary">
+        <div class="panel-heading">Tier: Executive</div>
+        <div class="panel-body">
+          <div *ngFor="let item of execList" class="panel panel-default" dnd-draggable [dragData]="item">
+            <div class="panel-body">{{item.first_name + item.last_name}}</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-sm-3">
-    <div class="panel panel-success">
-      <div class="panel-heading">Tier: Supervisor</div>
-      <div class="panel-body">
-        <div *ngFor="let item of userList" class="panel panel-default" dnd-draggable [dragData]="item">
-          <div class="panel-body">{{item.first_name + item.last_name}}</div>
-        </div>
-      </div>
-    </div>
+  <div class="row hding">
+    <h3>Employee Rolls Assigned</h3>
   </div>
-  <div class="col-sm-3">
-    <div class="panel panel-success">
-      <div class="panel-heading">Tier: Executive</div>
-      <div class="panel-body">
-        <div *ngFor="let item of userList" class="panel panel-default" dnd-draggable [dragData]="item">
-          <div class="panel-body">{{item.first_name + item.last_name}}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6">
-        <!--<pre>allowDropFunction(baseInteger: any): any {{ '{' }}
-  return (dragData: any) => dragData % baseInteger === 0;
-{{ '}' }}</pre>-->
-    <div class="row">
-      <div class="col-sm-6"><!--allowDropFunction($event, pm_id)-->
-        <div dnd-droppable class="panel panel-info" [allowDrop]="allowDropFunction(pm_id)" (onDropSuccess)="addItems($event)">
+  <div class="row">
+    <div class="col-md-4">
+      <div dnd-droppable class="panel panel-danger" [allowDrop]="allowDropFunction(pm_id)" (onDropSuccess)="addItems($event)">
           <div class="panel-heading">
            Project Manager
           </div>
@@ -44,9 +48,9 @@
             <div *ngFor="let item of projectManagerUsers">{{item.first_name + item.last_name}}</div>
           </div>
         </div>
-      </div>
-      <div class="col-sm-6"><!--allowDropFunction($event, pm_id)-->
-        <div dnd-droppable class="panel panel-warning" [allowDrop]="allowDropFunction(sup_id)" (onDropSuccess)="addItems($event)">
+    </div>
+    <div class="col-md-4">
+      <div dnd-droppable class="panel panel-warning" [allowDrop]="allowDropFunction(sup_id)" (onDropSuccess)="addItems($event)">
           <div class="panel-heading">
            Supervisors
           </div>
@@ -54,9 +58,9 @@
             <div *ngFor="let item of supervisorUsers">{{item.first_name + item.last_name}}</div>
           </div>
         </div>
-      </div>
-      <div class="col-sm-6"><!--allowDropFunction($event, pm_id)-->
-        <div dnd-droppable class="panel panel-warning" [allowDrop]="allowDropFunction(exec_id)" (onDropSuccess)="addItems($event)">
+    </div>
+    <div class="col-md-4">
+      <div dnd-droppable class="panel panel-primary" [allowDrop]="allowDropFunction(exec_id)" (onDropSuccess)="addItems($event)">
           <div class="panel-heading">
             Executives
           </div>
@@ -64,9 +68,13 @@
             <div *ngFor="let item of executives">{{item.first_name + item.last_name}}</div>
           </div>
         </div>
-      </div>
     </div>
   </div>
 </div>
-<div id="org_chart" [chartData]="org_ChartData" [chartOptions]="org_ChartOptions" chartType="OrgChart"
+        <!--<pre>allowDropFunction(baseInteger: any): any {{ '{' }}
+  return (dragData: any) => dragData % baseInteger === 0;
+{{ '}' }}</pre>-->
+
+<!-- <div id="org_chart" [chartData]="org_ChartData" [chartOptions]="org_ChartOptions" chartType="OrgChart"
      GoogleChart></div>
+ -->
