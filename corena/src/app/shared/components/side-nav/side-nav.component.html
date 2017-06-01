@@ -1,32 +1,3 @@
-<!-- <div *ngIf="true">
-<md-toolbar color="primary">
-    <button md-button>
-       <md-icon>domain</md-icon> Cornea
-    </button>
-
-    <span class="example-spacer"></span>
-    <button md-icon-button [mdMenuTriggerFor]="appMenu">
-       <md-icon>more_vert</md-icon>
-    </button>
-    <md-menu #appMenu="mdMenu" yPosition="below" xPosition="before">
-      <button md-menu-item> Settings </button>
-      <button md-menu-item> Help </button>
-    </md-menu>
-    <img md-list-avatar src="http://mdepinet.org/wp-content/uploads/person-placeholder.jpg" alt="..." class="roundimg" (click)="userBool=!userBool" #userimg>
-
-</md-toolbar>
-
-  <div #userpop id="userPopup" [style.display]="userBool ? 'inline-flex' : 'none'">
-  <div class="talk-bubble"></div>
-    <img md-list-avatar src="http://mdepinet.org/wp-content/uploads/person-placeholder.jpg" alt="..." class="roundimgUser">
-    <div class="roundimgUser">
-    <b>User Name</b><br>
-    user@nomail.com<br>
-    <button md-raised-button>Log Out</button>
-    </div>
-  </div>
-
-
 <md-sidenav-container class="example-sidenav-fab-container">
   <md-sidenav #sidenav mode="side" opened="true">
     <div class="example-scrolling-content">
@@ -43,7 +14,7 @@
               <ng-container *ngIf="up[i][j]">
                 <ng-container *ngFor="let smen of link; let j=index">
                   <ng-container *ngIf="j!==0">
-                    <md-list-item class="submenu">
+                    <md-list-item class="submenu" (click)="routingFun(i,j)">
                        <a md-line>{{ smen }}</a>
                     </md-list-item>
                   </ng-container>
@@ -53,7 +24,7 @@
             </ng-container>
 
             <ng-container *ngIf="link[0].length===1">
-              <md-list-item>
+              <md-list-item  (click)="routingFun(i,0)">
                  <a md-line><b>{{ link }}</b></a>
               </md-list-item>
               <md-divider></md-divider>
@@ -63,9 +34,7 @@
         </md-nav-list>
     </div>
   </md-sidenav>
-   <app-project-hierarchy></app-project-hierarchy>
+<!--    <app-project-hierarchy></app-project-hierarchy>
    <app-file-upload></app-file-upload>
-  <app-project-hierarchy></app-project-hierarchy>
+  <app-project-hierarchy></app-project-hierarchy> -->
 </md-sidenav-container>
-</div> -->
-<router-outlet></router-outlet>

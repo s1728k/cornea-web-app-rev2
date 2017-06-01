@@ -1,0 +1,27 @@
+<div *ngIf="true">
+<md-toolbar color="primary">
+    <button md-button>
+       <md-icon>domain</md-icon> Cornea
+    </button>
+
+    <span class="example-spacer"></span>
+    <button md-icon-button [mdMenuTriggerFor]="appMenu">
+       <md-icon>more_vert</md-icon>
+    </button>
+    <md-menu #appMenu="mdMenu" yPosition="below" xPosition="before">
+      <button md-menu-item> Settings </button>
+      <button md-menu-item> Help </button>
+    </md-menu>
+    <img md-list-avatar src="http://mdepinet.org/wp-content/uploads/person-placeholder.jpg" alt="..." class="roundimg" (click)="userBool=!userBool" #userimg>
+
+</md-toolbar>
+
+  <div #userpop id="userPopup" [style.display]="userBool ? 'inline-flex' : 'none'">
+  <div class="talk-bubble"></div>
+    <img md-list-avatar src="http://mdepinet.org/wp-content/uploads/person-placeholder.jpg" alt="..." class="roundimgUser">
+    <div class="roundimgUser">
+    <b>User Name</b><br>
+    user@nomail.com<br>
+    <button md-raised-button (click)="routingFun()">Log Out</button>
+    </div>
+  </div>

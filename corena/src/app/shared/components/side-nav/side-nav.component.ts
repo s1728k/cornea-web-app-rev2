@@ -1,14 +1,11 @@
-import {Component, ViewChild, ViewChildren, QueryList, ElementRef} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {trigger, state, style, animate, transition, keyframes} from '@angular/animations';
-import { SharedService } from './shared.service';
+import { RouterModule, Router }  from '@angular/router';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-  // host: {
-  //   '(document:click)': 'onClick($event)',
-  // },
+  selector: 'app-side-nav',
+  templateUrl: './side-nav.component.html',
+  styleUrls: ['./side-nav.component.css'],
   animations: [
     trigger('iconbool', [
       state('false', style({
@@ -32,11 +29,9 @@ import { SharedService } from './shared.service';
     ])
   ]
 })
-export class AppComponent {
+export class SideNavComponent implements OnInit {
 
-  constructor(private sharedService: SharedService){}
-
-  links: any[] = ['Dashboard',
+      links: any[] = ['Dashboard',
                   ['Project', 'BOQ', 'Project Hierarchy'],
                   ['Purchase Order', 'Request For Quotation', 'Supplier Quotation'],
                   ['Site', 'Indent'],
@@ -57,16 +52,20 @@ export class AppComponent {
                   {},
                   {}];
 
- // -------------------------------------------------------------------------
-  // @ViewChild('userpop') div: ElementRef;
-  // @ViewChild('userimg') img: ElementRef;
-  // userBool: boolean;
-  // loginBool= false;
-  // onClick(event) {
-  //  if (!this.div.nativeElement.contains(event.target) && this.img.nativeElement !== event.target){
-  //    this.userBool = false;
-  //  }
-  //  //this.loginBool = this.sharedService.loginBool;
-  // }
+  constructor(private router:Router) { }
+
+  ngOnInit() {
+  }
+
+  routingFun(i,j){
+      // console.log(i)
+      // console.log(j)
+      if (i===1 && j===1){
+          this.router.navigate(['/boq-upload']);
+      }
+      if (i===1 && j===2){
+          this.router.navigate(['/project-hierarchy']);
+      }
+  }
 
 }
