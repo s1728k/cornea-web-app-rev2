@@ -8,13 +8,16 @@ import { routing }       from './pages.routing';
 
 import { FileUploadComponent } from '../file-upload/file-upload.component'
 import { ProjectHierarchyComponent } from '../project-hierarchy/project-hierarchy.component'
+import { PopupDialog } from '../project-hierarchy/popup.component'
 
 
 import { PagesComponent } from './pages.component';
 
 @NgModule({
-  imports: [CommonModule, MaterialModule, MdNativeDateModule, MdButtonModule, FileUploadModule, DndModule.forRoot(), routing],
-  declarations: [PagesComponent, FileUploadComponent, ProjectHierarchyComponent]
+  imports: [CommonModule, MaterialModule, MdNativeDateModule, MdButtonModule,
+  FileUploadModule, DndModule.forRoot(), routing],
+  declarations: [PagesComponent, FileUploadComponent, ProjectHierarchyComponent, PopupDialog,],
+  entryComponents: [PopupDialog]
 })
 export class PagesModule {
 }

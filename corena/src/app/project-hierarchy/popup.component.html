@@ -1,0 +1,22 @@
+<!--<div style="margin-top:2%"></div>-->
+<!-- <div class="container-fluid">
+      <div class="row">
+        <md-select placeholder="{{data[0]}}">
+          <md-option *ngFor="let item of data[1]" [value]="item.first_name + ' ' + item.last_name">
+            {{ item.first_name + ' ' + item.last_name }}
+          </md-option>
+        </md-select>
+      </div>
+</div> -->
+<h2 md-dialog-title>Select</h2>
+<md-dialog-content>
+  <md-select placeholder="{{data[0]}}">
+    <md-option *ngFor="let item of data[1]" [value]="item.first_name + ' ' + item.last_name">
+      {{ item.first_name + ' ' + item.last_name }}
+    </md-option>
+  </md-select>
+</md-dialog-content>
+<md-dialog-actions>
+  <button md-button md-dialog-close>No</button>
+  <button md-button [md-dialog-close]="true">Yes</button>
+</md-dialog-actions>

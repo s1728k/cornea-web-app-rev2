@@ -62,7 +62,7 @@
               </div>
               <div class="panel-body">
                 <div *ngFor="let item of supervisorUsers" class="panel panel-default">
-                    <div class="panel-body">{{item.first_name + " " + item.last_name}}</div>
+                    <div class="panel-body" (click)="openDialogSup(item)">{{item.first_name + " " + item.last_name}}</div>
                 </div>
               </div>
             </div>
@@ -74,7 +74,7 @@
               </div>
               <div class="panel-body">
                 <div *ngFor="let item of executives" class="panel panel-default">
-                    <div class="panel-body">{{item.first_name + " " + item.last_name}}</div>
+                    <div class="panel-body" (click)="openDialogExe(item)">{{item.first_name + " " + item.last_name}}</div>
                 </div>
               </div>
             </div>
