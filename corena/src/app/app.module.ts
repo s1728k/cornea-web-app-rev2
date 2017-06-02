@@ -22,20 +22,26 @@ import {GoogleChart} from 'angular2-google-chart/directives/angular2-google-char
 // Common module which holds shared components
 import {SharedModule} from './shared/shared.module';
 import {AppComponent} from './app.component';
-import {FileUploadComponent} from './file-upload/file-upload.component';
-import {ProjectHierarchyComponent} from './project-hierarchy/project-hierarchy.component';
+// import {FileUploadComponent} from './file-upload/file-upload.component';
+// import {ProjectHierarchyComponent} from './project-hierarchy/project-hierarchy.component';
 import { LoginComponent } from './login/login.component';
-import { AppRoutingModule } from './app-routing.module';
+import { routing } from './app.routing';
+import { PagesModule } from './pages/pages.module'
+import { SharedService } from './shared.service';
+import { RateAnalysisComponent } from './rate-analysis/rate-analysis.component';
+import { NextCompComponent } from './next-comp/next-comp.component'
 // dependency for local storage
 // import { LocalStorageModule } from 'angular-2-local-storage';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FileUploadComponent,
-    ProjectHierarchyComponent,
+    // FileUploadComponent,
+    // ProjectHierarchyComponent,
     GoogleChart,
-    LoginComponent
+    LoginComponent,
+    RateAnalysisComponent,
+    NextCompComponent,
   ],
   // provide modules throughout
   imports: [
@@ -48,7 +54,8 @@ import { AppRoutingModule } from './app-routing.module';
     MaterialModule,
     MdNativeDateModule,
     MdButtonModule,
-    AppRoutingModule,
+    routing,
+    PagesModule,
     SharedModule,
     /*LocalStorageModule.withConfig({
       prefix: 'cornea-erp',
@@ -56,7 +63,7 @@ import { AppRoutingModule } from './app-routing.module';
       storageType: 'sessionStorage'
     })*/
   ],
-  providers: [RestApiServiceService],
+  providers: [RestApiServiceService, SharedService],
   bootstrap: [AppComponent]
 })
 /**
