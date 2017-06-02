@@ -4,12 +4,14 @@
     <app-top-header></app-top-header>
   </div>
   <div class="row">
-    <div class="col-md-2" >
+    <div class="col-md-2" style="padding:0px;">
       <app-side-nav></app-side-nav>
     </div>
     <div class="col-md-10">
       <div class="row">
-        <h3>List of Employees</h3>
+        <div class="col-md-12">
+            <h3>List of Employees</h3>
+        </div>
       </div>
       <div class="row">
         <div class="col-md-4">
@@ -44,7 +46,9 @@
         </div>
       </div>
       <div class="row hding">
-        <h3>Employee Rolls Assigned</h3>
+        <div class="col-md-12">
+            <h3>Employee Rolls Assigned</h3>
+        </div>
       </div>
       <div class="row">
         <div class="col-md-4">
@@ -53,7 +57,9 @@
                Project Manager
               </div>
               <div class="panel-body">
-                <div *ngFor="let item of projectManagerUsers" class="panel panel-default">{{item.first_name + " " + item.last_name}}</div>
+                <div *ngFor="let item of projectManagerUsers" class="panel panel-default">
+                    <div class="panel-body">{{item.first_name + " " + item.last_name}}</div>
+                </div>
               </div>
             </div>
         </div>
@@ -63,7 +69,9 @@
                Supervisors
               </div>
               <div class="panel-body">
-                <div *ngFor="let item of supervisorUsers" class="panel panel-default">{{item.first_name + " " + item.last_name}}</div>
+                <div *ngFor="let item of supervisorUsers" class="panel panel-default">
+                    <div class="panel-body">{{item.first_name + " " + item.last_name}}</div>
+                </div>
               </div>
             </div>
         </div>
@@ -73,7 +81,9 @@
                 Executives
               </div>
               <div class="panel-body">
-                <div *ngFor="let item of executives" class="panel panel-default">{{item.first_name + " " + item.last_name}}</div>
+                <div *ngFor="let item of executives" class="panel panel-default">
+                    <div class="panel-body">{{item.first_name + " " + item.last_name}}</div>
+                </div>
               </div>
             </div>
         </div>
