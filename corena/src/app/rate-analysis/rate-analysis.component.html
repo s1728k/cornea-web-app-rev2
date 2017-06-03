@@ -3,36 +3,24 @@
         <div class="col-md-4" style="border:0px solid red;">
             <md-card style="width:100%;height:20vh;">
                 <md-input-container>
-                    <input mdInput type="text" placeholder="Over Head" value="{{0.12348 | percent:'2.3-5'}}">
+                    <input mdInput type="text" placeholder="Over Head (%)" [(ngModel)]="overhead">
                 </md-input-container>
                 <md-input-container>
-                    <input mdInput type="text" placeholder="Profit"  value="{{1 | percent:'2.3-5'}}">
-                </md-input-container>
-            </md-card>
-        </div>
-        <div class="col-md-4" style="border:0px solid red;">
-            <md-card style="width:100%;">
-                <md-input-container>
-                    <input mdInput type="text" placeholder="Ply" value="{{0.12348 | percent:'2.3-5'}}">
-                </md-input-container>
-                <md-input-container>
-                    <input mdInput type="text" placeholder="Laminate"  value="{{1 | percent:'2.3-5'}}">
-                </md-input-container>
-                <md-input-container>
-                    <input mdInput type="text" placeholder="veneer" value="{{1 | percent:'2.3-5'}}" ng-model="user.name">
+                    <input mdInput type="text" placeholder="Profit (%)" [(ngModel)]="profit">
                 </md-input-container>
             </md-card>
         </div>
         <div class="col-md-4" style="border:0px solid red;">
             <md-card style="width:100%;">
+                <h3 style="border-bottom:1px solid grey;">Wastages</h3>
                 <md-input-container>
-                    <input mdInput type="text" placeholder="Ply" value="{{0.12348 | percent:'2.3-5'}}">
+                    <input mdInput type="text" placeholder="Ply (%)" [(ngModel)]="ply">
                 </md-input-container>
                 <md-input-container>
-                    <input mdInput type="text" placeholder="Laminate"  value="{{1 | percent:'2.3-5'}}">
+                    <input mdInput type="text" placeholder="Laminate (%)" [(ngModel)]="laminate">
                 </md-input-container>
                 <md-input-container>
-                    <input mdInput type="text" placeholder="veneer" value="{{1 | percent:'2.3-5'}}" ng-model="user.name">
+                    <input mdInput type="text" placeholder="veneer (%)" [(ngModel)]="veneer">
                 </md-input-container>
             </md-card>
         </div>
@@ -45,57 +33,66 @@
             <h3 (click)="exp1=!exp1" style="border-bottom:1px solid grey;">Heading 1</h3>
         </div>
     </div>
-    <div class="row" style="border:0px solid red;overflow-y:auto;  height:70vh;" *ngIf="exp1">
-        <div class="col-md-12" style="border:0px solid red;">
-            <md-card style="width:100%;">
-            <table>
-                <thead>
-                    <tr>
-                        <th width="40px;">Sr.No</th>
-                        <th width="300px;">Particular</th>
-                        <th colspan="3">Size</th>
-                        <th width="40px;">No</th>
-                        <th width="40px;">Sqmt</th>
-                        <th width="40px;">cmt</th>
-                        <th width="40px;">RMT</th>
-                        <th width="40px;">Rate</th>
-                        <th width="40px;">Amount</th>
-                    </tr>
-                    <tr>
-                        <th>1.01</th>
-                        <th>S.S Skirting</th>
-                        <th width="40px;">1.00</th>
-                        <th width="40px;">x</th>
-                        <th width="40px;">0.10</th>
-                        <th>1.00</th>
-                        <th>0.10</th>
-                        <th></th>
-                        <th>rmt</th>
-                        <th>787.00</th>
-                        <th>Rmt</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let calc of calcs">
-                        <td>1.01</td>
-                        <td>S.S Skirting</td>
-                        <td><input type="number" class="inp" [(ngModel)]="calc['v1']" ></td>
-                        <td>x</td>
-                        <td><input type="number" class="inp" [(ngModel)]="calc['v2']" ></td>
-                        <td><input type="number" class="inp" [(ngModel)]="calc['v3']" ></td>
-                        <td>{{calc['v1']*calc['v2']*calc['v3'] | number : '2.2-3'}}</td>
-                        <td>{{calc['v1']*calc['v2']*calc['v3']*0.0012 | number : '2.2-3'}}</td>
-                        <td>{{calc['v1']*calc['v2']*calc['v3']*0.0012*8000 | number : '2.2-3'}}</td>
-                        <td><input type="number" class="inp" [(ngModel)]="calc['v4']" ></td>
-                        <td>{{calc['v1']*calc['v2']*calc['v3']*0.0012*8000*calc['v4'] | number : '2.2-3'}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            </md-card><br>
-            <md-card style="width:100%;height:20vh;">Simple card</md-card><br>
-            <md-card style="width:100%;height:20vh;">Simple card</md-card><br>
-            <md-card style="width:100%;height:20vh;">Simple card</md-card><br>
-            <md-card style="width:100%;height:20vh;">Simple card</md-card><br>
+    <div class="row" style="border:0px solid grey;overflow-y:auto;  height:70vh;" *ngIf="exp1">
+        <div class="col-md-12" style="border:0px solid grey;">
+            <button md-raised-button (click)="increment1(list)">Add / Calculate Material Function</button>
+
+            <md-card style="width:100%;" *ngFor="let item of calcs1; let i=index;">
+            <md-card-header style="float: right; padding:5px;">
+                <button md-raised-button>Calculate Labor</button>
+                <button md-raised-button>Add CF</button>
+                <button md-raised-button (click)="deleteTable1(i)"><md-icon>delete</md-icon></button>
+            </md-card-header>
+            <md-card-content>
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="40px;"><md-icon (click)="addRow1(i)">add circle outline</md-icon></th>
+                            <th width="40px;">Sr.No</th>
+                            <th width="300px;">Particular</th>
+                            <th colspan="3">Size</th>
+                            <th width="40px;">No</th>
+                            <th width="40px;">Sqmt</th>
+                            <th width="40px;">cmt</th>
+                            <th width="40px;">RMT</th>
+                            <th width="40px;">Rate</th>
+                            <th width="40px;">Amount</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th width="40px;"><input type="text" class="inp" ></th>
+                            <th width="40px;"><input type="text" class="inp" ></th>
+                            <th width="40px;"><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let calc1 of calcs1[i]; let j=index">
+                            <td><md-icon (click)="deleteRow1(i,j)">delete</md-icon></td>
+                            <td><input type="text" class="inp" ></td>
+                            <td><input type="text" class="inp" ></td>
+                            <td><input type="number" class="inp" [(ngModel)]="calc1[j]['v1']" ></td>
+                            <td>x</td>
+                            <td><input type="number" class="inp" [(ngModel)]="calc1[j]['v2']" ></td>
+                            <td><input type="number" class="inp" [(ngModel)]="calc1[j]['v3']" ></td>
+                            <td>{{calc1[j]['v1']*calc1[j]['v2']*calc1[j]['v3'] | number : '2.2-3'}}</td>
+                            <td>{{calc1[j]['v1']*calc1[j]['v2']*calc1[j]['v3']*0.0012 | number : '2.2-3'}}</td>
+                            <td>{{calc1[j]['v1']*calc1[j]['v2']*calc1[j]['v3']*0.0012*8000 | number : '2.2-3'}}</td>
+                            <td><input type="number" class="inp" [(ngModel)]="calc1[j]['v4']" ></td>
+                            <td>{{calc1[j]['v1']*calc1[j]['v2']*calc1[j]['v3']*0.0012*8000*calc1[j]['v4'] | number : '2.2-3'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-card-content>
+
+            </md-card>
         </div>
     </div>
     <div class="row">
@@ -105,11 +102,76 @@
     </div>
     <div class="row" style="border:0px solid red;overflow-y:auto;  height:70vh;" *ngIf="exp2">
         <div class="col-md-12" style="border:0px solid red;">
-            <md-card style="width:100%;height:20vh;">Simple card</md-card><br>
-                <md-card style="width:100%;height:20vh;">Simple card</md-card><br>
-                <md-card style="width:100%;height:20vh;">Simple card</md-card><br>
-                <md-card style="width:100%;height:20vh;">Simple card</md-card><br>
-                <md-card style="width:100%;height:20vh;">Simple card</md-card><br>
+            <button md-raised-button (click)="increment2(list)">Add / Calculate Material Function</button>
+
+            <md-card style="width:100%;" *ngFor="let item of calcs2; let i=index;">
+            <md-card-header style="float: right; padding:5px;">
+                <button md-raised-button>Calculate Labor</button>
+                <button md-raised-button>Add CF</button>
+                <button md-raised-button (click)="deleteTable2(i)"><md-icon>delete</md-icon></button>
+            </md-card-header>
+            <md-card-content>
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="40px;"><md-icon (click)="addRow2(i)">add circle outline</md-icon></th>
+                            <th width="40px;">Sr.No</th>
+                            <th width="300px;">Particular</th>
+                            <th colspan="3">Size</th>
+                            <th width="40px;">No</th>
+                            <th width="40px;">Sqmt</th>
+                            <th width="40px;">cmt</th>
+                            <th width="40px;">RMT</th>
+                            <th width="40px;">Rate</th>
+                            <th width="40px;">Amount</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th width="40px;"><input type="text" class="inp" ></th>
+                            <th width="40px;"><input type="text" class="inp" ></th>
+                            <th width="40px;"><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let calc2 of calcs2[i]; let j=index">
+                            <td><md-icon (click)="deleteRow2(i,j)">delete</md-icon></td>
+                            <!-- delete button -->
+                            <td><input type="text" class="inp" ></td>
+                            <!-- Sr. No -->
+                            <td><input type="text" class="inp" ></td>
+                            <!-- Particular -->
+                            <td><input type="number" class="inp" [(ngModel)]="calc2[j]['v1']" ></td>
+                            <!-- size 1 -->
+                            <td>x</td>
+                            <!-- size 2 -->
+                            <td><input type="number" class="inp" [(ngModel)]="calc2[j]['v2']" ></td>
+                            <!-- size 3 -->
+                            <td><input type="number" class="inp" [(ngModel)]="calc2[j]['v3']" ></td>
+                            <!-- No -->
+                            <td>{{calc2[j]['v1']*calc2[j]['v2']*calc2[j]['v3'] | number : '2.2-3'}}</td>
+                            <!-- sqmt -->
+                            <td>{{calc2[j]['v1']*calc2[j]['v2']*calc2[j]['v3']*0.0012 | number : '2.2-3'}}</td>
+                            <!-- cmt -->
+                            <td>{{calc2[j]['v1']*calc2[j]['v2']*calc2[j]['v3']*0.0012*8000 | number : '2.2-3'}}</td>
+                            <!-- RMT -->
+                            <td><input type="number" class="inp" [(ngModel)]="calc2[j]['v4']" ></td>
+                            <!-- rate -->
+                            <td>{{calc2[j]['v1']*calc2[j]['v2']*calc2[j]['v3']*0.0012*8000*calc2[j]['v4'] | number : '2.2-3'}}</td>
+                            <!-- amount -->
+                        </tr>
+                    </tbody>
+                </table>
+            </md-card-content>
+
+            </md-card>
         </div>
     </div>
     <div class="row">
@@ -119,11 +181,64 @@
     </div>
     <div class="row" style="border:0px solid red;overflow-y:auto;  height:70vh;" *ngIf="exp3">
         <div class="col-md-12" style="border:0px solid red;">
-            <md-card style="width:100%;height:20vh;">Simple card</md-card><br>
-            <md-card style="width:100%;height:20vh;">Simple card</md-card><br>
-            <md-card style="width:100%;height:20vh;">Simple card</md-card><br>
-            <md-card style="width:100%;height:20vh;">Simple card</md-card><br>
-            <md-card style="width:100%;height:20vh;">Simple card</md-card><br>
+            <button md-raised-button (click)="increment3(list)">Add / Calculate Material Function</button>
+
+            <md-card style="width:100%;" *ngFor="let item of calcs3; let i=index;">
+            <md-card-header style="float: right; padding:5px;">
+                <button md-raised-button>Calculate Labor</button>
+                <button md-raised-button>Add CF</button>
+                <button md-raised-button (click)="deleteTable3(i)"><md-icon>delete</md-icon></button>
+            </md-card-header>
+            <md-card-content>
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="40px;"><md-icon (click)="addRow3(i)">add circle outline</md-icon></th>
+                            <th width="40px;">Sr.No</th>
+                            <th width="300px;">Particular</th>
+                            <th colspan="3">Size</th>
+                            <th width="40px;">No</th>
+                            <th width="40px;">Sqmt</th>
+                            <th width="40px;">cmt</th>
+                            <th width="40px;">RMT</th>
+                            <th width="40px;">Rate</th>
+                            <th width="40px;">Amount</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th width="40px;"><input type="text" class="inp" ></th>
+                            <th width="40px;"><input type="text" class="inp" ></th>
+                            <th width="40px;"><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                            <th><input type="text" class="inp" ></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let calc3 of calcs3[i]; let j=index">
+                            <td><md-icon (click)="deleteRow3(i,j)">delete</md-icon></td>
+                            <td><input type="text" class="inp" ></td>
+                            <td><input type="text" class="inp" ></td>
+                            <td><input type="number" class="inp" [(ngModel)]="calc3[j]['v1']" ></td>
+                            <td>x</td>
+                            <td><input type="number" class="inp" [(ngModel)]="calc3[j]['v2']" ></td>
+                            <td><input type="number" class="inp" [(ngModel)]="calc3[j]['v3']" ></td>
+                            <td>{{calc3[j]['v1']*calc3[j]['v2']*calc3[j]['v3'] | number : '2.2-3'}}</td>
+                            <td>{{calc3[j]['v1']*calc3[j]['v2']*calc3[j]['v3']*0.0012 | number : '2.2-3'}}</td>
+                            <td>{{calc3[j]['v1']*calc3[j]['v2']*calc3[j]['v3']*0.0012*8000 | number : '2.2-3'}}</td>
+                            <td><input type="number" class="inp" [(ngModel)]="calc3[j]['v4']" ></td>
+                            <td>{{calc3[j]['v1']*calc3[j]['v2']*calc3[j]['v3']*0.0012*8000*calc3[j]['v4'] | number : '2.2-3'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-card-content>
+
+            </md-card>
         </div>
     </div>
 </div>
