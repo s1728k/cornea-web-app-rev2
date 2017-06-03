@@ -77,21 +77,27 @@
                         <tr *ngFor="let calc1 of calcs1[i]; let j=index">
                             <td><md-icon (click)="deleteRow1(i,j)">delete</md-icon></td>
                             <td><input type="text" class="inp" ></td>
-                            <td><input type="text" class="inp" ></td>
-                            <td><input type="number" class="inp" [(ngModel)]="calc1['v1']"></td>
+                            <td><md-select class="inp" name="sel">
+                                <md-option *ngFor="let food of dropList1" [value]="food.key">
+                                  {{food.key}}
+                                </md-option>
+                              </md-select></td>
+                            <td><input type="number" class="inp" [(ngModel)]="calcs1[i][j]['v1']"></td>
                             <td>x</td>
-                            <td><input type="number" class="inp" [(ngModel)]="calc1['v2']"></td>
-                            <td><input type="number" class="inp" [(ngModel)]="calc1['v3']"></td>
-                            <td>{{calc1['v1']*calc1['v2']*calc1['v3'] | nan | number : '2.2-3'}}</td>
-                            <td>{{calc1['v1']*calc1['v2']*calc1['v3']*0.0012 | nan | number : '2.2-3'}}</td>
-                            <td>{{calc1['v1']*calc1['v2']*calc1['v3']*0.0012*8000  | nan | number : '2.2-3'}}</td>
-                            <td><input type="number" class="inp" [(ngModel)]="calc1['v4']"></td>
-                            <td>{{calc1['v1']*calc1['v2']*calc1['v3']*0.0012*8000*calc1['v4'] | nan | number : '2.2-3'}}</td>
+                            <td><input type="number" class="inp" [(ngModel)]="calcs1[i][j]['v2']"></td>
+                            <td><input type="number" class="inp" [(ngModel)]="calcs1[i][j]['v3']"></td>
+                            <td>{{calcs1[i][j]['v1']*calcs1[i][j]['v2']*calcs1[i][j]['v3'] | number : '2.2-3' | nan}}</td>
+                            <td>{{calcs1[i][j]['v1']*calcs1[i][j]['v2']*calcs1[i][j]['v3']*0.0012 | number : '2.2-3' | nan}}</td>
+                            <td>{{calcs1[i][j]['v1']*calcs1[i][j]['v2']*calcs1[i][j]['v3']*0.0012*8000 | number : '2.2-3' | nan}}</td>
+                            <td><input type="number" class="inp" [(ngModel)]="calcs1[i][j]['v4']"></td>
+                            <td>{{calcs1[i][j]['v1']*calcs1[i][j]['v2']*calcs1[i][j]['v3']*0.0012*8000*calcs1[i][j]['v4'] | number : '2.2-3'| nan }}</td>
                         </tr>
                     </tbody>
                 </table>
             </md-card-content>
-
+            <md-card-actions>
+                <button md-button (click)="grandTotal(i)">GrandTotal:{{grandTotalV}}</button>
+              </md-card-actions>
             </md-card>
         </div>
     </div>
@@ -126,7 +132,11 @@
                             <!-- delete button -->
                             <td><input type="text" class="inp" ></td>
                             <!-- Sr. No -->
-                            <td><input type="text" class="inp" ></td>
+                            <td><md-select class="inp" name="sel">
+                                <md-option *ngFor="let food of dropList2" [value]="food.key">
+                                  {{food.key}}
+                                </md-option>
+                              </md-select></td>
                             <!-- Description -->
                             <td><input type="text" class="inp" ></td>
                             <!-- Unit -->
@@ -134,15 +144,18 @@
                             <!-- Duration -->
                             <td><input type="number" class="inp" [(ngModel)]="calc2['v2']" ></td>
                             <!-- Count -->
-                            <td>{{calc2['v1']*calc2['v2']  | nan | number : '2.2-3'}}</td>
+                            <td>{{calc2['v1']*calc2['v2'] | number : '2.2-3' | nan}}</td>
                             <!-- Quantity -->
                             <td><input type="number" class="inp" [(ngModel)]="calc2['v3']" ></td>
                             <!-- Rate -->
-                            <td>{{calc2['v1']*calc2['v2']*calc2['v3']  | nan | number : '2.2-3'}}</td>
+                            <td>{{calc2['v1']*calc2['v2']*calc2['v3'] | number : '2.2-3' | nan}}</td>
                             <!-- amount -->
                         </tr>
                     </tbody>
                 </table>
+                <md-card-actions>
+                <button md-button  (click)="grandTotal2()">GrandTotal:{{grandTotal2V}}</button>
+              </md-card-actions>
             </md-card-content>
 
             </md-card>
