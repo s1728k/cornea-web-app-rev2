@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RateAnalysis } from '../model/rate.model'
+import { NanPipe } from '../nan.pipe'
 
 @Component({
   selector: 'app-rate-analysis',

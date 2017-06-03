@@ -35,9 +35,9 @@
     </div>
     <div class="row" style="border:0px solid grey;overflow-y:auto;  height:70vh;" *ngIf="exp1">
         <div class="col-md-12" style="border:0px solid grey;">
-            <button md-raised-button (click)="increment1(list)">Add / Calculate Material Function</button>
+            <button md-raised-button (click)="increment1(list)" style="margin-top: 5px;">Add / Calculate Material Function</button>
 
-            <md-card style="width:100%;" *ngFor="let item of calcs1; let i=index;">
+            <md-card style="width:100%;margin-top: 10px;" *ngFor="let item of calcs1; let i=index;">
             <md-card-header style="float: right; padding:5px;">
                 <button md-raised-button>Calculate Labor</button>
                 <button md-raised-button>Add CF</button>
@@ -78,15 +78,15 @@
                             <td><md-icon (click)="deleteRow1(i,j)">delete</md-icon></td>
                             <td><input type="text" class="inp" ></td>
                             <td><input type="text" class="inp" ></td>
-                            <td><input type="number" class="inp" [(ngModel)]="calc1[j]['v1']" ></td>
+                            <td><input type="number" class="inp" [(ngModel)]="calc1['v1']"></td>
                             <td>x</td>
-                            <td><input type="number" class="inp" [(ngModel)]="calc1[j]['v2']" ></td>
-                            <td><input type="number" class="inp" [(ngModel)]="calc1[j]['v3']" ></td>
-                            <td>{{calc1[j]['v1']*calc1[j]['v2']*calc1[j]['v3'] | number : '2.2-3'}}</td>
-                            <td>{{calc1[j]['v1']*calc1[j]['v2']*calc1[j]['v3']*0.0012 | number : '2.2-3'}}</td>
-                            <td>{{calc1[j]['v1']*calc1[j]['v2']*calc1[j]['v3']*0.0012*8000 | number : '2.2-3'}}</td>
-                            <td><input type="number" class="inp" [(ngModel)]="calc1[j]['v4']" ></td>
-                            <td>{{calc1[j]['v1']*calc1[j]['v2']*calc1[j]['v3']*0.0012*8000*calc1[j]['v4'] | number : '2.2-3'}}</td>
+                            <td><input type="number" class="inp" [(ngModel)]="calc1['v2']"></td>
+                            <td><input type="number" class="inp" [(ngModel)]="calc1['v3']"></td>
+                            <td>{{calc1['v1']*calc1['v2']*calc1['v3'] | nan | number : '2.2-3'}}</td>
+                            <td>{{calc1['v1']*calc1['v2']*calc1['v3']*0.0012 | nan | number : '2.2-3'}}</td>
+                            <td>{{calc1['v1']*calc1['v2']*calc1['v3']*0.0012*8000  | nan | number : '2.2-3'}}</td>
+                            <td><input type="number" class="inp" [(ngModel)]="calc1['v4']"></td>
+                            <td>{{calc1['v1']*calc1['v2']*calc1['v3']*0.0012*8000*calc1['v4'] | nan | number : '2.2-3'}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -105,39 +105,19 @@
 <!--             <button md-raised-button (click)="increment2(list)">Add / Calculate Material Function</button> -->
 
             <md-card style="width:100%;">
-            <md-card-header style="float: right; padding:5px;">
-                <button md-raised-button>Calculate Labor</button>
-                <button md-raised-button>Add CF</button>
-                <button md-raised-button (click)="deleteTable2(0)"><md-icon>delete</md-icon></button>
-            </md-card-header>
             <md-card-content>
                 <table>
                     <thead>
                         <tr>
                             <th width="40px;"><md-icon (click)="addRow2(0)">add circle outline</md-icon></th>
                             <th width="40px;">Sr.No</th>
-                            <th width="300px;">Particular</th>
-                            <th colspan="3">Size</th>
-                            <th width="40px;">No</th>
-                            <th width="40px;">Sqmt</th>
-                            <th width="40px;">cmt</th>
-                            <th width="40px;">RMT</th>
+                            <th width="300px;">Description</th>
+                            <th width="40px;">Unit</th>
+                            <th width="40px;">Duration</th>
+                            <th width="40px;">Count</th>
+                            <th width="40px;">Quantity</th>
                             <th width="40px;">Rate</th>
                             <th width="40px;">Amount</th>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <th><input type="text" class="inp" ></th>
-                            <th><input type="text" class="inp" ></th>
-                            <th width="40px;"><input type="text" class="inp" ></th>
-                            <th width="40px;"><input type="text" class="inp" ></th>
-                            <th width="40px;"><input type="text" class="inp" ></th>
-                            <th><input type="text" class="inp" ></th>
-                            <th><input type="text" class="inp" ></th>
-                            <th><input type="text" class="inp" ></th>
-                            <th><input type="text" class="inp" ></th>
-                            <th><input type="text" class="inp" ></th>
-                            <th><input type="text" class="inp" ></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -147,24 +127,18 @@
                             <td><input type="text" class="inp" ></td>
                             <!-- Sr. No -->
                             <td><input type="text" class="inp" ></td>
-                            <!-- Particular -->
-                            <td><input type="number" class="inp" [(ngModel)]="calc2[j]['v1']" ></td>
-                            <!-- size 1 -->
-                            <td>x</td>
-                            <!-- size 2 -->
-                            <td><input type="number" class="inp" [(ngModel)]="calc2[j]['v2']" ></td>
-                            <!-- size 3 -->
-                            <td><input type="number" class="inp" [(ngModel)]="calc2[j]['v3']" ></td>
-                            <!-- No -->
-                            <td>{{calc2[j]['v1']*calc2[j]['v2']*calc2[j]['v3'] | number : '2.2-3'}}</td>
-                            <!-- sqmt -->
-                            <td>{{calc2[j]['v1']*calc2[j]['v2']*calc2[j]['v3']*0.0012 | number : '2.2-3'}}</td>
-                            <!-- cmt -->
-                            <td>{{calc2[j]['v1']*calc2[j]['v2']*calc2[j]['v3']*0.0012*8000 | number : '2.2-3'}}</td>
-                            <!-- RMT -->
-                            <td><input type="number" class="inp" [(ngModel)]="calc2[j]['v4']" ></td>
-                            <!-- rate -->
-                            <td>{{calc2[j]['v1']*calc2[j]['v2']*calc2[j]['v3']*0.0012*8000*calc2[j]['v4'] | number : '2.2-3'}}</td>
+                            <!-- Description -->
+                            <td><input type="text" class="inp" ></td>
+                            <!-- Unit -->
+                            <td><input type="text" class="inp" [(ngModel)]="calc2['v1']" ></td>
+                            <!-- Duration -->
+                            <td><input type="number" class="inp" [(ngModel)]="calc2['v2']" ></td>
+                            <!-- Count -->
+                            <td>{{calc2['v1']*calc2['v2']  | nan | number : '2.2-3'}}</td>
+                            <!-- Quantity -->
+                            <td><input type="number" class="inp" [(ngModel)]="calc2['v3']" ></td>
+                            <!-- Rate -->
+                            <td>{{calc2['v1']*calc2['v2']*calc2['v3']  | nan | number : '2.2-3'}}</td>
                             <!-- amount -->
                         </tr>
                     </tbody>

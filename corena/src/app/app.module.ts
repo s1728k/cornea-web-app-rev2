@@ -33,6 +33,7 @@ import { NextCompComponent } from './next-comp/next-comp.component';
 // dependency for local storage
 import { LocalStorageModule } from 'angular-2-local-storage';
 import {StorageService} from './services/local-storage.service';
+import { NanPipe } from './nan.pipe';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import {StorageService} from './services/local-storage.service';
     LoginComponent,
     RateAnalysisComponent,
     NextCompComponent,
+    NanPipe,
   ],
   // provide modules throughout
   imports: [
