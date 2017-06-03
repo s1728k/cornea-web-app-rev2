@@ -9,8 +9,8 @@ import { RateAnalysis } from '../model/rate.model'
 export class RateAnalysisComponent implements OnInit {
 
   calcs1:RateAnalysis[][]=[];
-  calcs2:RateAnalysis[][]=[];
-  calcs3:RateAnalysis[][]=[];
+  calcs2:RateAnalysis[]=[];
+  //calcs3:RateAnalysis[][]=[];
 
   constructor() { }
 
@@ -37,30 +37,30 @@ export class RateAnalysisComponent implements OnInit {
   }
 
 
-  increment2(){
-    this.calcs2.push([])
-  }
-  deleteTable2(i){
-     this.calcs2.splice(i, 1);
-  }
+  // increment2(){
+  //   this.calcs2.push([])
+  // }
+  // deleteTable2(i){
+  //    this.calcs2.splice(i, 1);
+  // }
   addRow2(i){
-    this.calcs2[i].push({})
+    this.calcs2.push({})
   }
   deleteRow2(i,j){
-    this.calcs2[i].splice(j, 1);
+    this.calcs2.splice(j, 1);
   }
 
 
-  increment3(){
-    this.calcs3.push([])
-  }
-  deleteTable3(i){
-     this.calcs3.splice(i, 1);
-  }
-  addRow3(i){
-    this.calcs3[i].push({})
-  }
-  deleteRow3(i,j){
-    this.calcs3[i].splice(j, 1);
-  }
+  // increment3(){
+  //   this.calcs3.push([])
+  // }
+  // deleteTable3(i){
+  //    this.calcs3.splice(i, 1);
+  // }
+  // addRow3(i){
+  //   this.calcs3[i].push({})
+  // }
+  // deleteRow3(i,j){
+  //   this.calcs3[i].splice(j, 1);
+  // }
 }

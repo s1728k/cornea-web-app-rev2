@@ -30,7 +30,7 @@
     </div>
     <div class="row">
         <div class="col-md-12" style="margin-bottom:10px;">
-            <h3 (click)="exp1=!exp1" style="border-bottom:1px solid grey;">Heading 1</h3>
+            <h3 (click)="exp1=!exp1" style="border-bottom:1px solid grey;">Item Rate analysis</h3>
         </div>
     </div>
     <div class="row" style="border:0px solid grey;overflow-y:auto;  height:70vh;" *ngIf="exp1">
@@ -97,24 +97,24 @@
     </div>
     <div class="row">
         <div class="col-md-12" style="margin-bottom:10px;">
-            <h3 (click)="exp2=!exp2" style="border-bottom:1px solid grey;">Heading 2</h3>
+            <h3 (click)="exp2=!exp2" style="border-bottom:1px solid grey;">Overheads Rate analysis</h3>
         </div>
     </div>
     <div class="row" style="border:0px solid red;overflow-y:auto;  height:70vh;" *ngIf="exp2">
         <div class="col-md-12" style="border:0px solid red;">
-            <button md-raised-button (click)="increment2(list)">Add / Calculate Material Function</button>
+<!--             <button md-raised-button (click)="increment2(list)">Add / Calculate Material Function</button> -->
 
-            <md-card style="width:100%;" *ngFor="let item of calcs2; let i=index;">
+            <md-card style="width:100%;">
             <md-card-header style="float: right; padding:5px;">
                 <button md-raised-button>Calculate Labor</button>
                 <button md-raised-button>Add CF</button>
-                <button md-raised-button (click)="deleteTable2(i)"><md-icon>delete</md-icon></button>
+                <button md-raised-button (click)="deleteTable2(0)"><md-icon>delete</md-icon></button>
             </md-card-header>
             <md-card-content>
                 <table>
                     <thead>
                         <tr>
-                            <th width="40px;"><md-icon (click)="addRow2(i)">add circle outline</md-icon></th>
+                            <th width="40px;"><md-icon (click)="addRow2(0)">add circle outline</md-icon></th>
                             <th width="40px;">Sr.No</th>
                             <th width="300px;">Particular</th>
                             <th colspan="3">Size</th>
@@ -141,8 +141,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let calc2 of calcs2[i]; let j=index">
-                            <td><md-icon (click)="deleteRow2(i,j)">delete</md-icon></td>
+                        <tr *ngFor="let calc2 of calcs2; let j=index">
+                            <td><md-icon (click)="deleteRow2(0,j)">delete</md-icon></td>
                             <!-- delete button -->
                             <td><input type="text" class="inp" ></td>
                             <!-- Sr. No -->
@@ -174,7 +174,7 @@
             </md-card>
         </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-md-12" style="margin-bottom:10px;">
             <h3 (click)="exp3=!exp3" style="border-bottom:1px solid grey;">Heading 3</h3>
         </div>
@@ -240,5 +240,5 @@
 
             </md-card>
         </div>
-    </div>
+    </div> -->
 </div>
