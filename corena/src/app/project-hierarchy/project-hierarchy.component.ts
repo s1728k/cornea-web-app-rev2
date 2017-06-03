@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MdDialog, MdDialogRef} from '@angular/material';
-import {PopupDialog} from './popup.component'
-import {UserModel} from '../model/UserModel';
+import {PopupDialog} from './popup.component';
+import {UserModel} from '../model/class/UserModel';
 import * as Constants from '../shared/Constants';
 import {RestApiServiceService} from '../services/rest-api-service.service';
 import {executive} from '../shared/Constants';
@@ -13,6 +13,7 @@ import {executive} from '../shared/Constants';
 })
 export class ProjectHierarchyComponent implements OnInit {
 
+  selectedOption: {};
   user: UserModel;
   userList1: UserModel[];
   execList: UserModel[] = [
@@ -111,8 +112,7 @@ export class ProjectHierarchyComponent implements OnInit {
     this.user = new UserModel();
   }
 
-  private getUserList(): void {
-
+  getUserList(): void {
     const url = Constants.USER_END_POINT + Constants.USER_SERVICE_NAME + Constants.ACTION_ALL;
     // this.restApiService.makeHttpReuqest(Constants.GET_METHOD, url, this.user)
     //   .subscribe();
@@ -192,26 +192,26 @@ export class ProjectHierarchyComponent implements OnInit {
     return this.projectManagerUsers != null;
   }
 
-  selectedOption:{};
-  openDialogSup(item){
-    if(this.projectManagerUsers.length>1){
-      let dialogRef = this.dialog.open(PopupDialog,{
-        data:['Select PM', this.projectManagerUsers ]
+  openDialogSup(item) {
+    if (this.projectManagerUsers.length > 1) {
+      let dialogRef = this.dialog.open(PopupDialog, {
+        data: ['Select PM', this.projectManagerUsers]
       });
       dialogRef.afterClosed().subscribe(result => {
         this.selectedOption = result;
-        console.log(this.selectedOption)
+        console.log(this.selectedOption);
       });
     }
   }
-  openDialogExe(item){
-    if(this.supervisorUsers.length>1){
-      let dialogRef = this.dialog.open(PopupDialog,{
-        data:['Select Supervisor', this.supervisorUsers ]
+
+  openDialogExe(item) {
+    if (this.supervisorUsers.length > 1) {
+      let dialogRef = this.dialog.open(PopupDialog, {
+        data: ['Select Supervisor', this.supervisorUsers]
       });
       dialogRef.afterClosed().subscribe(result => {
         this.selectedOption = result;
-        console.log(this.selectedOption)
+        console.log(this.selectedOption);
       });
     }
   }

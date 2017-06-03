@@ -12,5 +12,17 @@ export const POST_METHOD = 'post';
 export const DELETE_METHOD = 'delete';
 export const PUT_METHOD = 'put';
 export const USER_END_POINT = 'http://92.168.0.205:8070/api';
+export const LOGIN_END_POINT = 'http://192.168.0.205:8070/v1/login';
 export const USER_SERVICE_NAME = 'users';
 export const ACTION_ALL = 'all';
+/*** Keys for storing user data in StorageService ***/
+export const USER_OBJECT = 'user_object';
+export const USER_FULL_NAME = 'user_full_name';
+export const USER_FIRST_NAME = 'first_name';
+export const USER_LAST_NAME = 'last_name';
+export const USER_ID = 'id';
+export const USER_IS_SMP = 'is_smp';
+export const USER_API_TOKEN = 'api_token';
+export const USER_COMPANY_ID = 'company_id';
+export const USER_GROUP_ID = 'group_id';
+export const USER_EMAIL = 'email';

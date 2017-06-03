@@ -26,12 +26,13 @@ import {AppComponent} from './app.component';
 // import {ProjectHierarchyComponent} from './project-hierarchy/project-hierarchy.component';
 import { LoginComponent } from './login/login.component';
 import { routing } from './app.routing';
-import { PagesModule } from './pages/pages.module'
+import { PagesModule } from './pages/pages.module';
 import { SharedService } from './shared.service';
 import { RateAnalysisComponent } from './rate-analysis/rate-analysis.component';
-import { NextCompComponent } from './next-comp/next-comp.component'
+import { NextCompComponent } from './next-comp/next-comp.component';
 // dependency for local storage
-// import { LocalStorageModule } from 'angular-2-local-storage';
+import { LocalStorageModule } from 'angular-2-local-storage';
+import {StorageService} from './services/local-storage.service';
 
 @NgModule({
   declarations: [
@@ -57,13 +58,13 @@ import { NextCompComponent } from './next-comp/next-comp.component'
     routing,
     PagesModule,
     SharedModule,
-    /*LocalStorageModule.withConfig({
+    LocalStorageModule.withConfig({
       prefix: 'cornea-erp',
       // storageType: 'localStorage'
       storageType: 'sessionStorage'
-    })*/
+    })
   ],
-  providers: [RestApiServiceService, SharedService],
+  providers: [RestApiServiceService, StorageService, SharedService],
   bootstrap: [AppComponent]
 })
 /**

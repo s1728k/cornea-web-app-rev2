@@ -3,13 +3,14 @@
     <img md-list-avatar src="http://mdepinet.org/wp-content/uploads/person-placeholder.jpg" alt="..." class="loginimgUser">
     <table class="example-full-width" cellspacing="0"><tr>
       <td><md-input-container class="example-full-width">
-        <input type="email" mdInput placeholder="Enter Email Address" required>
+        <input type="email" mdInput placeholder="Enter Email Address" [(ngModel)]="emailStr" required>
       </md-input-container></td></tr>
       <tr><td><md-input-container class="example-full-width">
-        <input type="password" mdInput placeholder="Password" required>
+        <input type="password" mdInput placeholder="Password" [(ngModel)]="passwordStr" required>
       </md-input-container></td>
     </tr></table>
 
-    <button md-raised-button (click)="login()" routerLink="/pages" >Log In</button>
+    <button md-raised-button class="button" (click)="login(emailStr, passwordStr)">Sign In</button>
   </div>
 </div>
+
