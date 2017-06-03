@@ -8,6 +8,7 @@ import {MdDialog, MdDialogRef, MD_DIALOG_DATA} from '@angular/material';
   styleUrls: ['./popup.component.css'],
 })
 export class PopupDialog {
+  selVal:{}={};
   constructor(public dialogRef: MdDialogRef<PopupDialog>,
               @Inject(MD_DIALOG_DATA) public data:any ) {}
 }

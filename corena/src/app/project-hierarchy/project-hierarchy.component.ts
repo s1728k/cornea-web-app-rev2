@@ -192,7 +192,7 @@ export class ProjectHierarchyComponent implements OnInit {
     return this.projectManagerUsers != null;
   }
 
-  selectedOption:string;
+  selectedOption:{};
   openDialogSup(item){
     if(this.projectManagerUsers.length>1){
       let dialogRef = this.dialog.open(PopupDialog,{
@@ -200,6 +200,7 @@ export class ProjectHierarchyComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe(result => {
         this.selectedOption = result;
+        console.log(this.selectedOption)
       });
     }
   }
@@ -210,6 +211,7 @@ export class ProjectHierarchyComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe(result => {
         this.selectedOption = result;
+        console.log(this.selectedOption)
       });
     }
   }

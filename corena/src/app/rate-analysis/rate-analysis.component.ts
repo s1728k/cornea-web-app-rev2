@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RateAnalysisComponent implements OnInit {
 
+  calcs:{}[]=[{},{},{},{},{},{},{},{},{},{}]
+
   constructor() { }
 
   ngOnInit() {
