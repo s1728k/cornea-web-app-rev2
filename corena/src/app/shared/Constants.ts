@@ -11,7 +11,7 @@ export const GET_METHOD = 'get';
 export const POST_METHOD = 'post';
 export const DELETE_METHOD = 'delete';
 export const PUT_METHOD = 'put';
-export const USER_END_POINT = 'http://92.168.0.205:8070/api';
+export const USER_END_POINT = 'http://192.168.0.205:8070/api';
 export const LOGIN_END_POINT = 'http://192.168.0.205:8070/v1/login';
 export const USER_SERVICE_NAME = 'users';
 export const ACTION_ALL = 'all';
@@ -26,3 +26,8 @@ export const USER_API_TOKEN = 'api_token';
 export const USER_COMPANY_ID = 'company_id';
 export const USER_GROUP_ID = 'group_id';
 export const USER_EMAIL = 'email';
+/*** for boq upload screen ***/
+export const BASE_URL_PROJECT = 'http://192.168.0.205:9000/api';
+export const SERVICE_NAME_PROJECT = '/projects';
+export const SERVICE_NAME_BOQ = '/boq';
+

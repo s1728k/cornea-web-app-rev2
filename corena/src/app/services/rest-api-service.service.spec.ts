@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { RestApiServiceService } from './rest-api-service.service';
+import { RestApiService } from './rest-api-service.service';
 
-describe('RestApiServiceService', () => {
+describe('RestApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [RestApiServiceService]
+      providers: [RestApiService]
     });
   });
 
-  it('should ...', inject([RestApiServiceService], (service: RestApiServiceService) => {
+  it('should ...', inject([RestApiService], (service: RestApiService) => {
     expect(service).toBeTruthy();
   }));
 });

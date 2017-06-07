@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {SharedService} from '../shared.service';
 import {LoginCredentials} from '../model/class/LoginCredentials';
 import {Http, RequestMethod, Response, Headers, RequestOptions} from '@angular/http';
-import {RestApiServiceService} from '../services/rest-api-service.service';
+import {RestApiService} from '../services/rest-api-service.service';
 import * as Constants from '../shared/Constants';
 import {User} from '../model/interface/User';
 import {StorageService} from '../services/local-storage.service';
@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private sharedService: SharedService,
               private http: Http,
-              private restApiService: RestApiServiceService,
+              private restApiService: RestApiService,
               private storageService: StorageService,
               private routes: Router) {
     this.cred = new LoginCredentials();

@@ -11,7 +11,7 @@ import { RouterModule, Router }  from '@angular/router';
 })
 export class TopHeaderComponent implements OnInit {
 
-  constructor(private router:Router) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }

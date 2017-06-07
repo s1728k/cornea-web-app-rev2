@@ -10,7 +10,7 @@ import * as Constants from '../shared/Constants';
  * supported by Observables
  */
 @Injectable()
-export class RestApiServiceService {
+export class RestApiService {
 
   headers: Headers;
 

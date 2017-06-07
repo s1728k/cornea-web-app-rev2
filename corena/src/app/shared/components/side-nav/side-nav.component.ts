@@ -52,18 +52,18 @@ export class SideNavComponent implements OnInit {
                   {},
                   {}];
 
-  constructor(private router:Router) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
 
-  routingFun(i,j){
+  routingFun(i, j){
       // console.log(i)
       // console.log(j)
-      if (i===1 && j===1){
+      if (i === 1 && j === 1){
           this.router.navigate(['/boq-upload']);
       }
-      if (i===1 && j===2){
+      if (i === 1 && j === 2){
           this.router.navigate(['/project-hierarchy']);
       }
   }

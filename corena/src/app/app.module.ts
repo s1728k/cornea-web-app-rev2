@@ -1,6 +1,6 @@
 import {RouterModule, Routes} from '@angular/router';
-// dependency for RestApiServiceService
-import {RestApiServiceService} from './services/rest-api-service.service';
+// dependency for RestApiService
+import {RestApiService} from './services/rest-api-service.service';
 // module to support rendering on browser
 import {BrowserModule} from '@angular/platform-browser';
 // dependency for material module
@@ -66,7 +66,7 @@ import { NanPipe } from './nan.pipe';
       storageType: 'sessionStorage'
     })
   ],
-  providers: [RestApiServiceService, StorageService, SharedService],
+  providers: [RestApiService, StorageService, SharedService],
   bootstrap: [AppComponent]
 })
 /**

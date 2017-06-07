@@ -3,7 +3,7 @@ import {MdDialog, MdDialogRef} from '@angular/material';
 import {PopupDialog} from './popup.component';
 import {UserModel} from '../model/class/UserModel';
 import * as Constants from '../shared/Constants';
-import {RestApiServiceService} from '../services/rest-api-service.service';
+import {RestApiService} from '../services/rest-api-service.service';
 import {executive} from '../shared/Constants';
 
 @Component({
@@ -107,7 +107,7 @@ export class ProjectHierarchyComponent implements OnInit {
   supervisorUsers: UserModel[] = [];
   executives: UserModel[] = [];
 
-  constructor(private restApiService: RestApiServiceService,
+  constructor(private restApiService: RestApiService,
               private dialog: MdDialog) {
     this.user = new UserModel();
   }
@@ -192,9 +192,9 @@ export class ProjectHierarchyComponent implements OnInit {
     return this.projectManagerUsers != null;
   }
 
-  openDialogSup(item) {
+  openDialogSup() {
     if (this.projectManagerUsers.length > 1) {
-      let dialogRef = this.dialog.open(PopupDialog, {
+      const dialogRef = this.dialog.open(PopupDialog, {
         data: ['Select PM', this.projectManagerUsers]
       });
       dialogRef.afterClosed().subscribe(result => {
@@ -204,9 +204,9 @@ export class ProjectHierarchyComponent implements OnInit {
     }
   }
 
-  openDialogExe(item) {
+  openDialogExe() {
     if (this.supervisorUsers.length > 1) {
-      let dialogRef = this.dialog.open(PopupDialog, {
+      const dialogRef = this.dialog.open(PopupDialog, {
         data: ['Select Supervisor', this.supervisorUsers]
       });
       dialogRef.afterClosed().subscribe(result => {

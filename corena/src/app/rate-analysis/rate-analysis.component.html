@@ -24,6 +24,9 @@
                 </md-input-container>
             </md-card>
         </div>
+        <div class="col-md-4">
+            <button md-raised-button disabled>Submit</button>
+        </div>
     </div>
     <div class="row">
         <br>
@@ -35,7 +38,7 @@
     </div>
     <div class="row" style="border:0px solid grey;overflow-y:auto;  height:70vh;" *ngIf="exp1">
         <div class="col-md-12" style="border:0px solid grey;">
-            <button md-raised-button (click)="increment1(list)" style="margin-top: 5px;">Add / Calculate Material Function</button>
+            <button md-raised-button (click)="increment1(list)" style="margin-top: 5px;">Add / Calculate Material</button>
 
             <md-card style="width:100%;margin-top: 10px;" *ngFor="let item of calcs1; let i=index;">
             <md-card-header style="float: right; padding:5px;">
@@ -49,19 +52,23 @@
                         <tr>
                             <th width="40px;"><md-icon (click)="addRow1(i)">add circle outline</md-icon></th>
                             <th width="40px;">Sr.No</th>
-                            <th width="300px;">Particular</th>
+                            <th width="200px;">Particular</th>
                             <th colspan="3">Size</th>
                             <th width="40px;">No</th>
                             <th width="40px;">Sqmt</th>
                             <th width="40px;">cmt</th>
                             <th width="40px;">RMT</th>
-                            <th width="40px;">Rate</th>
-                            <th width="40px;">Amount</th>
+                            <th width="80px;">Rate</th>
+                            <th width="100px;">Amount</th>
                         </tr>
                         <tr>
                             <th></th>
                             <th><input type="text" class="inp" ></th>
-                            <th><input type="text" class="inp" ></th>
+                            <th><md-select class="inp" name="sel">
+                                <md-option *ngFor="let item of rowItems" [value]="item.name" (click)="selRowItemId(item.id)">
+                                  {{item.name}}
+                                </md-option>
+                              </md-select></th>
                             <th width="40px;"><input type="text" class="inp" ></th>
                             <th width="40px;"><input type="text" class="inp" ></th>
                             <th width="40px;"><input type="text" class="inp" ></th>
@@ -140,7 +147,7 @@
                             <!-- Description -->
                             <td><input type="text" class="inp" ></td>
                             <!-- Unit -->
-                            <td><input type="text" class="inp" [(ngModel)]="calc2['v1']" ></td>
+                            <td><input type="number" class="inp" [(ngModel)]="calc2['v1']" ></td>
                             <!-- Duration -->
                             <td><input type="number" class="inp" [(ngModel)]="calc2['v2']" ></td>
                             <!-- Count -->
