@@ -8,6 +8,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 // angular dependency to bind the  components
 import {NgModule} from '@angular/core';
 // module to create form's
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
 // dependency to implement http calls to network  angular buit-in
 import {HttpModule} from '@angular/http';
@@ -32,7 +33,7 @@ import { RateAnalysisComponent } from './rate-analysis/rate-analysis.component';
 import { NextCompComponent } from './next-comp/next-comp.component';
 // dependency for local storage
 import { LocalStorageModule } from 'angular-2-local-storage';
-import {StorageService} from './services/local-storage.service';
+import { StorageService } from './services/local-storage.service';
 import { NanPipe } from './nan.pipe';
 
 @NgModule({
@@ -54,6 +55,7 @@ import { NanPipe } from './nan.pipe';
     HttpModule,
     FileUploadModule,
     HttpModule,
+    NgbModule.forRoot(),
     MaterialModule,
     MdNativeDateModule,
     MdButtonModule,

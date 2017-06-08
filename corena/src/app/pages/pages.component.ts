@@ -35,7 +35,7 @@ import { RouterModule, Router }  from '@angular/router';
 export class PagesComponent implements OnInit {
 
   links: any[] = ['Dashboard',
-                  ['Project', 'BOQ', 'Project Hierarchy','Rate Analysis'],
+                  ['Project', 'BOQ', 'Project Hierarchy', 'Rate Analysis'],
                   ['Purchase Order', 'Request For Quotation', 'Supplier Quotation'],
                   ['Site', 'Indent'],
                   'Accounts',
@@ -52,7 +52,7 @@ export class PagesComponent implements OnInit {
               ];
 
   redirects: any[] = ['under-construnction',
-                      ['', 'boq-upload', 'project-hierarchy','rate-analysis'],
+                      ['', 'boq-upload', 'project-hierarchy', 'rate-analysis'],
                       ['Purchase Order', 'under-construnction', 'under-construnction'],
                       ['Site', 'under-construnction'],
                       'under-construnction',
@@ -60,7 +60,7 @@ export class PagesComponent implements OnInit {
                       ['HR', 'under-construnction', 'under-construnction', 'under-construnction'],
                      ];
 
-  constructor(private router:Router) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
@@ -73,18 +73,18 @@ export class PagesComponent implements OnInit {
    if (!this.div.nativeElement.contains(event.target) && this.img.nativeElement !== event.target){
      this.userBool = false;
    }
-   //this.loginBool = this.sharedService.loginBool;
+   // this.loginBool = this.sharedService.loginBool;
   }
 
   redirectLogin(){
       this.router.navigate(['/login']);
   }
 
-  routingFun(i,j){
-    if (j===0){
-      this.router.navigate(['/pages/'+this.redirects[i]]);
+  routingFun(i, j){
+    if (j === 0){
+      this.router.navigate(['/pages/' + this.redirects[i]]);
     }else{
-      this.router.navigate(['/pages/'+this.redirects[i][j]]);
+      this.router.navigate(['/pages/' + this.redirects[i][j]]);
     }
   }
 
