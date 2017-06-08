@@ -4,6 +4,7 @@ import {RestApiService} from '../services/rest-api-service.service';
 import {ProjectResponseBOQUpload} from '../model/class/project-response';
 import {BOQTable} from '../model/class/boq-table.model';
 import * as Constants from '../shared/Constants';
+import {BoqNameId} from '../model/class/name.id.model';
 const URL = 'http://49.50.76.29:8090/api/boq/file';
 
 @Component({
@@ -26,7 +27,7 @@ export class FileUploadComponent implements OnInit {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
       + Constants.ACTION_ALL + '?visible[]=id&visible[]=name';
     this.urlBoq = Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_BOQ
-      + Constants.ACTION_ALL + '?visible[]=id&visible[]=name&visible[]=has_ra';
+      + Constants.ACTION_ALL + '?appends[]=lineItems&hidden[]=created_at&hidden[]=updated_at';
   }
 
   ngOnInit() {
@@ -69,10 +70,12 @@ export class FileUploadComponent implements OnInit {
       );
   }
 
-  updateBoqTable(id: number): void {
-    this.restApiService.getRequest(Constants.BASE_URL_BOQ
+  updateBoqTable(object: BoqNameId): void {
+    console.log(object.lineItems);
+    this.boqList = object.lineItems;
+    /*this.restApiService.getRequest(Constants.BASE_URL_BOQ
       + Constants.SERVICE_NAME_BOQ + '/' + id)
-      .map(res => /*this.boqList = <BOQTable[]>*/res.json().data)
+      .map(res => /!*this.boqList = <BOQTable[]>*!/res.json().data)
       .subscribe(
         (value: BOQTable[]) => {
           this.boqList = value;
@@ -80,6 +83,6 @@ export class FileUploadComponent implements OnInit {
         (err: any) => {
           console.error(err);
         }
-      );
+      );*/
   }
 }

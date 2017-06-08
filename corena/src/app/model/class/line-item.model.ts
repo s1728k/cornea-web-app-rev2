@@ -1,4 +1,3 @@
-import {NameId} from './name.id.model';
 /**
  * Created by DELL on 6/6/2017.
  */
@@ -14,5 +13,4 @@ export class LineItem {
   public length: number;
   public breadth: number;
   public thickness: number;
-  public material_id: NameId[];
 }

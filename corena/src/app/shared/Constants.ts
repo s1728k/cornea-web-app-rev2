@@ -12,7 +12,7 @@ export const POST_METHOD = 'post';
 export const DELETE_METHOD = 'delete';
 export const PUT_METHOD = 'put';
 export const USER_END_POINT = 'http://192.168.0.205:8070/api';
-export const LOGIN_END_POINT = 'http://192.168.0.205:8070/v1/login';
+export const LOGIN_END_POINT = 'http://49.50.76.29:8080/v1/login';
 export const USER_SERVICE_NAME = '/users';
 export const ACTION_ALL = '/all';
 /*** Keys for storing user data in StorageService ***/
@@ -31,3 +31,4 @@ export const BASE_URL_PROJECT = 'http://49.50.76.29:8090/api';
 export const SERVICE_NAME_PROJECT = '/project';
 export const SERVICE_NAME_BOQ = '/boq';
 export const BASE_URL_BOQ = 'http://49.50.76.29:80/api';
+export const APPENDS_LINE_ITEMS_BOQ = 'appends[]=lineitems';

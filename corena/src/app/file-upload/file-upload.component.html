@@ -115,11 +115,13 @@
   <div class="row" style="display:inline-flex">
 
     <div class="col-md-4" *ngFor="let project of projectList; let i=index">
-    <md-card style="padding:0px">
-      <div style="width=100%; border: 1px solid red;">
+    <md-card style="padding: 0px">
+      <div style="width: 100%;">
           <button md-button (click)="getBoqList(project)">{{project.name}}</button>
           <ul *ngIf="projectList[i].boq">
-            <li *ngFor="let boq of projectList[i].boq"><button md-button (click)="updateBoqTable(boq.id)"> {{boq.name}}</button></li>
+            <li *ngFor="let boq of projectList[i].boq">
+              <button md-button (click)="updateBoqTable(boq)">{{boq.name}}</button>
+            </li>
           </ul>
 
 <!--             <div style="overflow-y:auto" *ngIf="projectList[i].boq">
