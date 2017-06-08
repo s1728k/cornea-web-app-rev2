@@ -23,8 +23,8 @@ export class FileUploadComponent implements OnInit {
 
   constructor(private restApiService: RestApiService) {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
-      + Constants.ACTION_ALL + 'visible[]=id&visible[]=name&appends[]=boq';
-    this.urlBoq = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_BOQ;
+      + Constants.ACTION_ALL + '?visible[]=id&visible[]=name';
+    this.urlBoq = Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_BOQ + '?visible[]=id&visible[]=name';
   }
 
   ngOnInit() {

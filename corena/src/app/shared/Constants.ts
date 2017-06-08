@@ -27,7 +27,7 @@ export const USER_COMPANY_ID = 'company_id';
 export const USER_GROUP_ID = 'group_id';
 export const USER_EMAIL = 'email';
 /*** for boq upload screen ***/
-export const BASE_URL_PROJECT = 'http://49.50.76.29/api';
-export const SERVICE_NAME_PROJECT = '/projects';
+export const BASE_URL_PROJECT = 'http://49.50.76.29:8090/api';
+export const SERVICE_NAME_PROJECT = '/project';
 export const SERVICE_NAME_BOQ = '/boq';
-
+export const BASE_URL_BOQ = 'http://49.50.76.29:8080/api'
