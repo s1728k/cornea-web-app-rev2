@@ -37,6 +37,8 @@ import { GanttchartComponent } from './shared/components/ganttchart/ganttchart.c
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { StorageService } from './services/local-storage.service';
 import { NanPipe } from './nan.pipe';
+import { SearchService } from './services/search.service'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,7 +72,7 @@ import { NanPipe } from './nan.pipe';
       storageType: 'sessionStorage'
     })
   ],
-  providers: [RestApiService, StorageService, SharedService],
+  providers: [RestApiService, StorageService, SharedService, SearchService],
   bootstrap: [AppComponent]
 })
 /**

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { RateAnalysis, LineItemTableRow } from '../model/class';
 import { LineItem } from '../model/class/line-item.model';
 import { NanPipe } from '../nan.pipe';
+import { SearchService } from '../services/search.service'
 
 import { Observable }        from 'rxjs/Observable';
 import { Subject }           from 'rxjs/Subject';
@@ -47,7 +48,7 @@ export class RateAnalysisComponent implements OnInit {
   filteredStates:any[]=["sfsdF","fsdfs",'dfsfsdf']
 
 
-  constructor(private restApiService: RestApiService) { }
+  constructor(private restApiService: RestApiService, private searchService:SearchService) { }
 
   // Push a search term into the observable stream.
   search(term: string): void {
@@ -57,6 +58,11 @@ export class RateAnalysisComponent implements OnInit {
                       .debounceTime(300)
                       .distinctUntilChanged()
                       .switchMap((term: string) => this.restApiService.search(term));
+                      // .switchMap(term => this.restApiService.search(term))
+                      .subscribe((result) => {
+                          this.materials = result;
+                          console.log(this.materials);
+                      });
 
     console.log(this.materials);
   }
