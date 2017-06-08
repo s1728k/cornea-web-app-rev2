@@ -17,7 +17,7 @@ export class FileUploadComponent implements OnInit {
   public hasBaseDropZoneOver = false;
   public hasAnotherDropZoneOver = false;
   public projectList: ProjectResponseBOQUpload[];
-  toggleProject:{}={};
+  toggleProject: {} = {};
   public boqList: BOQTable[];
   urlProject: string;
   urlBoq: string;
@@ -58,12 +58,10 @@ export class FileUploadComponent implements OnInit {
       .subscribe(
         (value) => {
           // project.boq = value;
-          for (const project1 of this.projectList){
-            if (project1.id === project.id){
-              project1.boq = value;
-              break;
-            }
-          }
+          console.log(value);
+          console.log('project id = %s \n condition = %s \n value= %s', project.id, (project.id === project.id), value);
+          this.projectList[this.projectList.indexOf(project)].boq = value;
+          console.log(this.projectList[this.projectList.indexOf(project)].boq);
         },
         (error: any) => {
           console.log(error);
@@ -72,7 +70,8 @@ export class FileUploadComponent implements OnInit {
   }
 
   updateBoqTable(id: number): void {
-    this.restApiService.getRequest(this.urlBoq + '/' + id)
+    this.restApiService.getRequest(Constants.BASE_URL_BOQ
+      + Constants.SERVICE_NAME_BOQ + '/' + id)
       .map(res => /*this.boqList = <BOQTable[]>*/res.json().data)
       .subscribe(
         (value: BOQTable[]) => {

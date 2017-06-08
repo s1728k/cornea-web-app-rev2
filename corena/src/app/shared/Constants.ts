@@ -30,4 +30,4 @@ export const USER_EMAIL = 'email';
 export const BASE_URL_PROJECT = 'http://49.50.76.29:8090/api';
 export const SERVICE_NAME_PROJECT = '/project';
 export const SERVICE_NAME_BOQ = '/boq';
-export const BASE_URL_BOQ = 'http://49.50.76.29:8080/api';
+export const BASE_URL_BOQ = 'http://49.50.76.29:80/api';

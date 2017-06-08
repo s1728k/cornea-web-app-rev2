@@ -38,7 +38,7 @@ export class RestApiService {
    */
   getRequest(url: string): Observable<any> {
     console.log(url);
-    return this.http.get(url);
+    return this.http.get(url, this.headers);
   }
 
   putRequest(url: string, body: any): Observable<any> {
