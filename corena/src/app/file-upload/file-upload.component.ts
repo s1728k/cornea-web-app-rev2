@@ -23,14 +23,15 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   public boqList: BOQTable[];
   urlProject: string;
   urlBoq: string;
-  toggleCreateView:boolean=false;
-  boqSelected:{};
+  toggleCreateView: boolean;
+  boqSelected: {};
 
   constructor(private restApiService: RestApiService, private router: Router) {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
       + Constants.ACTION_ALL + '?visible[]=id&visible[]=name';
     this.urlBoq = Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_BOQ
       + Constants.ACTION_ALL + '?appends[]=lineItems&hidden[]=created_at&hidden[]=updated_at';
+    this.toggleCreateView = false;
   }
 
   ngOnInit() {
@@ -48,7 +49,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   };
 
   ngOnDestroy() {
-    this.restApiService.comm_obj=this.boqSelected;
+    this.restApiService.comm_obj = this.boqSelected;
   }
 
   // http://192.168.0.205:9000/api/projects/all/visible[]=id&visible[]=name&appends[]=boq
@@ -81,24 +82,24 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.toggleCreateView = false;
     console.log(object.lineItems);
     this.boqList = object.lineItems;
-    if(object.has_ra){
-      this.toggleCreateView=true;
+    if (object.has_ra) {
+      this.toggleCreateView = true;
     }
-    this.boqSelected=object
+    this.boqSelected = object;
     /*this.restApiService.getRequest(Constants.BASE_URL_BOQ
-      + Constants.SERVICE_NAME_BOQ + '/' + id)
-      .map(res => /!*this.boqList = <BOQTable[]>*!/res.json().data)
-      .subscribe(
-        (value: BOQTable[]) => {
-          this.boqList = value;
-        },
-        (err: any) => {
-          console.error(err);
-        }
-      );*/
+     + Constants.SERVICE_NAME_BOQ + '/' + id)
+     .map(res => /!*this.boqList = <BOQTable[]>*!/res.json().data)
+     .subscribe(
+     (value: BOQTable[]) => {
+     this.boqList = value;
+     },
+     (err: any) => {
+     console.error(err);
+     }
+     );*/
   }
 
-  redirecToRateAnalysis(){
+  redirecToRateAnalysis() {
     this.router.navigate(['/pages/rate-analysis']);
   }
 }

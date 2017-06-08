@@ -13,7 +13,7 @@ import * as Constants from '../shared/Constants';
 export class RestApiService {
 
   headers: Headers;
-  comm_obj:{}={};
+  public comm_obj: {} = {};
 
   /**
    * constructor to inject
@@ -64,10 +64,10 @@ export class RestApiService {
     );
   }
 
-  search(term: string): Observable<{}[]> {
+  search(term: string): Observable<any> {
     return this.http
-               .get("http://49.50.76.29/api/material/search?search=" + term + "&filter[]=name&filter[]=srno&filter[]=brand")
-               .map(response => response.json().data as {}[]);
+      .get('http://49.50.76.29/api/material/search?search=' + term + '&filter[]=name&filter[]=srno&filter[]=brand')
+      .map(response => response.json().data as {}[]);
   }
 
   // makeHttpReuqest(method: string, url: string, body: any): Observable<any> {
