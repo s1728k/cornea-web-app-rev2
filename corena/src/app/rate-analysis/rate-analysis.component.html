@@ -69,8 +69,8 @@
                             <th></th>
                             <th><input type="text" class="inp" ></th>
                             <th><md-select class="inp" name="sel">
-                                <md-option *ngFor="let item of rowItems" [value]="item.name" (click)="selRowItemId(item.id)">
-                                  {{item.name}}
+                                <md-option *ngFor="let item of boqObj.lineItems" [value]="item.title" (click)="selRowItemId(item.id)">
+                                  {{item.title}}
                                 </md-option>
                               </md-select></th>
                             <th width="40px;"><input type="text" class="inp" ></th>
@@ -90,11 +90,22 @@
                               <app-icon [iconName]="'ic_delete_black_24px'" (click)="deleteRow1(i,j)"></app-icon>
                             </td>
                             <td><input type="text" class="inp" ></td>
-                            <td><md-select class="inp" name="sel">
-                                <md-option *ngFor="let food of dropList1" [value]="food.key">
-                                  {{food.key}}
-                                </md-option>
-                              </md-select></td>
+                            <td><md-input-container>
+                                  <input mdInput placeholder="Material" #searchBox id="search-box" (keyup)="search(searchBox.value)" >
+                                </md-input-container>
+
+<!--                                 <md-autocomplete #auto="mdAutocomplete">
+                                  <md-option *ngFor="let material of materials" [value]="material.name">
+                                    {{ material.name }}
+                                  </md-option>
+                                </md-autocomplete> -->
+
+                  <!--               <md-select class="inp" name="sel">
+                                    <md-option *ngFor="let food of dropList1" [value]="food.key">
+                                      {{food.key}}
+                                    </md-option>
+                                  </md-select> -->
+                            </td>
                             <td><input type="number" class="inp" [(ngModel)]="calcs1[i][j]['v1']"></td>
                             <td>x</td>
                             <td><input type="number" class="inp" [(ngModel)]="calcs1[i][j]['v2']"></td>

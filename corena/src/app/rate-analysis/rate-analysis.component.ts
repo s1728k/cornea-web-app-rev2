@@ -4,6 +4,15 @@ import { RateAnalysis, LineItemTableRow } from '../model/class';
 import { LineItem } from '../model/class/line-item.model';
 import { NanPipe } from '../nan.pipe';
 
+import { Observable }        from 'rxjs/Observable';
+import { Subject }           from 'rxjs/Subject';
+// Observable class extensions
+import 'rxjs/add/observable/of';
+// Observable operators
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+
 
 @Component({
   selector: 'app-rate-analysis',
@@ -12,7 +21,10 @@ import { NanPipe } from '../nan.pipe';
 })
 export class RateAnalysisComponent implements OnInit {
 
-  boqObj:{};
+  boqObj:{}={};
+  materials: Observable<{}[]>;
+
+  private searchTerms = new Subject<string>();
 
   calcs1: RateAnalysis[][] = [];
   calcs2: RateAnalysis[] = [];
@@ -32,13 +44,43 @@ export class RateAnalysisComponent implements OnInit {
   // dummy data list for dropdown for material
   dropList1: {}[]= [{'key': 'value1'}, {'key': 'value2'}, {'key': 'value3'}, {'key': 'value4'}];
   dropList2: {}[]= [{'key': 'value1'}, {'key': 'value2'}, {'key': 'value3'}, {'key': 'value4'}];
+  filteredStates:any[]=["sfsdF","fsdfs",'dfsfsdf']
 
 
   constructor(private restApiService: RestApiService) { }
 
+  // Push a search term into the observable stream.
+  search(term: string): void {
+    console.log(term)
+    this.searchTerms.next(term);
+    this.materials = this.searchTerms
+                      .debounceTime(300)
+                      .distinctUntilChanged()
+                      .switchMap((term: string) => this.restApiService.search(term));
+
+    console.log(this.materials);
+  }
+
   ngOnInit() {
     this.boqObj=this.restApiService.comm_obj
-    console.log(this.boqObj)
+    console.log(this.boqObj['lineItems'])
+  }
+
+  src(){
+    this.materials = this.searchTerms
+      .debounceTime(300)        // wait 300ms after each keystroke before considering the term
+      .distinctUntilChanged()   // ignore if next search term is same as previous
+      .switchMap(term => term   // switch to new observable each time the term changes
+        // return the http search observable
+        ? this.restApiService.search(term)
+        // or the observable of empty heroes if there was no search term
+        : Observable.of<{}>([]))
+      .catch(error => {
+        // TODO: add real error handling
+        console.log(error);
+        return Observable.of<{}>([]);
+      });
+      console.log(this.materials);
   }
 
   increment1() {
