@@ -12,6 +12,8 @@ import { NanPipe } from '../nan.pipe';
 })
 export class RateAnalysisComponent implements OnInit {
 
+  boqObj:{};
+
   calcs1: RateAnalysis[][] = [];
   calcs2: RateAnalysis[] = [];
   // calcs3: RateAnalysis[][]=[];
@@ -35,7 +37,8 @@ export class RateAnalysisComponent implements OnInit {
   constructor(private restApiService: RestApiService) { }
 
   ngOnInit() {
-
+    this.boqObj=this.restApiService.comm_obj
+    console.log(this.boqObj)
   }
 
   increment1() {

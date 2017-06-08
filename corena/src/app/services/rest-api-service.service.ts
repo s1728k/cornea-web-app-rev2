@@ -98,4 +98,6 @@ export class RestApiService {
    .catch((error: any) => Observable.throw(error.json().error || 'error returned '));
    }
    */
+
+   comm_obj:{}={};
 }

@@ -117,7 +117,7 @@
     <div class="col-md-4" *ngFor="let project of projectList; let i=index">
       <md-card style="padding:0px; width:100%; border: 0px solid red;">
           <md-list>
-            <button md-button (click)="getBoqList(project)" style="width:100%"><h3>{{project.name}}</h3></button>
+            <button md-button (click)="getBoqList(project)" style="width:100%"><h4>{{project.name}}</h4></button>
             <md-list-item class="md-2-line" *ngFor="let boq of projectList[i].boq">
               <button md-button (click)="updateBoqTable(boq)" style="width:100%"> {{boq.name}}</button>
             </md-list-item>
@@ -133,8 +133,8 @@
   <div class="row">
     <div class="col-md-10"></div>
     <div class="col-md-2">
-      <button md-raised-button *ngIf="toggleCreateView" style="width:100%" [routerLink]="['/pages/rate-analysis']" routerLinkActivate='active'>View Rate Analysis</button>
-      <button md-raised-button *ngIf="!toggleCreateView" style="width:100%" [routerLink]="['/pages/rate-analysis']" routerLinkActivate='active'>Create Rate Analysis</button>
+      <button md-raised-button *ngIf="toggleCreateView" style="width:100%" (click)="redirecToRateAnalysis()">View Rate Analysis</button>
+      <button md-raised-button *ngIf="!toggleCreateView" style="width:100%" (click)="redirecToRateAnalysis()">Create Rate Analysis</button>
     </div>
   </div>
   <div class="row">

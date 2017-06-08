@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Router} from '@angular/router';
 import {FileUploader} from 'ng2-file-upload';
 import {RestApiService} from '../services/rest-api-service.service';
 import {ProjectResponseBOQUpload} from '../model/class/project-response';
@@ -13,7 +14,7 @@ const URL = 'http://49.50.76.29:80/api/boq/file';
   styleUrls: ['./file-upload.component.css']
 })
 
-export class FileUploadComponent implements OnInit {
+export class FileUploadComponent implements OnInit, OnDestroy {
   public uploader: FileUploader = new FileUploader({url: URL});
   public hasBaseDropZoneOver = false;
   public hasAnotherDropZoneOver = false;
@@ -23,8 +24,9 @@ export class FileUploadComponent implements OnInit {
   urlProject: string;
   urlBoq: string;
   toggleCreateView:boolean=false;
+  boqSelected:{};
 
-  constructor(private restApiService: RestApiService) {
+  constructor(private restApiService: RestApiService, private router: Router) {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
       + Constants.ACTION_ALL + '?visible[]=id&visible[]=name';
     this.urlBoq = Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_BOQ
@@ -44,6 +46,10 @@ export class FileUploadComponent implements OnInit {
         }
       );
   };
+
+  ngOnDestroy() {
+    this.restApiService.comm_obj=this.boqSelected;
+  }
 
   // http://192.168.0.205:9000/api/projects/all/visible[]=id&visible[]=name&appends[]=boq
   public fileOverBase(e: any): void {
@@ -78,6 +84,7 @@ export class FileUploadComponent implements OnInit {
     if(object.has_ra){
       this.toggleCreateView=true;
     }
+    this.boqSelected=object
     /*this.restApiService.getRequest(Constants.BASE_URL_BOQ
       + Constants.SERVICE_NAME_BOQ + '/' + id)
       .map(res => /!*this.boqList = <BOQTable[]>*!/res.json().data)
@@ -89,5 +96,9 @@ export class FileUploadComponent implements OnInit {
           console.error(err);
         }
       );*/
+  }
+
+  redirecToRateAnalysis(){
+    this.router.navigate(['/pages/rate-analysis']);
   }
 }
