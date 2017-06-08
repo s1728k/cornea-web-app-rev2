@@ -3,6 +3,8 @@ import {RouterModule, Routes} from '@angular/router';
 import {RestApiService} from './services/rest-api-service.service';
 // module to support rendering on browser
 import {BrowserModule} from '@angular/platform-browser';
+
+import {GanttModule} from './lib';
 // dependency for material module
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 // angular dependency to bind the  components
@@ -34,6 +36,7 @@ import { NextCompComponent } from './next-comp/next-comp.component';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import {StorageService} from './services/local-storage.service';
 import { NanPipe } from './nan.pipe';
+import { GanttchartComponent } from './shared/components/ganttchart/ganttchart.component';
 
 @NgModule({
   declarations: [
@@ -45,10 +48,12 @@ import { NanPipe } from './nan.pipe';
     RateAnalysisComponent,
     NextCompComponent,
     NanPipe,
+    GanttchartComponent,
   ],
   // provide modules throughout
   imports: [
     BrowserModule,
+    GanttModule,
     BrowserAnimationsModule,
     FormsModule,
     HttpModule,
