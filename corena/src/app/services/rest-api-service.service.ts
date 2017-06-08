@@ -48,6 +48,20 @@ export class RestApiService {
     return this.http.delete(url);
   }
 
+  /**
+   * function returns and Observable
+   * after joining 2 streams of data
+   * @param url1
+   * @param url2
+   * @returns {any}
+   */
+  getObservableFJ(url1: string, url2: string): Observable<any> {
+    return Observable.forkJoin(
+      this.http.get(url1).map((res: Response) => res.json().data),
+      this.http.get(url2).map((res: Response) => res.json().data)
+    );
+  }
+
   // makeHttpReuqest(method: string, url: string, body: any): Observable<any> {
   //
   //   if (method === Constants.POST_METHOD) {

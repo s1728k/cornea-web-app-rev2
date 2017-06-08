@@ -5,6 +5,7 @@ import {UserModel} from '../model/class/UserModel';
 import * as Constants from '../shared/Constants';
 import {RestApiService} from '../services/rest-api-service.service';
 import {executive} from '../shared/Constants';
+import {User} from '../model/interface/User';
 
 @Component({
   selector: 'app-project-hierarchy',
@@ -13,9 +14,12 @@ import {executive} from '../shared/Constants';
 })
 export class ProjectHierarchyComponent implements OnInit {
 
+  private dialogRef;
+  url: string;
   selectedOption: {};
   user: UserModel;
   userList1: UserModel[];
+  // list for users in executive role
   execList: UserModel[] = [
     {
       'first_name': 'Ravi',
@@ -110,6 +114,9 @@ export class ProjectHierarchyComponent implements OnInit {
   constructor(private restApiService: RestApiService,
               private dialog: MdDialog) {
     this.user = new UserModel();
+    this.url = Constants.USER_END_POINT + Constants.USER_SERVICE_NAME + Constants.ACTION_ALL
+      + '?visible[]=id&visible[]=first_name&visible[]=last_name&visible[]=role&';
+    this.dialogRef = dialog;
   }
 
   getUserList(): void {
@@ -186,11 +193,29 @@ export class ProjectHierarchyComponent implements OnInit {
 
 
   ngOnInit() {
+    this.restApiService.getRequest(this.url)
+      .map(response => <UserModel[]>response.json().data)
+      .subscribe(
+        (value) => {
+        },
+        (error2 => console.log(error2)),
+        () => this.getSupList()
+      );
   }
+
+  getSupList() {
+
+  };
 
   showProjectTeam(): boolean {
     return this.projectManagerUsers != null;
   }
+
+  /**
+   * method to allow click event
+   * on Selected Supervisor's
+   * @param item
+   */
 
   openDialogSup() {
     if (this.projectManagerUsers.length > 1) {
@@ -202,17 +227,7 @@ export class ProjectHierarchyComponent implements OnInit {
         console.log(this.selectedOption);
       });
     }
+
   }
 
-  openDialogExe() {
-    if (this.supervisorUsers.length > 1) {
-      const dialogRef = this.dialog.open(PopupDialog, {
-        data: ['Select Supervisor', this.supervisorUsers]
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        this.selectedOption = result;
-        console.log(this.selectedOption);
-      });
-    }
-  }
 }

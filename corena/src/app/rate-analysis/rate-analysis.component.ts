@@ -69,7 +69,7 @@ export class RateAnalysisComponent implements OnInit {
   }
 
   // get api request for material names
-  selRowItemId(id){
+  selRowItemId(id) {
 
   }
 
@@ -121,3 +121,4 @@ export class RateAnalysisComponent implements OnInit {
   // }
 
 }
+
