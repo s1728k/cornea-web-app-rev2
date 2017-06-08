@@ -3,13 +3,12 @@ import {RouterModule, Routes} from '@angular/router';
 import {RestApiService} from './services/rest-api-service.service';
 // module to support rendering on browser
 import {BrowserModule} from '@angular/platform-browser';
-
-import {GanttModule} from './lib';
 // dependency for material module
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 // angular dependency to bind the  components
 import {NgModule} from '@angular/core';
 // module to create form's
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
 // dependency to implement http calls to network  angular buit-in
 import {HttpModule} from '@angular/http';
@@ -34,10 +33,8 @@ import { RateAnalysisComponent } from './rate-analysis/rate-analysis.component';
 import { NextCompComponent } from './next-comp/next-comp.component';
 // dependency for local storage
 import { LocalStorageModule } from 'angular-2-local-storage';
-import {StorageService} from './services/local-storage.service';
+import { StorageService } from './services/local-storage.service';
 import { NanPipe } from './nan.pipe';
-import { GanttchartComponent } from './shared/components/ganttchart/ganttchart.component';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,17 +45,16 @@ import { GanttchartComponent } from './shared/components/ganttchart/ganttchart.c
     RateAnalysisComponent,
     NextCompComponent,
     NanPipe,
-    GanttchartComponent,
   ],
   // provide modules throughout
   imports: [
     BrowserModule,
-    GanttModule,
     BrowserAnimationsModule,
     FormsModule,
     HttpModule,
     FileUploadModule,
     HttpModule,
+    NgbModule.forRoot(),
     MaterialModule,
     MdNativeDateModule,
     MdButtonModule,
