@@ -4,8 +4,8 @@ import {RestApiService} from '../services/rest-api-service.service';
 import {ProjectResponseBOQUpload} from '../model/class/project-response';
 import {BOQTable} from '../model/class/boq-table.model';
 import * as Constants from '../shared/Constants';
-import {BoqNameId} from '../model/class/name.id.model';
-const URL = 'http://49.50.76.29:8090/api/boq/file';
+import {BoqNameId} from '../model/class';
+const URL = 'http://49.50.76.29:80/api/boq/file';
 
 @Component({
   selector: 'app-file-upload',
@@ -22,6 +22,7 @@ export class FileUploadComponent implements OnInit {
   public boqList: BOQTable[];
   urlProject: string;
   urlBoq: string;
+  toggleCreateView:boolean=false;
 
   constructor(private restApiService: RestApiService) {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
@@ -71,8 +72,12 @@ export class FileUploadComponent implements OnInit {
   }
 
   updateBoqTable(object: BoqNameId): void {
+    this.toggleCreateView = false;
     console.log(object.lineItems);
     this.boqList = object.lineItems;
+    if(object.has_ra){
+      this.toggleCreateView=true;
+    }
     /*this.restApiService.getRequest(Constants.BASE_URL_BOQ
       + Constants.SERVICE_NAME_BOQ + '/' + id)
       .map(res => /!*this.boqList = <BOQTable[]>*!/res.json().data)
