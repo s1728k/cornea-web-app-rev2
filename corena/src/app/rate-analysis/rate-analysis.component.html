@@ -44,13 +44,17 @@
             <md-card-header style="float: right; padding:5px;">
                 <button md-raised-button>Calculate Labor</button>
                 <button md-raised-button>Add CF</button>
-                <button md-raised-button (click)="deleteTable1(i)"><md-icon>delete</md-icon></button>
+                <button md-raised-button (click)="deleteTable1(i)">
+                  <app-icon [iconName]="'ic_delete_black_24px'"></app-icon>
+                </button>
             </md-card-header>
             <md-card-content>
                 <table>
                     <thead>
                         <tr>
-                            <th width="40px;"><md-icon (click)="addRow1(i)">add circle outline</md-icon></th>
+                            <th width="40px;">
+                              <app-icon [iconName]="'ic_add_box_black_24px'" (click)="addRow1(i)"></app-icon>
+                            </th>
                             <th width="40px;">Sr.No</th>
                             <th width="200px;">Particular</th>
                             <th colspan="3">Size</th>
@@ -82,7 +86,9 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let calc1 of calcs1[i]; let j=index">
-                            <td><md-icon (click)="deleteRow1(i,j)">delete</md-icon></td>
+                            <td>
+                              <app-icon [iconName]="'ic_delete_black_24px'" (click)="deleteRow1(i,j)"></app-icon>
+                            </td>
                             <td><input type="text" class="inp" ></td>
                             <td><md-select class="inp" name="sel">
                                 <md-option *ngFor="let food of dropList1" [value]="food.key">
@@ -122,7 +128,9 @@
                 <table>
                     <thead>
                         <tr>
-                            <th width="40px;"><md-icon (click)="addRow2(0)">add circle outline</md-icon></th>
+                            <th width="40px;">
+                              <app-icon [iconName]="'ic_add_box_black_24px'" (click)="addRow2(0)"></app-icon>
+                            </th>
                             <th width="40px;">Sr.No</th>
                             <th width="300px;">Description</th>
                             <th width="40px;">Unit</th>
@@ -135,7 +143,9 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let calc2 of calcs2; let j=index">
-                            <td><md-icon (click)="deleteRow2(0,j)">delete</md-icon></td>
+                            <td>
+                              <app-icon [iconName]="'ic_delete_black_24px'" (click)="deleteRow2(0,j)"></app-icon>
+                            </td>
                             <!-- delete button -->
                             <td><input type="text" class="inp" ></td>
                             <!-- Sr. No -->
