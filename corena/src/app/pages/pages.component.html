@@ -1,12 +1,10 @@
 
 <md-toolbar color="primary" [class.m2app-dark]="true">
-    <button md-button>
-       <md-icon>domain</md-icon> Cornea
-    </button>
+       <app-icon [iconName]="'domain'"></app-icon> Cornea
 
     <span class="example-spacer"></span>
     <button md-icon-button [mdMenuTriggerFor]="appMenu">
-       <md-icon>more_vert</md-icon>
+       <app-icon [iconName]="'ic_more_vert_black_24px'"></app-icon>
     </button>
     <md-menu #appMenu="mdMenu" yPosition="below" xPosition="before">
       <button md-menu-item> Settings </button>
@@ -18,7 +16,7 @@
 
   <div #userpop id="userPopup" [style.display]="userBool ? 'inline-flex' : 'none'">
     <div class="talk-bubble"></div>
-    <img md-list-avatar src="http://mdepinet.org/wp-content/uploads/person-placeholder.jpg" alt="..." class="roundimgUser">
+    <img md-list-avatar src="assets/images/person-placeholder.jpg" alt="..." class="roundimgUser">
     <div class="roundimgUser">
     <b>User Name</b><br>
     user@nomail.com<br>
@@ -35,8 +33,8 @@
 
                   <md-list-item [@iconbool]="up[i][j]" (click)="up[i][j]=!up[i][j]">
                      <a md-line><b>{{ link[0] }}</b></a>
-                     <md-icon *ngIf="up[i][j]">keyboard_arrow_up</md-icon>
-                     <md-icon *ngIf="!up[i][j]">keyboard_arrow_down</md-icon>
+                     <app-icon [iconName]="'ic_keyboard_arrow_up_black_24px'" *ngIf="up[i][j]"></app-icon>
+                     <app-icon [iconName]="'ic_keyboard_arrow_down_black_24px'" *ngIf="!up[i][j]"></app-icon>
                   </md-list-item>
 
               <ng-container *ngIf="up[i][j]">

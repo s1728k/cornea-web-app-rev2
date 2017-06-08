@@ -1,4 +1,5 @@
 import { NgModule }      from '@angular/core';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule }  from '@angular/common';
 import {MaterialModule, MdNativeDateModule, MdButtonModule} from '@angular/material';
 import {FileUploadModule} from 'ng2-file-upload';
@@ -12,11 +13,12 @@ import { PopupDialog } from '../project-hierarchy/popup.component'
 
 
 import { PagesComponent } from './pages.component';
+import {IconsComponent} from '../icons/icons.component';
 
 @NgModule({
-  imports: [CommonModule, MaterialModule, MdNativeDateModule, MdButtonModule,
+  imports: [CommonModule, MaterialModule, MdNativeDateModule, MdButtonModule, NgbModule,
   FileUploadModule, DndModule.forRoot(), routing],
-  declarations: [PagesComponent, FileUploadComponent, ProjectHierarchyComponent, PopupDialog,],
+  declarations: [PagesComponent, FileUploadComponent, ProjectHierarchyComponent, PopupDialog, IconsComponent],
   entryComponents: [PopupDialog]
 })
 export class PagesModule {
