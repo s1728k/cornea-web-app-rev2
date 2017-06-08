@@ -14,7 +14,7 @@ export const PUT_METHOD = 'put';
 export const USER_END_POINT = 'http://192.168.0.205:8070/api';
 export const LOGIN_END_POINT = 'http://192.168.0.205:8070/v1/login';
 export const USER_SERVICE_NAME = '/users';
-export const ACTION_ALL = 'all';
+export const ACTION_ALL = '/all';
 /*** Keys for storing user data in StorageService ***/
 export const USER_OBJECT = 'user_object';
 export const USER_FULL_NAME = 'user_full_name';

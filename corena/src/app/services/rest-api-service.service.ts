@@ -37,6 +37,7 @@ export class RestApiService {
    * @returns {Observable<Response>} generic observables
    */
   getRequest(url: string): Observable<any> {
+    console.log(url);
     return this.http.get(url);
   }
 

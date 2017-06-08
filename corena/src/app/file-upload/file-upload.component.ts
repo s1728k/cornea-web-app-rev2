@@ -25,19 +25,20 @@ export class FileUploadComponent implements OnInit {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
       + Constants.ACTION_ALL + 'visible[]=id&visible[]=name';
     this.urlBoq = Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_BOQ
-      + Constants.ACTION_ALL + 'visible[]=id&visible[]=name';
+      + Constants.ACTION_ALL + '?visible[]=id&visible[]=name';
   }
 
   ngOnInit() {
     this.restApiService.getRequest(this.urlProject)
-      .map(res => /*this.projectList = <ProjectResponseBOQUpload[]>*/res.json().data)
+      .map(res => /*this.projectList = <ProjectResponseBOQUpload[]>*/console.log(res.json().data))
       .subscribe(
-        (value: ProjectResponseBOQUpload[]) => {
+        /*(value: ProjectResponseBOQUpload[]) => {
           this.projectList = value;
+          console.log(value);
         },
         (err: any) => {
           console.error(err);
-        }
+        }*/
       );
   };
 

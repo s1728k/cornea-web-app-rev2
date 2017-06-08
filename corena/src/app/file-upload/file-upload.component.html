@@ -99,6 +99,16 @@
   </div>
   <div class="row">
     <div class="col-md-12">
+      <h3 style="border-bottom: 1px solid grey">Projects</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" style="display:inline-flex">
+      <button md-raised-button *ngFor="let proj of projectList">{{proj.name}}</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
       <h3 style="border-bottom: 1px solid grey">BOQs</h3>
     </div>
   </div>
@@ -113,26 +123,6 @@
         </md-list>
       </md-card>
     </div>
-    <!-- <div class="col-md-4">
-      <md-card>
-        <md-list>
-          <h4> Project Name</h4>
-          <md-list-item><button md-raised-button> Boq 1 </button></md-list-item>
-          <md-list-item><button md-raised-button> Boq 2 </button></md-list-item>
-          <md-list-item><button md-raised-button> Boq 3 </button></md-list-item>
-        </md-list>
-      </md-card>
-    </div>
-    <div class="col-md-4">
-      <md-card>
-        <md-list>
-          <h4> Project Name</h4>
-          <md-list-item><button md-raised-button> Boq 1 </button></md-list-item>
-          <md-list-item><button md-raised-button> Boq 2 </button></md-list-item>
-          <md-list-item><button md-raised-button> Boq 3 </button></md-list-item>
-        </md-list>
-      </md-card>
-    </div> -->
   </div>
   <div class="row">
     <div class="col-md-12">
