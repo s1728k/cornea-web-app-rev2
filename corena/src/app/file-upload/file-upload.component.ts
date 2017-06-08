@@ -17,28 +17,29 @@ export class FileUploadComponent implements OnInit {
   public hasBaseDropZoneOver = false;
   public hasAnotherDropZoneOver = false;
   public projectList: ProjectResponseBOQUpload[];
+  toggleProject:{}={};
   public boqList: BOQTable[];
   urlProject: string;
   urlBoq: string;
 
   constructor(private restApiService: RestApiService) {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
-      + Constants.ACTION_ALL + 'visible[]=id&visible[]=name';
+      + Constants.ACTION_ALL + '?visible[]=id&visible[]=name';
     this.urlBoq = Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_BOQ
       + Constants.ACTION_ALL + '?visible[]=id&visible[]=name';
   }
 
   ngOnInit() {
     this.restApiService.getRequest(this.urlProject)
-      .map(res => /*this.projectList = <ProjectResponseBOQUpload[]>*/console.log(res.json().data))
+      .map(res => /*this.projectList = <ProjectResponseBOQUpload[]>*/res.json().data)
       .subscribe(
-        /*(value: ProjectResponseBOQUpload[]) => {
+        (value: ProjectResponseBOQUpload[]) => {
           this.projectList = value;
           console.log(value);
         },
         (err: any) => {
           console.error(err);
-        }*/
+        }
       );
   };
 
@@ -49,6 +50,25 @@ export class FileUploadComponent implements OnInit {
 
   public fileOverAnother(e: any): void {
     this.hasAnotherDropZoneOver = e;
+  }
+
+  getBoqList(project: ProjectResponseBOQUpload): void {
+    this.restApiService.getRequest(this.urlBoq + '&conditions[project_id]=' + project.id)
+      .map(response => response.json().data)
+      .subscribe(
+        (value) => {
+          // project.boq = value;
+          for (const project1 of this.projectList){
+            if (project1.id === project.id){
+              project1.boq = value;
+              break;
+            }
+          }
+        },
+        (error: any) => {
+          console.log(error);
+        },
+      );
   }
 
   updateBoqTable(id: number): void {

@@ -97,7 +97,7 @@
     </div>
 
   </div>
-  <div class="row">
+<!--   <div class="row">
     <div class="col-md-12">
       <h3 style="border-bottom: 1px solid grey">Projects</h3>
     </div>
@@ -106,20 +106,23 @@
     <div class="col-md-12" style="display:inline-flex">
       <button md-raised-button *ngFor="let proj of projectList">{{proj.name}}</button>
     </div>
-  </div>
+  </div> -->
   <div class="row">
     <div class="col-md-12">
       <h3 style="border-bottom: 1px solid grey">BOQs</h3>
     </div>
   </div>
   <div class="row" style="display:inline-flex">
-    <div class="col-md-4" *ngFor="let proj of projectList">
+    <div class="col-md-4" *ngFor="let project of projectList">
       <md-card>
         <md-list>
-          <h4>{{proj.name}}</h4>
-          <md-list-item *ngFor="let boq of proj.boq">
-            <button md-raised-button (click)="updateBoqTable(boq.id)"> {{boq.name}}</button>
-          </md-list-item>
+          <button md-raised-button *ngFor="let project of projectList; let i=index" (click)="getBoqList(project)">{{project.name}}</button>
+          <div style="overflow-y:auto" *ngIf="project.boq">
+          inside
+<!--             <md-list-item *ngFor="let boq of proj.boq">
+              <button md-raised-button (click)="updateBoqTable(boq.id)"> {{boq.name}}</button>
+            </md-list-item> -->
+          </div>
         </md-list>
       </md-card>
     </div>
