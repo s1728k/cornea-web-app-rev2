@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import {Component, OnInit, ViewChild, ViewChildren, QueryList, ElementRef} from '@angular/core';
 import {trigger, state, style, animate, transition, keyframes} from '@angular/animations';
-import { RouterModule, Router }  from '@angular/router';
+import {RouterModule, Router}  from '@angular/router';
 
 @Component({
   selector: 'app-pages',
@@ -14,7 +14,7 @@ import { RouterModule, Router }  from '@angular/router';
       state('false', style({
         transform: 'rotate(0)'
       })),
-      state('true',   style({
+      state('true', style({
         transform: 'rotate(180deg)'
       })),
       transition('false => true', animate('1000ms ease-in', keyframes([
@@ -35,32 +35,33 @@ import { RouterModule, Router }  from '@angular/router';
 export class PagesComponent implements OnInit {
 
   links: any[] = ['Dashboard',
-                  ['Project', 'BOQ', 'Project Hierarchy','Rate Analysis'],
-                  ['Purchase Order', 'Request For Quotation', 'Supplier Quotation'],
-                  ['Site', 'Indent'],
-                  'Accounts',
-                  'Finance',
-                  ['HR', 'Register New Employee', 'Attendence Sheet', 'Performance Stats'],
-                 ];
+    ['Project', 'BOQ', 'Project Hierarchy', 'Rate Analysis', 'GanttChart'],
+    ['Purchase Order', 'Request For Quotation', 'Supplier Quotation'],
+    ['Site', 'Indent'],
+    'Accounts',
+    'Finance',
+    ['HR', 'Register New Employee', 'Attendence Sheet', 'Performance Stats'],
+  ];
   up: any[] = [false,
-               [false, false, false, false],
-               [false, false, false],
-               [false, false],
-               false,
-               false,
-               [false, false, false, false],
-              ];
+    [false, false, false, false, false],
+    [false, false, false],
+    [false, false],
+    false,
+    false,
+    [false, false, false, false],
+  ];
 
   redirects: any[] = ['under-construnction',
-                      ['', 'boq-upload', 'project-hierarchy','rate-analysis'],
-                      ['Purchase Order', 'under-construnction', 'under-construnction'],
-                      ['Site', 'under-construnction'],
-                      'under-construnction',
-                      'under-construnction',
-                      ['HR', 'under-construnction', 'under-construnction', 'under-construnction'],
-                     ];
+    ['', 'boq-upload', 'project-hierarchy', 'rate-analysis', 'ganttchart'],
+    ['Purchase Order', 'under-construnction', 'under-construnction'],
+    ['Site', 'under-construnction'],
+    'under-construnction',
+    'under-construnction',
+    ['HR', 'under-construnction', 'under-construnction', 'under-construnction'],
+  ];
 
-  constructor(private router:Router) { }
+  constructor(private router: Router) {
+  }
 
   ngOnInit() {
   }
@@ -68,23 +69,24 @@ export class PagesComponent implements OnInit {
   @ViewChild('userpop') div: ElementRef;
   @ViewChild('userimg') img: ElementRef;
   userBool: boolean;
-  loginBool= false;
+  loginBool = false;
+
   onClick(event) {
-   if (!this.div.nativeElement.contains(event.target) && this.img.nativeElement !== event.target){
-     this.userBool = false;
-   }
-   //this.loginBool = this.sharedService.loginBool;
+    if (!this.div.nativeElement.contains(event.target) && this.img.nativeElement !== event.target) {
+      this.userBool = false;
+    }
+    // this.loginBool = this.sharedService.loginBool;
   }
 
-  redirectLogin(){
-      this.router.navigate(['/login']);
+  redirectLogin() {
+    this.router.navigate(['/login']);
   }
 
-  routingFun(i,j){
-    if (j===0){
-      this.router.navigate(['/pages/'+this.redirects[i]]);
-    }else{
-      this.router.navigate(['/pages/'+this.redirects[i][j]]);
+  routingFun(i, j) {
+    if (j === 0) {
+      this.router.navigate(['/pages/' + this.redirects[i]]);
+    } else {
+      this.router.navigate(['/pages/' + this.redirects[i][j]]);
     }
   }
 

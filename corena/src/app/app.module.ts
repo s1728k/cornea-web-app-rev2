@@ -12,12 +12,14 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
 // dependency to implement http calls to network  angular buit-in
 import {HttpModule} from '@angular/http';
+import {GanttModule} from './lib';
 // for uploading files to server vola softwaare lib angular
 import {FileUploadModule} from 'ng2-file-upload';
 // including required dependencies from Material Module angular buit-in
 import {MaterialModule, MdNativeDateModule, MdButtonModule} from '@angular/material';
 // dependency for hammerjs
 import 'hammerjs';
+
 // dependency for google charts used  in project for organization tree
 import {GoogleChart} from 'angular2-google-chart/directives/angular2-google-chart.directive';
 // Common module which holds shared components
@@ -31,6 +33,7 @@ import { PagesModule } from './pages/pages.module';
 import { SharedService } from './shared.service';
 import { RateAnalysisComponent } from './rate-analysis/rate-analysis.component';
 import { NextCompComponent } from './next-comp/next-comp.component';
+import { GanttchartComponent } from './shared/components/ganttchart/ganttchart.component';
 // dependency for local storage
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { StorageService } from './services/local-storage.service';
@@ -40,6 +43,7 @@ import { NanPipe } from './nan.pipe';
     AppComponent,
     // FileUploadComponent,
     // ProjectHierarchyComponent,
+    GanttchartComponent,
     GoogleChart,
     LoginComponent,
     RateAnalysisComponent,
@@ -49,6 +53,7 @@ import { NanPipe } from './nan.pipe';
   // provide modules throughout
   imports: [
     BrowserModule,
+    GanttModule,
     BrowserAnimationsModule,
     FormsModule,
     HttpModule,
