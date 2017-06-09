@@ -12,12 +12,14 @@ export const routes: Routes = [
     path: 'pages',
     component: PagesComponent,
     children: [
-      {path: '', redirectTo: 'boq-upload', pathMatch: 'full'},
+      {path: '', redirectTo: 'under-construnction', pathMatch: 'full'},
       {path: 'under-construnction', component: NextCompComponent},
-      {path: 'boq-upload', component: FileUploadComponent},
+      {path: 'boq-tables', component: FileUploadComponent},
       {path: 'project-hierarchy', component: ProjectHierarchyComponent},
       {path: 'rate-analysis', component: RateAnalysisComponent},
-      {path: 'ganttchart', component: GanttchartComponent}
+      {path: 'ganttchart', component: GanttchartComponent},
+      {path: 'files-upload', loadChildren: '../files-upload/files-upload.module#FilesUploadModule'}
+
     ]
   }
 ];

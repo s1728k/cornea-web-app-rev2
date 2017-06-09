@@ -5,6 +5,7 @@ import {DndModule} from 'ng2-dnd';
 import { SideNavComponent } from './components/side-nav/side-nav.component';
 import { TopHeaderComponent } from './components/top-header/top-header.component';
 import { IconsComponent } from './components/icons/icons.component';
+import {NanPipe} from "./pipes/nan.pipe";
 
 @NgModule({
   imports: [
@@ -12,7 +13,7 @@ import { IconsComponent } from './components/icons/icons.component';
     MaterialModule, MdNativeDateModule, MdButtonModule,
     DndModule.forRoot()
   ],
-  declarations: [SideNavComponent, TopHeaderComponent, IconsComponent],
-  exports: [DndModule,SideNavComponent, TopHeaderComponent, IconsComponent],
+  declarations: [SideNavComponent, TopHeaderComponent, IconsComponent, NanPipe],
+  exports: [DndModule,SideNavComponent, TopHeaderComponent, IconsComponent, NanPipe],
 })
 export class SharedModule { }

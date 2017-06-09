@@ -31,13 +31,11 @@ import { routing } from './app.routing';
 import { PagesModule } from './pages/pages.module';
 import { SharedService } from './shared.service';
 import { RateAnalysisComponent } from './rate-analysis/rate-analysis.component';
-import { NextCompComponent } from './next-comp/next-comp.component';
 import { GanttchartComponent } from './shared/components/ganttchart/ganttchart.component';
 // dependency for local storage
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { StorageService } from './services/local-storage.service';
-import { NanPipe } from './nan.pipe';
-import { SearchService } from './services/search.service'
+import { SearchService } from './shared/';
 
 @NgModule({
   declarations: [
@@ -48,8 +46,6 @@ import { SearchService } from './services/search.service'
     GoogleChart,
     LoginComponent,
     RateAnalysisComponent,
-    NextCompComponent,
-    NanPipe,
   ],
   // provide modules throughout
   imports: [

@@ -1,10 +1,10 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {FileUploader} from 'ng2-file-upload';
 import {RestApiService} from '../services/rest-api-service.service';
 import {ProjectResponseBOQUpload} from '../model/class/project-response';
 import {BOQTable} from '../model/class/boq-table.model';
-import * as Constants from '../shared/Constants';
+import * as Constants from '../shared/constants.globals';
 import {BoqNameId} from '../model/class';
 const URL = 'http://49.50.76.29:80/api/boq/file';
 
@@ -14,7 +14,7 @@ const URL = 'http://49.50.76.29:80/api/boq/file';
   styleUrls: ['./file-upload.component.css']
 })
 
-export class FileUploadComponent implements OnInit, OnDestroy {
+export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   public uploader: FileUploader = new FileUploader({url: URL});
   public hasBaseDropZoneOver = false;
   public hasAnotherDropZoneOver = false;
@@ -23,15 +23,14 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   public boqList: BOQTable[];
   urlProject: string;
   urlBoq: string;
-  toggleCreateView: boolean;
-  boqSelected: {};
+  toggleCreateView:boolean=false;
+  boqSelected:{};
 
   constructor(private restApiService: RestApiService, private router: Router) {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
       + Constants.ACTION_ALL + '?visible[]=id&visible[]=name';
     this.urlBoq = Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_BOQ
       + Constants.ACTION_ALL + '?appends[]=lineItems&hidden[]=created_at&hidden[]=updated_at';
-    this.toggleCreateView = false;
   }
 
   ngOnInit() {
@@ -48,8 +47,14 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       );
   };
 
+  ngAfterViewInit() {
+    this.uploader.onAfterAddingFile = (item => {
+      item.withCredentials = false;
+    });
+  }
+
   ngOnDestroy() {
-    this.restApiService.comm_obj = this.boqSelected;
+    this.restApiService.comm_obj=this.boqSelected;
   }
 
   // http://192.168.0.205:9000/api/projects/all/visible[]=id&visible[]=name&appends[]=boq
@@ -82,24 +87,24 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.toggleCreateView = false;
     console.log(object.lineItems);
     this.boqList = object.lineItems;
-    if (object.has_ra) {
-      this.toggleCreateView = true;
+    if(object.has_ra){
+      this.toggleCreateView=true;
     }
-    this.boqSelected = object;
+    this.boqSelected=object
     /*this.restApiService.getRequest(Constants.BASE_URL_BOQ
-     + Constants.SERVICE_NAME_BOQ + '/' + id)
-     .map(res => /!*this.boqList = <BOQTable[]>*!/res.json().data)
-     .subscribe(
-     (value: BOQTable[]) => {
-     this.boqList = value;
-     },
-     (err: any) => {
-     console.error(err);
-     }
-     );*/
+      + Constants.SERVICE_NAME_BOQ + '/' + id)
+      .map(res => /!*this.boqList = <BOQTable[]>*!/res.json().data)
+      .subscribe(
+        (value: BOQTable[]) => {
+          this.boqList = value;
+        },
+        (err: any) => {
+          console.error(err);
+        }
+      );*/
   }
 
-  redirecToRateAnalysis() {
+  redirecToRateAnalysis(){
     this.router.navigate(['/pages/rate-analysis']);
   }
 }

@@ -2,7 +2,8 @@ import {RestApiService} from '../services/rest-api-service.service';
 import {Component, OnInit} from '@angular/core';
 import {RateAnalysis, LineItemTableRow} from '../model/class';
 import {LineItem} from '../model/class/line-item.model';
-import {NanPipe} from '../nan.pipe';
+import {NanPipe} from '../shared/pipes/nan.pipe';
+
 
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
@@ -12,6 +13,9 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
+import {FormControl} from '@angular/forms';
+import {Http} from '@angular/http';
 
 
 @Component({
@@ -19,13 +23,21 @@ import 'rxjs/add/operator/distinctUntilChanged';
   templateUrl: './rate-analysis.component.html',
   styleUrls: ['./rate-analysis.component.css']
 })
+
 export class RateAnalysisComponent implements OnInit {
 
   boqObj: {} = {};
   private materials: Observable<{}[]>;
+  private materials1: {}[];
 
   private searchTerms: Subject<string>;
 
+  queryField: FormControl = new FormControl();
+
+  overhead: number;
+  profit: number;
+  wastage: number;
+  selMaterial:{}={};
   calcs1: RateAnalysis[][] = [];
   calcs2: RateAnalysis[] = [];
   // calcs3: RateAnalysis[][]=[];
@@ -47,13 +59,13 @@ export class RateAnalysisComponent implements OnInit {
   filteredStates: any[] = ['sfsdF', 'fsdfs', 'dfsfsdf'];
 
 
-  constructor(private restApiService: RestApiService) {
+  constructor(private restApiService: RestApiService, private _http: Http) {
     this.searchTerms = new Subject<string>();
     // this.searchTerms.
   }
 
   // Push a search term into the observable stream.
-  search(term1: string): void {
+  search1(term1: string): void {
     console.log(term1);
     this.searchTerms.next(term1);
     this.restApiService.getRequest('http://49.50.76.29/api/material/search?search='
@@ -90,6 +102,19 @@ export class RateAnalysisComponent implements OnInit {
       });
     console.log(this.boqObj['lineItems']);
     console.log();
+
+    //this.materials=[{'name':"sdf"}]
+    this.queryField.valueChanges
+      .debounceTime(200)
+      .distinctUntilChanged()
+      .switchMap((query) =>  this.search(query))
+      .subscribe( result => {  if (result.status === 400) { return; } else { this.materials1 = result.json().data; console.log(this.materials1) }
+      });
+  }
+
+  search(queryString: string) {
+    let _URL = 'http://49.50.76.29/api/material/search?search=' + queryString + '&filter[]=name&filter[]=srno&filter[]=brand';
+    return this._http.get(_URL);
   }
 
   src() {
@@ -129,6 +154,12 @@ export class RateAnalysisComponent implements OnInit {
     console.log('data returned %s', this.rowItems);
   }
 
+  updateRow(material,i,j){
+    this.calcs1[i][j]['v4']=material['uom'];
+    this.calcs1[i][j]['v6']=material['rate'];
+    this.calcs1[i][j]['srno']=material['srno'];
+  }
+
   // get api request for material names
   selRowItemId(id) {
 
@@ -140,8 +171,13 @@ export class RateAnalysisComponent implements OnInit {
   grandTotal(j) {
     this.grandTotalV = 0;
     for (let i = this.calcs1[j].length - 1; i >= 0; i--) {
-      this.grandTotalV = this.grandTotalV + +this.calcs1[j][i]['v1'] * +this.calcs1[j][i]['v2'] * +this.calcs1[j][i]['v3']
-        * 0.0012 * 8000 * +this.calcs1[j][i]['v4'];
+      if (this.calcs1[i][j]['v5']){
+        this.grandTotalV = this.grandTotalV + this.calcs1[i][j]['v1']*this.calcs1[i][j]['breadth']*this.calcs1[i][j]['v2']*this.calcs1[i][j]['v3']
+        *(this.calcs1[i][j]['v5']/100+1)*this.calcs1[i][j]['v6']*(this.overhead/100+1)*(this.profit/100+1);
+      }else{
+        this.grandTotalV = this.grandTotalV + this.calcs1[i][j]['v1']*this.calcs1[i][j]['breadth']*this.calcs1[i][j]['v2']*this.calcs1[i][j]['v3']
+        *this.calcs1[i][j]['v6']*(this.overhead/100+1)*(this.profit/100+1)*(this.wastage/100+1);
+      }
     }
   }
 

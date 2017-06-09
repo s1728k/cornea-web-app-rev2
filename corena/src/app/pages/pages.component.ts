@@ -41,6 +41,7 @@ export class PagesComponent implements OnInit {
     'Accounts',
     'Finance',
     ['HR', 'Register New Employee', 'Attendence Sheet', 'Performance Stats'],
+    ['Uploads', 'BOQ Uploader'],
   ];
   up: any[] = [false,
     [false, false, false, false],
@@ -49,15 +50,17 @@ export class PagesComponent implements OnInit {
     false,
     false,
     [false, false, false, false],
+    [false, false],
   ];
 
   redirects: any[] = ['under-construnction',
-    ['', 'boq-upload', 'project-hierarchy', 'ganttchart'],
+    ['', 'boq-tables', 'project-hierarchy', 'ganttchart'],
     ['Purchase Order', 'under-construnction', 'under-construnction'],
     ['Site', 'under-construnction'],
     'under-construnction',
     'under-construnction',
     ['HR', 'under-construnction', 'under-construnction', 'under-construnction'],
+    ['Uploads', 'pages/boq-upload'],
   ];
 
   constructor(private router: Router) {
@@ -87,6 +90,7 @@ export class PagesComponent implements OnInit {
     if (j === 0) {
       this.router.navigate(['/pages/' + this.redirects[i]]);
     } else {
+      console.log(this.redirects[i][j])
       this.router.navigate(['/pages/' + this.redirects[i][j]]);
     }
   }

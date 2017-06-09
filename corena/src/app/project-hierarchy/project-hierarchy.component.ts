@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {MdDialog, MdDialogRef} from '@angular/material';
 import {PopupDialog} from './popup.component';
 import {UserModel} from '../model/class/UserModel';
-import * as Constants from '../shared/Constants';
+import * as Constants from '../shared/constants.globals';
 import {RestApiService} from '../services/rest-api-service.service';
-import {executive} from '../shared/Constants';
+import {executive} from '../shared/constants.globals';
 import {User} from '../model/interface/User';
 
 @Component({

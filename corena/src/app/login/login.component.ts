@@ -3,7 +3,7 @@ import {SharedService} from '../shared.service';
 import {LoginCredentials} from '../model/class/LoginCredentials';
 import {Http, RequestMethod, Response, Headers, RequestOptions} from '@angular/http';
 import {RestApiService} from '../services/rest-api-service.service';
-import * as Constants from '../shared/Constants';
+import * as Constants from '../shared/constants.globals';
 import {User} from '../model/interface/User';
 import {StorageService} from '../services/local-storage.service';
 import {subscribeOn} from 'rxjs/operator/subscribeOn';

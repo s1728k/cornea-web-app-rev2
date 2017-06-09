@@ -4,7 +4,7 @@ import {LocalStorageService} from 'angular-2-local-storage';
 // importing user model interface to use here
 import {User} from '../model/interface/User';
 // importing constants class to get stored keys
-import * as Constants from '../shared/Constants';
+import * as Constants from '../shared/constants.globals';
 import {UserResponse} from '../model/interface/user-response';
 
 /**

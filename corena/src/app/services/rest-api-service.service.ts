@@ -4,7 +4,7 @@ import {Observable} from 'rxjs/Observable';
 // Import RxJs required methods
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import * as Constants from '../shared/Constants';
+import * as Constants from '../shared/constants.globals';
 /**
  * generic http call service
  * supported by Observables
