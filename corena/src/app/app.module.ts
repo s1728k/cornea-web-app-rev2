@@ -36,6 +36,7 @@ import { GanttchartComponent } from './shared/components/ganttchart/ganttchart.c
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { StorageService } from './services/local-storage.service';
 import { SearchService } from './shared/';
+import { BoqTableComponent } from './boq-table/boq-table.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { SearchService } from './shared/';
     GoogleChart,
     LoginComponent,
     RateAnalysisComponent,
+    BoqTableComponent,
   ],
   // provide modules throughout
   imports: [

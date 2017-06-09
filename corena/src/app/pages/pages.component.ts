@@ -35,32 +35,29 @@ import {RouterModule, Router}  from '@angular/router';
 export class PagesComponent implements OnInit {
 
   links: any[] = ['Dashboard',
-    ['Project', 'BOQ', 'Project Hierarchy', 'GanttChart'],
+    ['Project', 'BOQ', 'Project Hierarchy', 'GanttChart', 'Upload Files'],
     ['Purchase Order', 'Request For Quotation', 'Supplier Quotation'],
     ['Site', 'Indent'],
     'Accounts',
     'Finance',
     ['HR', 'Register New Employee', 'Attendence Sheet', 'Performance Stats'],
-    ['Uploads', 'BOQ Uploader'],
   ];
   up: any[] = [false,
-    [false, false, false, false],
+    [false, false, false, false, false],
     [false, false, false],
     [false, false],
     false,
     false,
     [false, false, false, false],
-    [false, false],
   ];
 
   redirects: any[] = ['under-construnction',
-    ['', 'boq-tables', 'project-hierarchy', 'ganttchart'],
+    ['', 'boq-tables', 'project-hierarchy', 'ganttchart', 'files-upload'],
     ['Purchase Order', 'under-construnction', 'under-construnction'],
     ['Site', 'under-construnction'],
     'under-construnction',
     'under-construnction',
     ['HR', 'under-construnction', 'under-construnction', 'under-construnction'],
-    ['Uploads', 'files-upload'],
   ];
 
   constructor(private router: Router) {

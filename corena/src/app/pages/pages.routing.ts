@@ -6,6 +6,7 @@ import {ProjectHierarchyComponent} from '../project-hierarchy/project-hierarchy.
 import {RateAnalysisComponent} from '../rate-analysis/rate-analysis.component';
 import {NextCompComponent} from '../next-comp/next-comp.component';
 import {GanttchartComponent} from '../shared/components/ganttchart/ganttchart.component';
+import {BoqTableComponent} from '../boq-table/boq-table.component';
 
 export const routes: Routes = [
   {
@@ -14,12 +15,11 @@ export const routes: Routes = [
     children: [
       {path: '', redirectTo: 'under-construnction', pathMatch: 'full'},
       {path: 'under-construnction', component: NextCompComponent},
-      {path: 'boq-tables', component: FileUploadComponent},
+      {path: 'boq-tables', component: BoqTableComponent},
       {path: 'project-hierarchy', component: ProjectHierarchyComponent},
       {path: 'rate-analysis', component: RateAnalysisComponent},
       {path: 'ganttchart', component: GanttchartComponent},
-      {path: 'files-upload', loadChildren: '../files-upload/files-upload.module#FilesUploadModule'}
-
+      {path: 'files-upload', component: FileUploadComponent}
     ]
   }
 ];

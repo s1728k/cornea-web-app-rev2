@@ -15,12 +15,12 @@ import { PopupDialog } from '../project-hierarchy/popup.component'
 
 import { PagesComponent } from './pages.component';
 import {SharedModule} from '../shared/';
-import {FilesUploadModule} from '../files-upload/';
+
 import {NextCompComponent} from "../next-comp/next-comp.component";
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, MaterialModule, MdNativeDateModule, MdButtonModule, NgbModule,
-  FileUploadModule, DndModule.forRoot(), FilesUploadModule, SharedModule, routing],
+  FileUploadModule, DndModule.forRoot(), SharedModule, routing],
   declarations: [PagesComponent, FileUploadComponent, ProjectHierarchyComponent, PopupDialog, NextCompComponent],
   exports: [SharedModule, ReactiveFormsModule],
   entryComponents: [PopupDialog]

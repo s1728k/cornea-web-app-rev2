@@ -1,0 +1,68 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <h3 style="border-bottom: 1px solid grey">BOQs</h3>
+    </div>
+  </div>
+  <div class="row">
+
+    <div class="col-md-4" *ngFor="let project of projectList; let i=index">
+      <md-card style="padding:0px; width:100%; border: 0px solid red;">
+        <md-list>
+          <button md-button (click)="getBoqList(project)" style="width:100%"><h4>{{project.name}}</h4></button>
+          <md-list-item class="md-2-line" *ngFor="let boq of projectList[i].boq">
+            <button md-button (click)="updateBoqTable(boq)" style="width:100%"> {{boq.name}}</button>
+          </md-list-item>
+        </md-list>
+      </md-card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h3 style="border-bottom: 1px solid grey">Selected BOQ</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-10"></div>
+    <div class="col-md-2">
+      <button md-raised-button *ngIf="toggleCreateView" style="width:100%" (click)="redirecToRateAnalysis()">View Rate Analysis</button>
+      <button md-raised-button *ngIf="!toggleCreateView" style="width:100%" (click)="redirecToRateAnalysis()">Create Rate Analysis</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" style="border: 0px solid red; padding-top:10px;">
+      <md-card style="padding: 0px;">
+        <table>
+          <thead>
+          <tr>
+            <th width="20">Sr.No.</th>
+            <th width="80">Description</th>
+            <th width="20">Unit</th>
+            <th width="40">Quantity</th>
+            <th width="40">Rate</th>
+            <th width="40">Amount</th>
+            <th width="50">Drawing Reference</th>
+            <th width="40">Length</th>
+            <th width="40">Breadth</th>
+            <th width="40">Thickness</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of boqList">
+            <td>{{item.sr_no}}</td>
+            <td>{{item.description}}</td>
+            <td>{{item.unit}}</td>
+            <td>{{item.quantity}}</td>
+            <td>{{item.rate}}</td>
+            <td>{{item.amount}}</td>
+            <td>{{item.drawing_reference}}</td>
+            <td>{{item.length}}</td>
+            <td>{{item.breadth}}</td>
+            <td>{{item.thickness}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </md-card>
+    </div>
+  </div>
+</div>

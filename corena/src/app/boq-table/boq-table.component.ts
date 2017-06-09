@@ -1,20 +1,20 @@
 import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {FileUploader} from 'ng2-file-upload';
-import {RestApiService} from '../../services/rest-api-service.service';
-import {ProjectResponseBOQUpload} from '../../model/class/project-response';
-import {BOQTable} from '../../model/class/boq-table.model';
-import * as Constants from '../../shared/constants.globals';
-import {BoqNameId} from '../../model/class';
+import {RestApiService} from '../services/rest-api-service.service';
+import {ProjectResponseBOQUpload} from '../model/class/project-response';
+import {BOQTable} from '../model/class/boq-table.model';
+import * as Constants from '../shared/constants.globals';
+import {BoqNameId} from '../model/class';
 const URL = 'http://49.50.76.29:80/api/boq/file';
 
 @Component({
-  selector: 'app-boq-upload',
-  templateUrl: './boq-upload.component.html',
-  styleUrls: ['./boq-upload.component.css']
+  selector: 'app-boq-table',
+  templateUrl: './boq-table.component.html',
+  styleUrls: ['./boq-table.component.css']
 })
 
-export class BoqUploadComponent implements OnInit, OnDestroy, AfterViewInit {
+export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
   public uploader: FileUploader = new FileUploader({url: URL});
   public hasBaseDropZoneOver = false;
   public hasAnotherDropZoneOver = false;

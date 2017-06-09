@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BoqUploadComponent } from './boq-upload.component';
+import { BoqTableComponent } from './boq-table.component';
 
-describe('BoqUploadComponent', () => {
-  let component: BoqUploadComponent;
-  let fixture: ComponentFixture<BoqUploadComponent>;
+describe('BoqTableComponent', () => {
+  let component: BoqTableComponent;
+  let fixture: ComponentFixture<BoqTableComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BoqUploadComponent ]
+      declarations: [ BoqTableComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BoqUploadComponent);
+    fixture = TestBed.createComponent(BoqTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

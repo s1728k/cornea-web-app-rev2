@@ -7,7 +7,7 @@ export const routes: Routes = [
   { path: 'under-construnction', component: NextCompComponent  },
   { path: 'login', component: LoginComponent },
   { path: 'pages', loadChildren: './pages/pages.module#PagesModule' },
-  { path: '', component: LoginComponent },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', component: LoginComponent },
 ];
 
