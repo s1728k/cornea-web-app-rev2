@@ -1,12 +1,11 @@
-import { RestApiService } from '../services/rest-api-service.service';
-import { Component, OnInit } from '@angular/core';
-import { RateAnalysis, LineItemTableRow } from '../model/class';
-import { LineItem } from '../model/class/line-item.model';
-import { NanPipe } from '../nan.pipe';
-import { SearchService } from '../services/search.service'
+import {RestApiService} from '../services/rest-api-service.service';
+import {Component, OnInit} from '@angular/core';
+import {RateAnalysis, LineItemTableRow} from '../model/class';
+import {LineItem} from '../model/class/line-item.model';
+import {NanPipe} from '../nan.pipe';
 
-import { Observable }        from 'rxjs/Observable';
-import { Subject }           from 'rxjs/Subject';
+import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
 // Observable class extensions
 import 'rxjs/add/observable/of';
 // Observable operators
@@ -22,18 +21,18 @@ import 'rxjs/add/operator/distinctUntilChanged';
 })
 export class RateAnalysisComponent implements OnInit {
 
-  boqObj:{}={};
-  materials: Observable<{}[]>;
+  boqObj: {} = {};
+  private materials: Observable<{}[]>;
 
-  private searchTerms = new Subject<string>();
+  private searchTerms: Subject<string>;
 
   calcs1: RateAnalysis[][] = [];
   calcs2: RateAnalysis[] = [];
   // calcs3: RateAnalysis[][]=[];
 
   // old variable to be removed when api call is made it doesnt affeect anything
-  rowItemsOld: LineItemTableRow[]= [{'id': 1, 'name': 'item1'}, {'id': 2, 'name': 'item2'},
-                                    {'id': 3, 'name': 'item3'}, {'id': 4, 'name': 'item4'}];
+  rowItemsOld: LineItemTableRow[] = [{'id': 1, 'name': 'item1'}, {'id': 2, 'name': 'item2'},
+    {'id': 3, 'name': 'item3'}, {'id': 4, 'name': 'item4'}];
 
   // variable for LineItem
   rowItems: LineItem[];
@@ -43,61 +42,72 @@ export class RateAnalysisComponent implements OnInit {
   grandTotal2V: any;
 
   // dummy data list for dropdown for material
-  dropList1: {}[]= [{'key': 'value1'}, {'key': 'value2'}, {'key': 'value3'}, {'key': 'value4'}];
-  dropList2: {}[]= [{'key': 'value1'}, {'key': 'value2'}, {'key': 'value3'}, {'key': 'value4'}];
-  filteredStates:any[]=["sfsdF","fsdfs",'dfsfsdf']
+  dropList1: {}[] = [{'key': 'value1'}, {'key': 'value2'}, {'key': 'value3'}, {'key': 'value4'}];
+  dropList2: {}[] = [{'key': 'value1'}, {'key': 'value2'}, {'key': 'value3'}, {'key': 'value4'}];
+  filteredStates: any[] = ['sfsdF', 'fsdfs', 'dfsfsdf'];
 
 
-  constructor(private restApiService: RestApiService, private searchService:SearchService) { }
+  constructor(private restApiService: RestApiService) {
+    this.searchTerms = new Subject<string>();
+    // this.searchTerms.
+  }
 
   // Push a search term into the observable stream.
-  search(term: string): void {
-    console.log(term)
-    this.searchTerms.next(term);
-    this.materials = this.searchTerms
-                      .debounceTime(300)
-                      .distinctUntilChanged()
-                      .switchMap((term: string) => this.restApiService.search(term));
-                      // .switchMap(term => this.restApiService.search(term))
-                      .subscribe((result) => {
-                          this.materials = result;
-                          console.log(this.materials);
-                      });
-
+  search(term1: string): void {
+    console.log(term1);
+    this.searchTerms.next(term1);
+    this.restApiService.getRequest('http://49.50.76.29/api/material/search?search='
+      + term1 + '&filter[]=name&filter[]=srno&filter[]=brand')
+      .map(res => res.json().data)
+      .subscribe(
+        (value) => {
+          console.log(value);
+        },
+        (err: any) => console.log(err)
+      );
+    /*this.searchTerms
+     /!*.debounceTime(300)        // wait 300ms after each keystroke before considering the term
+     .distinctUntilChanged()*!/   // ignore if next search term is same as previous
+     .switchMap(term => this.restApiService.search(term))
+     .catch(error => {
+     // TODO: add real error handling
+     console.log(error);
+     return Observable.of<{}>([]);
+     });*/
     console.log(this.materials);
   }
 
   ngOnInit() {
-    this.boqObj=this.restApiService.comm_obj
-    console.log(this.boqObj['lineItems'])
-  }
-
-  src(){
+    this.boqObj = this.restApiService.comm_obj;
     this.materials = this.searchTerms
-      .debounceTime(300)        // wait 300ms after each keystroke before considering the term
-      .distinctUntilChanged()   // ignore if next search term is same as previous
-      .switchMap(term => term   // switch to new observable each time the term changes
-        // return the http search observable
-        ? this.restApiService.search(term)
-        // or the observable of empty heroes if there was no search term
-        : Observable.of<{}>([]))
+    /*.debounceTime(300)        // wait 300ms after each keystroke before considering the term
+     .distinctUntilChanged()*/   // ignore if next search term is same as previous
+      .switchMap(term => this.restApiService.search(term))
       .catch(error => {
         // TODO: add real error handling
         console.log(error);
         return Observable.of<{}>([]);
       });
-      console.log(this.materials);
+    console.log(this.boqObj['lineItems']);
+    console.log();
+  }
+
+  src() {
+    console.log(this.materials);
   }
 
   increment1() {
     this.calcs1.push([]);
   }
+
   deleteTable1(i) {
-     this.calcs1.splice(i, 1);
+    this.calcs1.splice(i, 1);
   }
+
   addRow1(i) {
     this.calcs1[i].push({});
   }
+
   deleteRow1(i, j) {
     this.calcs1[i].splice(j, 1);
   }
@@ -145,6 +155,7 @@ export class RateAnalysisComponent implements OnInit {
   addRow2(i) {
     this.calcs2.push({});
   }
+
   deleteRow2(i, j) {
     this.calcs2.splice(j, 1);
   }

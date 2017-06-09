@@ -8,20 +8,9 @@
                 <md-input-container>
                     <input mdInput type="text" placeholder="Profit (%)" [(ngModel)]="profit">
                 </md-input-container>
-            </md-card>
-        </div>
-        <div class="col-md-4" style="border:0px solid red;">
-            <md-card style="width:100%;">
-                <h3 style="border-bottom:1px solid grey;">Wastages</h3>
-                <md-input-container>
-                    <input mdInput type="text" placeholder="Ply (%)" [(ngModel)]="ply">
-                </md-input-container>
-                <md-input-container>
-                    <input mdInput type="text" placeholder="Laminate (%)" [(ngModel)]="laminate">
-                </md-input-container>
-                <md-input-container>
-                    <input mdInput type="text" placeholder="veneer (%)" [(ngModel)]="veneer">
-                </md-input-container>
+              <md-input-container>
+                <input mdInput type="text" placeholder="Wastage (%)" [(ngModel)]="wastage">
+              </md-input-container>
             </md-card>
         </div>
         <div class="col-md-4">
@@ -58,10 +47,9 @@
                             <th width="40px;">Sr.No</th>
                             <th width="200px;">Particular</th>
                             <th colspan="3">Size</th>
-                            <th width="40px;">No</th>
-                            <th width="40px;">Sqmt</th>
-                            <th width="40px;">cmt</th>
-                            <th width="40px;">RMT</th>
+                            <th width="40px;">Quantity</th>
+                            <th width="40px;">Uom</th>
+                            <th width="100px;">Wastage(%)</th>
                             <th width="80px;">Rate</th>
                             <th width="100px;">Amount</th>
                         </tr>
