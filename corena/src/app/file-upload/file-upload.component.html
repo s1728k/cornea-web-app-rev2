@@ -1,5 +1,15 @@
 <div class="container-fluid">
   <div class="row">
+    <div class="col-md-4">
+      <label>Enter The Type</label>
+      <md-select placeholder="Select The File Type">
+        <md-option [value]="'material'">material</md-option>
+        <md-option [value]="'labour'">labour</md-option>
+        <md-option [value]="'Boq'">Boq</md-option>
+      </md-select>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-md-12" style="margin-bottom: 40px">
 
       <div ng2FileDrop
