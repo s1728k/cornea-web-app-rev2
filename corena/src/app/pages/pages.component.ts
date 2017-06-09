@@ -60,7 +60,7 @@ export class PagesComponent implements OnInit {
     'under-construnction',
     'under-construnction',
     ['HR', 'under-construnction', 'under-construnction', 'under-construnction'],
-    ['Uploads', 'pages/boq-upload'],
+    ['Uploads', 'files-upload'],
   ];
 
   constructor(private router: Router) {
@@ -90,7 +90,6 @@ export class PagesComponent implements OnInit {
     if (j === 0) {
       this.router.navigate(['/pages/' + this.redirects[i]]);
     } else {
-      console.log(this.redirects[i][j])
       this.router.navigate(['/pages/' + this.redirects[i][j]]);
     }
   }

@@ -7,7 +7,7 @@ import {FilesUploadComponent} from './files-upload.component';
 
 export const routes: Routes = [
   {
-    path: 'boq-upload',
+    path: '',
     component: BoqUploadComponent,
     children: [
       // {path: '', redirectTo: 'boq-upload', pathMatch: 'full'},
