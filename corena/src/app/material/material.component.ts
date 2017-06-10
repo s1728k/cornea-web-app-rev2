@@ -68,7 +68,7 @@ export class MaterialComponent implements OnInit {
   }
 
   putMaterial(material) {
-    const url = 'http://49.50.76.29/api/material/new';
+    const url = 'http://49.50.76.29/api/material/' + String(material.id);
 
     this.restApiService.putRequest(url, material)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data)
