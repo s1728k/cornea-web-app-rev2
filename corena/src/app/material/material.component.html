@@ -1,0 +1,156 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 style="border-bottom:1px solid grey;">
+                Add To Materials
+            </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table>
+                <thead>
+                    <tr>
+                        <th width="30%">Name</th>
+                        <th width="25%">Brand</th>
+                        <th width="5%">UOM</th>
+                        <th width="15%">Rate</th>
+                        <th width="15%">Has CF</th>
+                        <th width="10%"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <md-input-container class="full-width">
+                                <input mdInput type="text" [(ngModel)]="newMaterial['name']" name="name">
+                            </md-input-container>
+<!--                             <md-select [(ngModel)]="newMaterial['brand']" name="brandId" class="full-width">
+                               <md-option *ngFor="let material of materialList" [value]="material">{{ material.name }}</md-option>
+                               <md-option [value]="" (click)="addNewBrand()">Add New Brand</md-option>
+                            </md-select> -->
+                        </td>
+                        <td>
+                            <md-input-container class="full-width">
+                                <input mdInput type="text" [(ngModel)]="newMaterial['brand']" name="brand">
+                            </md-input-container>
+<!--                             <md-select [(ngModel)]="newMaterial['brand']" name="brandId" class="full-width">
+                               <md-option *ngFor="let brand of brandList" [value]="brand">{{ brand.name }}</md-option>
+                               <md-option [value]="" (click)="addNewBrand()">Add New Brand</md-option>
+                            </md-select> -->
+                        </td>
+                        <td>
+                            <md-input-container class="full-width">
+                                <input mdInput type="text" [(ngModel)]="newMaterial['uom']" name="uom">
+                            </md-input-container>
+<!--                             <md-select [(ngModel)]="newMaterial['modal']" name="modalId" class="full-width">
+                               <md-option *ngFor="let uom of uomList" [value]="modal">{{ uom.name }}</md-option>
+                               <md-option [value]="" (click)="addNewModal()">Add New Modal</md-option>
+                            </md-select> -->
+                        </td>
+                        <td>
+                            <md-input-container class="full-width">
+                                <input mdInput type="text" [(ngModel)]="newMaterial['rate']" name="rate">
+                            </md-input-container>
+<!--                             <md-input-container class="full-width">
+                                <input mdInput type="text" [(ngModel)]="newMaterial['price']" name="price">
+                            </md-input-container> -->
+                        </td>
+                        <td>
+                            <md-select name="has_cf" class="full-width"  [(ngModel)]="newMaterial['has_cf']" >
+                               <md-option *ngFor="let has_cf of hasCfList" [value]="has_cf.id">{{ has_cf.name }}</md-option>
+                            </md-select>
+                        </td>
+
+                        <td><button md-raised-button class="full-width" (click)="postMaterial()">Add</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3 style="border-bottom:1px solid grey;">
+                Material List
+            </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <input type='text' style='padding:8px;margin:15px auto;width:30%;'
+            placeholder='Search Whole Table...' (keyup)='updateFilter($event)' />
+            <table>
+                <tr>
+                    <th width="5%">Sr.No.</th>
+                    <th width="30%">Name</th>
+                    <th width="25%">Brand</th>
+                    <th width="5%">UOM</th>
+                    <th width="15%">Rate</th>
+                    <th width="10%">Has CF</th>
+                    <th width="10%"></th>
+                </tr>
+                <tr>
+                    <td width="5%">
+                        <input type='text' style='width:100%;'
+                        placeholder='Sr.No...' (keyup)='updateFilter1(searchOpt)' [(ngModel)]="searchOpt['sr']" name="sr" />
+                    </td>
+                    <td width="30%">
+                        <input type='text' style='width:100%;'
+                        placeholder='Name...' (keyup)='updateFilter1(searchOpt)' [(ngModel)]="searchOpt['name']" name="Name" />
+                    </td>
+                    <td width="25%">
+                        <input type='text' style='width:100%;'
+                        placeholder='Brand...' (keyup)='updateFilter1(searchOpt)' [(ngModel)]="searchOpt['brand']" name="Brand" />
+                    </td>
+                    <td width="5%">
+                        <input type='text' style='width:100%;'
+                        placeholder='Uom' (keyup)='updateFilter1(searchOpt)' [(ngModel)]="searchOpt['uom']" name="UOM" />
+                    </td>
+                    <td width="15%">
+                        <input type='text' style='width:100%;'
+                        placeholder='Rate...' (keyup)='updateFilter1(searchOpt)' [(ngModel)]="searchOpt['rate']" name="Rate" />
+                    </td>
+                    <td width="10%">
+                        <input type='text' style='width:100%;'
+                        placeholder='Has_CF' (keyup)='updateFilter1(searchOpt)' [(ngModel)]="searchOpt['job']" name="Has_CF" />
+                    </td>
+                    <td width="10%"></td>
+                </tr>
+            </table>
+            <div  style="height:30vh; overflow-y:auto;">
+            <table>
+                <tr *ngFor="let item of rowsToDisplay; let i=index">
+                    <ng-container *ngIf="ed[i]">
+                        <td width="5%"><input type='text' style='width:100%;' [(ngModel)]="item['sr.no.']"></td>
+                        <td width="30%"><input type='text' style='width:100%;' [(ngModel)]="item['name']"></td>
+                        <td width="25%"><input type='text' style='width:100%;' [(ngModel)]="item['brand']"></td>
+                        <td width="5%"><input type='text' style='width:100%;' [(ngModel)]="item['uom']"></td>
+                        <td width="15%"><input type='text' style='width:100%;' [(ngModel)]="item['rate']"></td>
+                        <td width="10%"><input type='text' style='width:100%;' [(ngModel)]="item['has_cf']"></td>
+                        <td width="10%">
+                            <div style="display:inline-flex;">
+                                <button (click)="ed[i]=!ed[i]; putMaterial(item)"><app-icon [iconName]="'ic_done_black_24px'" ></app-icon></button>
+                                <!-- <button (click)="delRow(item)"><app-icon [iconName]="'ic_delete_black_24px'"></app-icon></button> -->
+                            </div>
+                        </td>
+                    </ng-container>
+                    <ng-container *ngIf="!ed[i]">
+                        <td width="5%">{{item['sr.no.']}}</td>
+                        <td width="30%">{{item['name']}}</td>
+                        <td width="25%">{{item['brand']}}</td>
+                        <td width="5%">{{item['uom']}}</td>
+                        <td width="15%">{{item['rate']}}</td>
+                        <td width="10%">{{item['has_cf']}}</td>
+                        <td width="10%">
+                            <div style="display:inline-flex;">
+                                <button (click)="ed[i]=!ed[i]"><app-icon [iconName]="'ic_create_black_24px'" ></app-icon></button>
+                                <button (click)="delRow(item)"><app-icon [iconName]="'ic_delete_black_24px'"></app-icon></button>
+                            </div>
+                        </td>
+                    </ng-container>
+                </tr>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -37,6 +37,7 @@ import { LocalStorageModule } from 'angular-2-local-storage';
 import { StorageService } from './services/local-storage.service';
 import { SearchService } from './shared/';
 import { BoqTableComponent } from './boq-table/boq-table.component';
+import { MaterialComponent } from './material/material.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { BoqTableComponent } from './boq-table/boq-table.component';
     LoginComponent,
     RateAnalysisComponent,
     BoqTableComponent,
+    MaterialComponent,
   ],
   // provide modules throughout
   imports: [

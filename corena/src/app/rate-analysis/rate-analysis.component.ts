@@ -164,6 +164,22 @@ export class RateAnalysisComponent implements OnInit {
       }
   }
 
+  submitRACalcs() {
+    const url = '';
+
+    this.restApiService.getRequest(url)
+      .map(res => /*this.loggeddInUser = <User>*/res.json().data)
+      .subscribe(
+        (value: LineItem[]) => {
+          this.rowItems = value;
+        },
+        (err: any) => {
+          console.error(err);
+        }
+      );
+    console.log('data returned %s', this.rowItems);
+  }
+
   routeToFileUploadScreen() {
 
   }

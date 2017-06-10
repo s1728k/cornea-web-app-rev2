@@ -7,6 +7,7 @@ import {RateAnalysisComponent} from '../rate-analysis/rate-analysis.component';
 import {NextCompComponent} from '../next-comp/next-comp.component';
 import {GanttchartComponent} from '../shared/components/ganttchart/ganttchart.component';
 import {BoqTableComponent} from '../boq-table/boq-table.component';
+import {MaterialComponent} from '../material/material.component';
 
 export const routes: Routes = [
   {
@@ -19,7 +20,8 @@ export const routes: Routes = [
       {path: 'project-hierarchy', component: ProjectHierarchyComponent},
       {path: 'rate-analysis', component: RateAnalysisComponent},
       {path: 'ganttchart', component: GanttchartComponent},
-      {path: 'files-upload', component: FileUploadComponent}
+      {path: 'files-upload', component: FileUploadComponent},
+      {path: 'materials', component: MaterialComponent}
     ]
   }
 ];
