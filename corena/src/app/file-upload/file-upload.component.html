@@ -30,15 +30,13 @@
   <div class="row">
     <div class="col-md-6">
       <label>Enter The Type</label>
-      <md-select placeholder="Select The File Type">
-        <md-option [value]="'material'">material</md-option>
-        <md-option [value]="'labour'">labour</md-option>
-        <md-option [value]="'Boq'">Boq</md-option>
+      <md-select>
+        <md-option *ngFor="let item of listTypesOfFileUploads" [value]="item">{{item}}</md-option>
       </md-select>
     </div>
     <div class="col-md-6">
       <input type="file" ng2FileSelect class="btn-primary" [uploader]="uploader" multiple/>
-            <!--       <h3>Upload queue</h3>
+<!--                   <h3>Upload queue</h3>
             <p>Queue length: {{ uploader?.queue?.length }}</p> -->
     </div>
   </div>

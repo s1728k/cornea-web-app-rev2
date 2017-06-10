@@ -1,20 +1,20 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-4" style="border:0px solid red;">
+        <div class="col-md-6" style="border:0px solid red;">
             <md-card style="width:100%">
-                <md-input-container>
+                <md-input-container style="width:100%">
                     <input mdInput type="number" placeholder="Over Head (%)" [(ngModel)]="overhead">
                 </md-input-container>
-                <md-input-container>
+                <md-input-container style="width:100%">
                     <input mdInput type="number" placeholder="Profit (%)" [(ngModel)]="profit">
                 </md-input-container>
-                <md-input-container>
+                <md-input-container style="width:100%">
                     <input mdInput type="number" placeholder="Wastage (%)" [(ngModel)]="wastage">
                 </md-input-container>
             </md-card>
         </div>
-        <div class="col-md-4">
-            <button md-raised-button disabled>Submit</button>
+        <div class="col-md-6" style="padding-top:70px;padding-left:200px;">
+            <button md-raised-button color="primary" style="padding:10px; font-size: 30px;">Submit</button>
         </div>
     </div>
     <div class="row">

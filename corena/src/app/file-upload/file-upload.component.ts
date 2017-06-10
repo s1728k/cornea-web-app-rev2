@@ -23,8 +23,9 @@ export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   public boqList: BOQTable[];
   urlProject: string;
   urlBoq: string;
-  toggleCreateView:boolean=false;
-  boqSelected:{};
+  toggleCreateView= false;
+  boqSelected: {};
+  listTypesOfFileUploads: any[]= ['Boq', 'Labor', 'Material', 'Overheads'];
 
   constructor(private restApiService: RestApiService, private router: Router) {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
@@ -45,7 +46,7 @@ export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
           console.error(err);
         }
       );
-    console.log(this.restApiService.comm_obj)
+    console.log(this.restApiService.comm_obj);
   };
 
   ngAfterViewInit() {
@@ -55,7 +56,7 @@ export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    this.restApiService.comm_obj=this.boqSelected;
+    this.restApiService.comm_obj = this.boqSelected;
   }
 
   // http://192.168.0.205:9000/api/projects/all/visible[]=id&visible[]=name&appends[]=boq
@@ -88,10 +89,10 @@ export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
     this.toggleCreateView = false;
     console.log(object.lineItems);
     this.boqList = object.lineItems;
-    if(object.has_ra){
-      this.toggleCreateView=true;
+    if (object.has_ra){
+      this.toggleCreateView = true;
     }
-    this.boqSelected=object
+    this.boqSelected = object;
     /*this.restApiService.getRequest(Constants.BASE_URL_BOQ
       + Constants.SERVICE_NAME_BOQ + '/' + id)
       .map(res => /!*this.boqList = <BOQTable[]>*!/res.json().data)
