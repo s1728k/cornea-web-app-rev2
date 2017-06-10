@@ -37,7 +37,8 @@ export class RateAnalysisComponent implements OnInit {
   overhead: number;
   profit: number;
   wastage: number;
-  selMaterial:{}={};
+  selMaterial: {}= {};
+  addCF: {}= {};
   calcs1: RateAnalysis[][] = [];
   calcs2: RateAnalysis[] = [];
   // calcs3: RateAnalysis[][]=[];
@@ -155,9 +156,12 @@ export class RateAnalysisComponent implements OnInit {
   }
 
   updateRow(material,i,j){
-    this.calcs1[i][j]['v4']=material['uom'];
-    this.calcs1[i][j]['v6']=material['rate'];
-    this.calcs1[i][j]['srno']=material['srno'];
+      this.calcs1[i][j]['v4']=material['uom'];
+      this.calcs1[i][j]['v6']=material['rate'];
+      this.calcs1[i][j]['srno']=material['srno'];
+      if (material['has_cf']) {
+        this.addCF[i] = true;
+      }
   }
 
   // get api request for material names

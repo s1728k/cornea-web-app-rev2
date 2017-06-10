@@ -32,7 +32,7 @@
             <md-card style="width:100%;margin-top: 10px;" *ngFor="let item of calcs1; let i=index;">
             <md-card-header style="float: right; padding:5px;">
                 <button md-raised-button>Calculate Labor</button>
-                <button md-raised-button>Add CF</button>
+                <button md-raised-button *ngIf="addCF[i]">Add CF</button>
                 <button md-raised-button (click)="deleteTable1(i)">
                   <app-icon [iconName]="'ic_delete_black_24px'"></app-icon>
                 </button>
@@ -79,7 +79,7 @@
                             <td>{{calcs1[i][j]['srno']}}</td>
                             <td>
                                     <md-input-container>
-                                      <input mdInput placeholder="Material" type="text" [mdAutocomplete]="auto" [formControl]="queryField">
+                                      <input mdInput placeholder="Material" type="text" [mdAutocomplete]="auto" [formControl]="queryField" >
                                     </md-input-container>
 
                                     <md-autocomplete #auto="mdAutocomplete">
