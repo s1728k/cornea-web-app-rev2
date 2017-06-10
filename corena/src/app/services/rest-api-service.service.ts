@@ -25,7 +25,9 @@ export class RestApiService {
   }
 
   // objectList: Object[];
-  postRequest(url: string, body: any): Observable<any> {
+  postRequest(url, body): Observable<any> {
+    console.log(body);
+    console.log(url);
     // console.log(this.http.post(url, body, this.headers));
     return this.http.post(url, body, this.headers);
     // .catch((err:any)=> console.log(err));

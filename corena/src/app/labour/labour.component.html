@@ -12,10 +12,11 @@
                 <thead>
                     <tr>
                         <th width="30%">Name</th>
-                        <th width="25%">Brand</th>
-                        <th width="5%">UOM</th>
+                        <th width="5%">Age</th>
+                        <th width="25%">Type</th>
+                        <th width="10%">Category</th>
                         <th width="15%">Rate</th>
-                        <th width="15%">Has CF</th>
+                        <th width="5%">UOM</th>
                         <th width="10%"></th>
                     </tr>
                 </thead>
@@ -32,7 +33,7 @@
                         </td>
                         <td>
                             <md-input-container class="full-width">
-                                <input mdInput type="text" [(ngModel)]="newMaterial['brand']" name="brand">
+                                <input mdInput type="text" [(ngModel)]="newMaterial['age']" name="age">
                             </md-input-container>
 <!--                             <md-select [(ngModel)]="newMaterial['brand']" name="brandId" class="full-width">
                                <md-option *ngFor="let brand of brandList" [value]="brand">{{ brand.name }}</md-option>
@@ -40,13 +41,21 @@
                             </md-select> -->
                         </td>
                         <td>
-                            <md-input-container class="full-width">
-                                <input mdInput type="text" [(ngModel)]="newMaterial['uom']" name="uom">
-                            </md-input-container>
+                            <md-select name="has_cf" class="full-width"  [(ngModel)]="newMaterial['type']" >
+                               <md-option *ngFor="let type of typeList" [value]="type">{{ type }}</md-option>
+                            </md-select>
 <!--                             <md-select [(ngModel)]="newMaterial['modal']" name="modalId" class="full-width">
                                <md-option *ngFor="let uom of uomList" [value]="modal">{{ uom.name }}</md-option>
                                <md-option [value]="" (click)="addNewModal()">Add New Modal</md-option>
                             </md-select> -->
+                        </td>
+                        <td>
+                            <md-input-container class="full-width">
+                                <input mdInput type="text" [(ngModel)]="newMaterial['category']" name="category">
+                            </md-input-container>
+<!--                             <md-input-container class="full-width">
+                                <input mdInput type="text" [(ngModel)]="newMaterial['price']" name="price">
+                            </md-input-container> -->
                         </td>
                         <td>
                             <md-input-container class="full-width">
@@ -57,9 +66,12 @@
                             </md-input-container> -->
                         </td>
                         <td>
-                            <md-select name="has_cf" class="full-width"  [(ngModel)]="newMaterial['has_cf']" >
-                               <md-option *ngFor="let has_cf of hasCfList" [value]="has_cf.id">{{ has_cf.name }}</md-option>
+                            <md-select name="uom" class="full-width"  [(ngModel)]="newMaterial['uom']" >
+                               <md-option *ngFor="let uom of uomList" [value]="uom">{{ uom }}</md-option>
                             </md-select>
+<!--                             <md-input-container class="full-width">
+                                <input mdInput type="text" [(ngModel)]="newMaterial['price']" name="price">
+                            </md-input-container> -->
                         </td>
 
                         <td><button md-raised-button class="full-width" (click)="postMaterial()">Add</button></td>
@@ -86,27 +98,15 @@
 
     <div class="row">
         <div class="col-md-12">
-            <input type="number" placeholder="Entries per sheet" [ngModel]="perPageCount" (ngModelChange)="perPageCountChange($event)">
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <app-pagination *ngIf="pageCount" [pageCount]="pageCount" [countPerPage]="perPageCount" (pageSelected)=selPage($event) >
-            </app-pagination>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
             <table>
                 <tr>
                     <th width="5%">Sr.No.</th>
                     <th width="30%">Name</th>
-                    <th width="25%">Brand</th>
-                    <th width="5%">UOM</th>
+                    <th width="5%">Age</th>
+                    <th width="20%">Type</th>
+                    <th width="10%">Category</th>
                     <th width="15%">Rate</th>
-                    <th width="10%">Has CF</th>
+                    <th width="5%">UOM</th>
                     <th width="10%"></th>
                 </tr>
                 <tr>
@@ -118,21 +118,25 @@
                         <input type='text' style='width:100%;'
                         placeholder='Name...' (keyup)='updateFilter1(searchOpt, "name", 0)' [(ngModel)]="searchOpt['name']" name="Name" />
                     </td>
-                    <td width="25%">
-                        <input type='text' style='width:100%;'
-                        placeholder='Brand...' (keyup)='updateFilter1(searchOpt, "brand", 0)' [(ngModel)]="searchOpt['brand']" name="Brand" />
-                    </td>
                     <td width="5%">
                         <input type='text' style='width:100%;'
-                        placeholder='Uom' (keyup)='updateFilter1(searchOpt, "uom", 0)' [(ngModel)]="searchOpt['uom']" name="UOM" />
+                        placeholder='Age...' (keyup)='updateFilter1(searchOpt, "brand", 0)' [(ngModel)]="searchOpt['age']" name="Age" />
+                    </td>
+                    <td width="20%">
+                        <input type='text' style='width:100%;'
+                        placeholder='Type' (keyup)='updateFilter1(searchOpt, "uom", 0)' [(ngModel)]="searchOpt['type']" name="Type" />
+                    </td>
+                    <td width="10%">
+                        <input type='text' style='width:100%;'
+                        placeholder='Category' (keyup)='updateFilter1(searchOpt, "uom", 0)' [(ngModel)]="searchOpt['category']" name="Category" />
                     </td>
                     <td width="15%">
                         <input type='text' style='width:100%;'
                         placeholder='Rate...' (keyup)='updateFilter1(searchOpt, "rate", 0)' [(ngModel)]="searchOpt['rate']" name="Rate" />
                     </td>
-                    <td width="10%">
+                    <td width="5%">
                         <input type='text' style='width:100%;'
-                        placeholder='Has_CF' (keyup)='updateFilter1(searchOpt, "job", 0)' [(ngModel)]="searchOpt['job']" name="Has_CF" />
+                        placeholder='UOM' (keyup)='updateFilter1(searchOpt, "job", 0)' [(ngModel)]="searchOpt['uom']" name="UOM" />
                     </td>
                     <td width="10%"></td>
                 </tr>
@@ -141,12 +145,13 @@
             <table>
                 <tr *ngFor="let item of rowsToDisplay; let i=index">
                     <ng-container *ngIf="ed[i]">
-                        <td width="5%"><input type='text' style='width:100%;' [(ngModel)]="item['sr.no.']"></td>
+                        <td width="5%"><input type='text' style='width:100%;' [(ngModel)]="item['sr']"></td>
                         <td width="30%"><input type='text' style='width:100%;' [(ngModel)]="item['name']"></td>
-                        <td width="25%"><input type='text' style='width:100%;' [(ngModel)]="item['brand']"></td>
-                        <td width="5%"><input type='text' style='width:100%;' [(ngModel)]="item['uom']"></td>
+                        <td width="5%"><input type='text' style='width:100%;' [(ngModel)]="item['age']"></td>
+                        <td width="20%"><input type='text' style='width:100%;' [(ngModel)]="item['type']"></td>
+                        <td width="10%"><input type='text' style='width:100%;' [(ngModel)]="item['category']"></td>
                         <td width="15%"><input type='text' style='width:100%;' [(ngModel)]="item['rate']"></td>
-                        <td width="10%"><input type='text' style='width:100%;' [(ngModel)]="item['has_cf']"></td>
+                        <td width="5%"><input type='text' style='width:100%;' [(ngModel)]="item['uom']"></td>
                         <td width="10%">
                             <div style="display:inline-flex;">
                                 <button (click)="ed[i]=!ed[i]; putMaterial(item)"><app-icon [iconName]="'ic_done_black_24px'" ></app-icon></button>
@@ -155,22 +160,33 @@
                         </td>
                     </ng-container>
                     <ng-container *ngIf="!ed[i]">
-                        <td width="5%">{{item['sr.no.']}}</td>
+                        <td width="5%">{{item['sr']}}</td>
                         <td width="30%">{{item['name']}}</td>
-                        <td width="25%">{{item['brand']}}</td>
-                        <td width="5%">{{item['uom']}}</td>
+                        <td width="5%">{{item['age']}}</td>
+                        <td width="20%">{{item['type']}}</td>
+                        <td width="10%">{{item['category']}}</td>
                         <td width="15%">{{item['rate']}}</td>
-                        <td width="10%">{{item['has_cf']}}</td>
+                        <td width="5%">{{item['uom']}}</td>
                         <td width="10%">
                             <div style="display:inline-flex;">
                                 <button (click)="ed[i]=!ed[i]"><app-icon [iconName]="'ic_create_black_24px'" ></app-icon></button>
-                                <button (click)="delRow(item)"><app-icon [iconName]="'ic_delete_black_24px'"></app-icon></button>
+                                <button (click)="deleteMaterial(item)"><app-icon [iconName]="'ic_delete_black_24px'"></app-icon></button>
                             </div>
                         </td>
                     </ng-container>
                 </tr>
             </table>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label>PerPageCount</label>
+            <input type="number" placeholder="Entries per sheet" [ngModel]="perPageCount" (ngModelChange)="perPageCountChange($event)">
+        </div>
+        <div class="col-md-6">
+            <app-pagination *ngIf="pageCount" [pageCount]="pageCount" [countPerPage]="perPageCount" (pageSelected)=selPage($event) >
+            </app-pagination>
         </div>
     </div>
 </div>

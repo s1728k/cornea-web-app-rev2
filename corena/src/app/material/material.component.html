@@ -84,18 +84,7 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <input type="number" placeholder="Entries per sheet" [ngModel]="perPageCount" (ngModelChange)="perPageCountChange($event)">
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <app-pagination *ngIf="pageCount" [pageCount]="pageCount" [countPerPage]="perPageCount" (pageSelected)=selPage($event) >
-            </app-pagination>
-        </div>
-    </div>
 
     <div class="row">
         <div class="col-md-12">
@@ -164,7 +153,7 @@
                         <td width="10%">
                             <div style="display:inline-flex;">
                                 <button (click)="ed[i]=!ed[i]"><app-icon [iconName]="'ic_create_black_24px'" ></app-icon></button>
-                                <button (click)="delRow(item)"><app-icon [iconName]="'ic_delete_black_24px'"></app-icon></button>
+                                <button (click)="deleteMaterial(item)"><app-icon [iconName]="'ic_delete_black_24px'"></app-icon></button>
                             </div>
                         </td>
                     </ng-container>
@@ -173,4 +162,16 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <label>PerPageCount</label>
+            <input type="number" placeholder="Entries per sheet" [ngModel]="perPageCount" (ngModelChange)="perPageCountChange($event)">
+        </div>
+        <div class="col-md-6">
+            <app-pagination *ngIf="pageCount" [pageCount]="pageCount" [countPerPage]="perPageCount" (pageSelected)=selPage($event) >
+            </app-pagination>
+        </div>
+    </div>
+
 </div>

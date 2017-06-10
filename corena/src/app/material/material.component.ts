@@ -103,16 +103,18 @@ export class MaterialComponent implements OnInit {
     this.getPageCount('','filter[]=name&filter[]=srno&filter[]=brand');
   }
 
-  postMaterial(newMaterial) {
+  postMaterial() {
     const url = 'http://49.50.76.29/api/material/new';
     console.log(this.newMaterial);
-    this.restApiService.postRequest(url, newMaterial)
+    this.newMaterial['srno']="";
+    this.restApiService.postRequest(url, this.newMaterial)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data[0])
       .subscribe(
         (value: {}) => {
           this.newMaterial = value;
           console.log(this.newMaterial);
-          this.materialListDb.push(this.newMaterial);
+          this.newMaterial={};
+          this.selPage(this.activePage);
           this.rowsToDisplay = this.materialListDb;
           console.log(this.materialListDb);
         },
@@ -127,6 +129,27 @@ export class MaterialComponent implements OnInit {
     const url = 'http://49.50.76.29/api/material/' + String(material.id);
 
     this.restApiService.putRequest(url, material)
+      .map(res => /*this.loggeddInUser = <User>*/res.json().data)
+      .subscribe(
+        (value: any) => {
+          this.newMaterial = value;
+          console.log(value);
+          this.selPage(this.activePage);
+          // this.materialListDb.push(this.newMaterial);
+          // this.rowsToDisplay = this.materialListDb;
+          // console.log(this.materialListDb);
+        },
+        (err: any) => {
+          console.error(err);
+        }
+      );
+    // console.log(this.materialListDb);
+  }
+
+  deleteMaterial(material) {
+    const url = 'http://49.50.76.29/api/material/' + String(material.id);
+
+    this.restApiService.deleteRequest(url)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data)
       .subscribe(
         (value: any) => {
