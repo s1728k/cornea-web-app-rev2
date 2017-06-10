@@ -8,6 +8,7 @@ import {NextCompComponent} from '../next-comp/next-comp.component';
 import {GanttchartComponent} from '../shared/components/ganttchart/ganttchart.component';
 import {BoqTableComponent} from '../boq-table/boq-table.component';
 import {MaterialComponent} from '../material/material.component';
+import {LabourComponent} from '../labour/labour.component';
 
 export const routes: Routes = [
   {
@@ -21,7 +22,8 @@ export const routes: Routes = [
       {path: 'rate-analysis', component: RateAnalysisComponent},
       {path: 'ganttchart', component: GanttchartComponent},
       {path: 'files-upload', component: FileUploadComponent},
-      {path: 'materials', component: MaterialComponent}
+      {path: 'materials', component: MaterialComponent},
+      {path: 'labour', component: LabourComponent},
     ]
   }
 ];

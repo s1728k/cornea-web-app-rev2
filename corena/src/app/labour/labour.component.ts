@@ -3,11 +3,11 @@ import {RestApiService} from '../services/rest-api-service.service';
 
 
 @Component({
-  selector: 'app-material',
-  templateUrl: './material.component.html',
-  styleUrls: ['./material.component.css']
+  selector: 'app-labour',
+  templateUrl: './labour.component.html',
+  styleUrls: ['./labour.component.css']
 })
-export class MaterialComponent implements OnInit {
+export class LabourComponent implements OnInit {
   materialList: {}[]= [{id: 1, name: 'Maruthi 800'}, {id: 2, name: 'Jesrsy'}, {id: 3, name: 'Ambzidor'}, {id: 4, name: 'Jeep'}, {id: 5, name: 'BMTC Bus'}];
   brandList: {}[]= [{id: 1, name: 'Maruthi 800'}, {id: 2, name: 'Jesrsy'}, {id: 3, name: 'Ambzidor'}, {id: 4, name: 'Jeep'}, {id: 5, name: 'BMTC Bus'}];
   uomList: {}[]= [{id: 1, name: '800'}, {id: 2, name: '600'}, {id: 3, name: '400'}, {id: 4, name: '200'}, {id: 5, name: '100'}];
@@ -34,7 +34,6 @@ export class MaterialComponent implements OnInit {
   }
 
   perPageCountChange(perPageCount) {
-    console.log(perPageCount)
     this.perPageCount=perPageCount;
     this.getMaterials(0);
   }
@@ -105,11 +104,11 @@ export class MaterialComponent implements OnInit {
 
   postMaterial(newMaterial) {
     const url = 'http://49.50.76.29/api/material/new';
-    console.log(this.newMaterial);
+
     this.restApiService.postRequest(url, newMaterial)
-      .map(res => /*this.loggeddInUser = <User>*/res.json().data[0])
+      .map(res => /*this.loggeddInUser = <User>*/res.json().data)
       .subscribe(
-        (value: {}) => {
+        (value: any) => {
           this.newMaterial = value;
           console.log(this.newMaterial);
           this.materialListDb.push(this.newMaterial);
@@ -142,6 +141,7 @@ export class MaterialComponent implements OnInit {
         }
       );
     // console.log(this.materialListDb);
+
   }
 
   addNewBrand(){
@@ -167,14 +167,13 @@ export class MaterialComponent implements OnInit {
   }
 
   updateFilter(event, n) {
-    console.log(n)
+
     let val
     if (event){
       val = event.target.value.toLowerCase();
     }else{
       val = ""
     }
-
     this.lastSearchObj = {'from':'full','1':val, '2':n};
 
     const url = 'http://49.50.76.29/api/material/search?search='+val+

@@ -38,6 +38,7 @@ import { StorageService } from './services/local-storage.service';
 import { SearchService } from './shared/';
 import { BoqTableComponent } from './boq-table/boq-table.component';
 import { MaterialComponent } from './material/material.component';
+import { LabourComponent } from './labour/labour.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { MaterialComponent } from './material/material.component';
     RateAnalysisComponent,
     BoqTableComponent,
     MaterialComponent,
+    LabourComponent,
   ],
   // provide modules throughout
   imports: [
