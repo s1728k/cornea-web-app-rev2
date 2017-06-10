@@ -1,0 +1,11 @@
+li{
+  padding: 10px;
+  border: 1px solid grey;
+}
+li:hover{
+  cursor: pointer;
+  background-color: grey !important;
+}
+ul li:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+}

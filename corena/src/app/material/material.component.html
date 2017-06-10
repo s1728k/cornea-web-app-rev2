@@ -68,6 +68,7 @@
             </table>
         </div>
     </div>
+
     <div class="row">
         <div class="col-md-12">
             <h3 style="border-bottom:1px solid grey;">
@@ -75,10 +76,29 @@
             </h3>
         </div>
     </div>
+
     <div class="row">
         <div class="col-md-12">
             <input type='text' style='padding:8px;margin:15px auto;width:30%;'
-            placeholder='Search Whole Table...' (keyup)='updateFilter($event)' />
+            placeholder='Search Whole Table...' (keyup)='updateFilter($event, 0)' />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <input type="number" placeholder="Entries per sheet" [(ngModel)]="perPageCount">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <app-pagination *ngIf="pageCount" [pageCount]="pageCount" [countPerPage]="perPageCount" (pageSelected)=selPage($event) >
+            </app-pagination>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
             <table>
                 <tr>
                     <th width="5%">Sr.No.</th>
@@ -92,27 +112,27 @@
                 <tr>
                     <td width="5%">
                         <input type='text' style='width:100%;'
-                        placeholder='Sr.No...' (keyup)='updateFilter1(searchOpt)' [(ngModel)]="searchOpt['sr']" name="sr" />
+                        placeholder='Sr.No...' (keyup)='updateFilter1(searchOpt, "sr", 0)' [(ngModel)]="searchOpt['sr']" name="sr" />
                     </td>
                     <td width="30%">
                         <input type='text' style='width:100%;'
-                        placeholder='Name...' (keyup)='updateFilter1(searchOpt)' [(ngModel)]="searchOpt['name']" name="Name" />
+                        placeholder='Name...' (keyup)='updateFilter1(searchOpt, "name", 0)' [(ngModel)]="searchOpt['name']" name="Name" />
                     </td>
                     <td width="25%">
                         <input type='text' style='width:100%;'
-                        placeholder='Brand...' (keyup)='updateFilter1(searchOpt)' [(ngModel)]="searchOpt['brand']" name="Brand" />
+                        placeholder='Brand...' (keyup)='updateFilter1(searchOpt, "brand", 0)' [(ngModel)]="searchOpt['brand']" name="Brand" />
                     </td>
                     <td width="5%">
                         <input type='text' style='width:100%;'
-                        placeholder='Uom' (keyup)='updateFilter1(searchOpt)' [(ngModel)]="searchOpt['uom']" name="UOM" />
+                        placeholder='Uom' (keyup)='updateFilter1(searchOpt, "uom", 0)' [(ngModel)]="searchOpt['uom']" name="UOM" />
                     </td>
                     <td width="15%">
                         <input type='text' style='width:100%;'
-                        placeholder='Rate...' (keyup)='updateFilter1(searchOpt)' [(ngModel)]="searchOpt['rate']" name="Rate" />
+                        placeholder='Rate...' (keyup)='updateFilter1(searchOpt, "rate", 0)' [(ngModel)]="searchOpt['rate']" name="Rate" />
                     </td>
                     <td width="10%">
                         <input type='text' style='width:100%;'
-                        placeholder='Has_CF' (keyup)='updateFilter1(searchOpt)' [(ngModel)]="searchOpt['job']" name="Has_CF" />
+                        placeholder='Has_CF' (keyup)='updateFilter1(searchOpt, "job", 0)' [(ngModel)]="searchOpt['job']" name="Has_CF" />
                     </td>
                     <td width="10%"></td>
                 </tr>

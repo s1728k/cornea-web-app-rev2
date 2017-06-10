@@ -21,16 +21,70 @@ export class MaterialComponent implements OnInit {
   newMaterial: {}= {};
   searchOpt: {}= {brand: '', modal: '', job: ''};
   ed: {}= {};
+  lastSearchObj: {}= {};
+  pageCount= 4;
+  perPageCount= 2;
 
   constructor(private restApiService: RestApiService) { }
 
   ngOnInit() {
     this.rowsToDisplay = this.materialListDb;
-    this.getMaterials();
+    this.getMaterials(0);
+    this.getPageCount('filter[]=name&filter[]=srno&filter[]=brand');
   }
 
-  getMaterials() {
-    const url = 'http://49.50.76.29/api/material/all';
+  getPendPos(p: any): void {
+    // this.crudService.url="http://192.168.0.205:8080/api/po/all?conditions[status]="+this.status+"&page="+String(p)+"&perPage=10"
+    // this.crudService
+    //     .getObjs()
+    //     .then(pendPos => this.pendPos = pendPos);
+  }
+
+  getPageCount(fltr: string): void{
+    const url = 'http://49.50.76.29/api/material/search?search=&' + fltr + '&perPage=10&page=0';
+
+    this.restApiService.getRequest(url)
+      .map(res => /*this.loggeddInUser = <User>*/res.json().total)
+      .subscribe(
+        (value: any) => {
+          this.pageCount = value;
+        },
+        (err: any) => {
+          console.error(err);
+        }
+      );
+    console.log(this.pageCount);
+  }
+
+  selPage(p){
+    switch (this.lastSearchObj['from']) {
+      case "full":
+        this.updateFilter(this.lastSearchObj['1'], this.lastSearchObj['2']);
+        break;
+
+    case "ind":
+        this.updateFilter1(this.lastSearchObj['1'], this.lastSearchObj['2'], this.lastSearchObj['3'])
+        break;
+
+    case "start":
+        this.getMaterials(p)
+        break;
+
+      default:
+        // code...
+        break;
+    }
+  }
+
+  check(perPageCount) {
+    console.log(this.perPageCount);
+  }
+
+  getMaterials(n) {
+    this.lastSearchObj = {'from':'start','1':n};
+
+    const url = 'http://49.50.76.29/api/material/search?search=&filter[]=name&filter[]=srno&filter[]=brand&perPage=' +
+                String(this.perPageCount) + '&page=' + String(n);
 
     this.restApiService.getRequest(url)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data)
@@ -38,13 +92,14 @@ export class MaterialComponent implements OnInit {
         (value: {}[]) => {
           this.materialListDb = value;
           this.rowsToDisplay = this.materialListDb;
+          console.log(n);
           console.log(this.materialListDb);
         },
         (err: any) => {
           console.error(err);
         }
       );
-    console.log(this.materialListDb);
+    this.getPageCount('filter[]=name&filter[]=srno&filter[]=brand');
   }
 
   postMaterial(newMaterial) {
@@ -106,52 +161,55 @@ export class MaterialComponent implements OnInit {
   }
   delRow(item){
     this.materialListDb.splice(this.materialListDb.indexOf(item), 1);
-    this.updateFilter1(this.searchOpt);
+    //this.updateFilter1(this.searchOpt);
   }
 
-  updateFilter(event){
+  updateFilter(event, n) {
+
     const val = event.target.value.toLowerCase();
-    // filter our data
-    const temp = this.materialListDb.filter(function(d) {
-      return d['brand'].toLowerCase().indexOf(val) !== -1 || !val || d['modal'].toLowerCase().indexOf(val) !== -1
-      || d['job'].toLowerCase().indexOf(val) !== -1 || d['job'].toLowerCase().indexOf(val) !== -1;
-    });
-    // update the rows
-    this.rowsToDisplay = temp;
-    // Whenever the filter changes, always go back to the first page
-    // this.table.offset = 0;
+    this.lastSearchObj = {'from':'full','1':val, '2':n};
+
+    const url = 'http://49.50.76.29/api/material/search?search='+val+
+                '&filter[]=name&filter[]=srno&filter[]=brand&perPage=' +
+                String(this.perPageCount) + '&page=' + String(n);
+
+    this.restApiService.getRequest(url)
+      .map(res => /*this.loggeddInUser = <User>*/res.json().data)
+      .subscribe(
+        (value: {}[]) => {
+          this.materialListDb = value;
+          this.rowsToDisplay = this.materialListDb;
+          console.log(this.materialListDb);
+        },
+        (err: any) => {
+          console.error(err);
+        }
+      );
+    console.log(this.materialListDb);
+    this.getPageCount('filter[]=name&filter[]=srno&filter[]=brand');
+
   }
-  updateFilter1(sParam){
-    //-------------2------------
-    let val = sParam['brand'].toLowerCase();
-    let temp = this.materialListDb.filter(function(d) {
-      return d['brand'].toLowerCase().indexOf(val) !== -1 || !val ;
-    });
-    this.rowsToDisplay = temp;
-    // -------------1------------
-    val = sParam['sr'];
-    temp = this.rowsToDisplay.filter(function(d) {
-      return d['sr.no.'].toString().toLowerCase().indexOf(val) !== -1 || !val ;
-    });
-    this.rowsToDisplay = temp;
-    //-------------3------------
-    val = sParam['modal'].toLowerCase();
-    temp = this.rowsToDisplay.filter(function(d) {
-      return d['modal'].toLowerCase().indexOf(val) !== -1 || !val ;
-    });
-    this.rowsToDisplay = temp;
-    //-------------4------------
-    val = sParam['job'].toLowerCase();
-    temp = this.rowsToDisplay.filter(function(d) {
-      return d['job'].toLowerCase().indexOf(val) !== -1 || !val ;
-    });
-    this.rowsToDisplay = temp;
-    //-------------5------------
-    val = sParam['price'];
-    temp = this.rowsToDisplay.filter(function(d) {
-      return d['price'].toString().toLowerCase().indexOf(val) !== -1 || !val ;
-    });
-    this.rowsToDisplay = temp;
+
+  updateFilter1(sParam, k, n){
+    this.lastSearchObj = {'from':'ind','1':sParam, '2':k, '3':n};
+    const url = 'http://49.50.76.29/api/material/search?search='+ sParam[k] +
+                '&filter[]='+ k +'&perPage=' +
+                String(this.perPageCount) + '&page=' + String(n);
+
+    this.restApiService.getRequest(url)
+      .map(res => /*this.loggeddInUser = <User>*/res.json().data)
+      .subscribe(
+        (value: {}[]) => {
+          this.materialListDb = value;
+          this.rowsToDisplay = this.materialListDb;
+          console.log(this.materialListDb);
+        },
+        (err: any) => {
+          console.error(err);
+        }
+      );
+    console.log(this.materialListDb);
+    this.getPageCount('filter[]='+ k);
   }
 
 }

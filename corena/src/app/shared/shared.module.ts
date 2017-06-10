@@ -6,6 +6,7 @@ import { SideNavComponent } from './components/side-nav/side-nav.component';
 import { TopHeaderComponent } from './components/top-header/top-header.component';
 import { IconsComponent } from './components/icons/icons.component';
 import {NanPipe} from "./pipes/nan.pipe";
+import {PaginationComponent} from "./components/pagination/pagination.component";
 
 @NgModule({
   imports: [
@@ -13,7 +14,7 @@ import {NanPipe} from "./pipes/nan.pipe";
     MaterialModule, MdNativeDateModule, MdButtonModule,
     DndModule.forRoot()
   ],
-  declarations: [SideNavComponent, TopHeaderComponent, IconsComponent, NanPipe],
-  exports: [DndModule,SideNavComponent, TopHeaderComponent, IconsComponent, NanPipe],
+  declarations: [SideNavComponent, TopHeaderComponent, IconsComponent, PaginationComponent, NanPipe],
+  exports: [DndModule, SideNavComponent, TopHeaderComponent, IconsComponent, PaginationComponent, NanPipe],
 })
 export class SharedModule { }
