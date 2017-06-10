@@ -1,16 +1,6 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-4">
-      <label>Enter The Type</label>
-      <md-select placeholder="Select The File Type">
-        <md-option [value]="'material'">material</md-option>
-        <md-option [value]="'labour'">labour</md-option>
-        <md-option [value]="'Boq'">Boq</md-option>
-      </md-select>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12" style="margin-bottom: 40px">
+    <div class="col-md-12">
 
       <div ng2FileDrop
            [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
@@ -28,19 +18,51 @@
         <input id="file-input" type="file">
 
       </div>-->
+    </div>
+  </div>
 
-      <input type="file" ng2FileSelect class="btn-primary" [uploader]="uploader" multiple/><br/>
+  <div class="row">
+    <div class="col-md-12">
+    <br>
+    </div>
+  </div>
 
-      <!--       <h3>Upload queue</h3>
+  <div class="row">
+    <div class="col-md-6">
+      <label>Enter The Type</label>
+      <md-select placeholder="Select The File Type">
+        <md-option [value]="'material'">material</md-option>
+        <md-option [value]="'labour'">labour</md-option>
+        <md-option [value]="'Boq'">Boq</md-option>
+      </md-select>
+    </div>
+    <div class="col-md-6">
+      <input type="file" ng2FileSelect class="btn-primary" [uploader]="uploader" multiple/>
+            <!--       <h3>Upload queue</h3>
             <p>Queue length: {{ uploader?.queue?.length }}</p> -->
+    </div>
+  </div>
 
-      <div style="margin-bottom: 4px;">
+  <div class="row">
+    <div class="col-md-12">
+    <br>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
         <div>
           Total progress:
           <div class="progress" style="">
             <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
           </div>
         </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div style="margin-bottom: 4px;">
         <button type="button" class="btn btn-success btn-s"
                 (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
           <span class="glyphicon glyphicon-upload"></span> Upload all
@@ -54,7 +76,17 @@
           <span class="glyphicon glyphicon-trash"></span> Remove all
         </button>
       </div>
+    </div>
+  </div>
 
+  <div class="row">
+    <div class="col-md-12">
+    <br>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
       <table class="table">
         <thead>
         <tr>
@@ -102,9 +134,6 @@
         </tr>
         </tbody>
       </table>
-
-
     </div>
-
   </div>
 </div>

@@ -145,13 +145,9 @@
                               <app-icon [iconName]="'ic_delete_black_24px'" (click)="deleteRow2(0,j)"></app-icon>
                             </td>
                             <!-- delete button -->
-                            <td><input type="text" class="inp" ></td>
+                            <td>{{j+1}}</td>
                             <!-- Sr. No -->
-                            <td><md-select class="inp" name="sel">
-                                <md-option *ngFor="let food of dropList2" [value]="food.key">
-                                  {{food.key}}
-                                </md-option>
-                              </md-select></td>
+                            <td><input type="text" class="inp" ><   /td>
                             <!-- Description -->
                             <td><input type="text" class="inp" ></td>
                             <!-- Unit -->

@@ -6,6 +6,6 @@ export class CFFactor {
   item_id: number;
   price: number;
   uom: string;
-  20mm: 
+  20mm:
   50mm
 }

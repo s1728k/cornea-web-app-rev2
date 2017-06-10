@@ -164,6 +164,10 @@ export class RateAnalysisComponent implements OnInit {
       }
   }
 
+  routeToFileUploadScreen() {
+
+  }
+
   // get api request for material names
   selRowItemId(id) {
 

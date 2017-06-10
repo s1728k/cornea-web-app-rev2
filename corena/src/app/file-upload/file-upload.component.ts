@@ -45,6 +45,7 @@ export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
           console.error(err);
         }
       );
+    console.log(this.restApiService.comm_obj)
   };
 
   ngAfterViewInit() {
