@@ -9,6 +9,7 @@ import {GanttchartComponent} from '../shared/components/ganttchart/ganttchart.co
 import {BoqTableComponent} from '../boq-table/boq-table.component';
 import {MaterialComponent} from '../material/material.component';
 import {LabourComponent} from '../labour/labour.component';
+import {CfComponent} from '../cf/cf.component';
 
 export const routes: Routes = [
   {
@@ -24,6 +25,7 @@ export const routes: Routes = [
       {path: 'files-upload', component: FileUploadComponent},
       {path: 'materials', component: MaterialComponent},
       {path: 'labour', component: LabourComponent},
+      {path: 'cf-factor', component: CfComponent},
     ]
   }
 ];

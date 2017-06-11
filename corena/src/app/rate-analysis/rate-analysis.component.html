@@ -32,7 +32,7 @@
             <md-card style="width:100%;margin-top: 10px;" *ngFor="let item of calcs1; let i=index;">
             <md-card-header style="float: right; padding:5px;">
                 <button md-raised-button>Calculate Labor</button>
-                <button md-raised-button *ngIf="addCF[i]">Add CF</button>
+                <button md-raised-button *ngIf="addCF[i].length>0">Add CF</button>
                 <button md-raised-button (click)="deleteTable1(i)">
                   <app-icon [iconName]="'ic_delete_black_24px'"></app-icon>
                 </button>
@@ -51,6 +51,7 @@
                             <th width="40px;">Uom</th>
                             <th width="100px;">Wastage(%)</th>
                             <th width="80px;">Rate</th>
+                            <th width="80px;" *ngIf="addCF[i].length>0">CF</th>
                             <th width="100px;">Amount</th>
                         </tr>
                         <tr>
@@ -68,6 +69,7 @@
                             <th><input type="text" class="inp" ></th>
                             <th><input type="text" class="inp" ></th>
                             <th><input type="text" class="inp" ></th>
+                            <th *ngIf="addCF[i].length>0"><input type="text" class="inp" ></th>
                             <th><input type="text" class="inp" ></th>
                         </tr>
                     </thead>
@@ -95,12 +97,18 @@
                             <td><input type="number" class="inp" name="Size3" [(ngModel)]="calcs1[i][j]['v2']"></td>
                             <td><input type="number" class="inp" name="qty" [(ngModel)]="calcs1[i][j]['v3']"></td>
                             <td><input type="text" class="inp" name="uom" [(ngModel)]="calcs1[i][j]['v4']"></td>
-                            <td><input type="number" class="inp" name="wastage" [(ngModel)]="calcs1[i][j]['v5']"></td>
+                            <td><input type="number" class="inp" name="wastage" [(ngModel)]="calcs1[i][j]['wastage']" [attr.Value]="wastage"></td>
                             <td><input type="number" class="inp" name="rate" [(ngModel)]="calcs1[i][j]['v6']"></td>
-                            <ng-container *ngIf="calcs1[i][j]['v5']">
-                                <td>{{calcs1[i][j]['v1']*calcs1[i][j]['breadth']*calcs1[i][j]['v2']*calcs1[i][j]['v3']*(calcs1[i][j]['v5']/100+1)*calcs1[i][j]['v6']*(overhead/100+1)*(profit/100+1) | number : '2.2-3'| nan }}</td>
+                            <td *ngIf="addCF[i].length>0">
+                                <md-select class="inp" [(ngModel)]="calcs1[i][j]['CF']">
+                                  <md-option [value]="cfDropDown[i][j]['20mm']">{{ cfDropDown[i][j]['20mm'] }}</md-option>
+                                  <md-option [value]="cfDropDown[i][j]['50mm']">{{ cfDropDown[i][j]['50mm'] }}</md-option>
+                                </md-select>
+                            </td>
+                            <ng-container *ngIf="calcs1[i][j]['wastage']">
+                                <td>{{calcs1[i][j]['v1']*calcs1[i][j]['breadth']*calcs1[i][j]['v2']*calcs1[i][j]['v3']*(calcs1[i][j]['wastage']/100+1)*calcs1[i][j]['v6']*(overhead/100+1)*(profit/100+1) | number : '2.2-3'| nan }}</td>
                             </ng-container>
-                            <ng-container *ngIf="!calcs1[i][j]['v5']">
+                            <ng-container *ngIf="!calcs1[i][j]['wastage']">
                                 <td>{{calcs1[i][j]['v1']*calcs1[i][j]['breadth']*calcs1[i][j]['v2']*calcs1[i][j]['v3']*calcs1[i][j]['v6']*(overhead/100+1)*(profit/100+1)*(wastage/100+1) | number : '2.2-3'| nan }}</td>
                             </ng-container>
                         </tr>

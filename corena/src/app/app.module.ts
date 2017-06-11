@@ -39,6 +39,7 @@ import { SearchService } from './shared/';
 import { BoqTableComponent } from './boq-table/boq-table.component';
 import { MaterialComponent } from './material/material.component';
 import { LabourComponent } from './labour/labour.component';
+import { CfComponent } from './cf/cf.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { LabourComponent } from './labour/labour.component';
     BoqTableComponent,
     MaterialComponent,
     LabourComponent,
+    CfComponent,
   ],
   // provide modules throughout
   imports: [

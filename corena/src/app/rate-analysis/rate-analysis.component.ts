@@ -3,6 +3,8 @@ import {Component, OnInit} from '@angular/core';
 import {RateAnalysis, LineItemTableRow} from '../model/class';
 import {LineItem} from '../model/class/line-item.model';
 import {NanPipe} from '../shared/pipes/nan.pipe';
+import {MdDialog, MdDialogRef} from '@angular/material';
+import {RaPopupDialog} from './rapopup.component';
 
 
 import {Observable} from 'rxjs/Observable';
@@ -38,7 +40,6 @@ export class RateAnalysisComponent implements OnInit {
   profit: number;
   wastage: number;
   selMaterial: {}= {};
-  addCF: {}= {};
   calcs1: RateAnalysis[][] = [];
   calcs2: RateAnalysis[] = [];
   // calcs3: RateAnalysis[][]=[];
@@ -60,7 +61,7 @@ export class RateAnalysisComponent implements OnInit {
   filteredStates: any[] = ['sfsdF', 'fsdfs', 'dfsfsdf'];
 
 
-  constructor(private restApiService: RestApiService, private _http: Http) {
+  constructor(private restApiService: RestApiService, private _http: Http, private dialog: MdDialog) {
     this.searchTerms = new Subject<string>();
     // this.searchTerms.
   }
@@ -124,6 +125,7 @@ export class RateAnalysisComponent implements OnInit {
 
   increment1() {
     this.calcs1.push([]);
+    this.addCF[this.calcs1.length-1]=[]
   }
 
   deleteTable1(i) {
@@ -132,10 +134,13 @@ export class RateAnalysisComponent implements OnInit {
 
   addRow1(i) {
     this.calcs1[i].push({});
+    this.cfDropDown[i][this.calcs1[i].length-1]={'20mm':0, '50mm':0}
   }
 
+  addCF: {}= {};
   deleteRow1(i, j) {
     this.calcs1[i].splice(j, 1);
+    //this.addCF[i].pop({})
   }
 
   // get api request for line item
@@ -160,7 +165,8 @@ export class RateAnalysisComponent implements OnInit {
       this.calcs1[i][j]['v6']=material['rate'];
       this.calcs1[i][j]['srno']=material['srno'];
       if (material['has_cf']) {
-        this.addCF[i] = true;
+        this.addCF[i].push({})
+        this.openDialogSup(i,j);
       }
   }
 
@@ -195,9 +201,9 @@ export class RateAnalysisComponent implements OnInit {
   grandTotal(j) {
     this.grandTotalV = 0;
     for (let i = this.calcs1[j].length - 1; i >= 0; i--) {
-      if (this.calcs1[i][j]['v5']){
+      if (this.calcs1[i][j]['wastage']){
         this.grandTotalV = this.grandTotalV + this.calcs1[i][j]['v1']*this.calcs1[i][j]['breadth']*this.calcs1[i][j]['v2']*this.calcs1[i][j]['v3']
-        *(this.calcs1[i][j]['v5']/100+1)*this.calcs1[i][j]['v6']*(this.overhead/100+1)*(this.profit/100+1);
+        *(this.calcs1[i][j]['wastage']/100+1)*this.calcs1[i][j]['v6']*(this.overhead/100+1)*(this.profit/100+1);
       }else{
         this.grandTotalV = this.grandTotalV + this.calcs1[i][j]['v1']*this.calcs1[i][j]['breadth']*this.calcs1[i][j]['v2']*this.calcs1[i][j]['v3']
         *this.calcs1[i][j]['v6']*(this.overhead/100+1)*(this.profit/100+1)*(this.wastage/100+1);
@@ -242,5 +248,22 @@ export class RateAnalysisComponent implements OnInit {
   //   this.calcs3[i].splice(j, 1);
   // }
 
-}
+  cfData:{}={};
+  cfDropDown:{}[][]=[[]]
+  openDialogSup(i,j) {
+    const dialogRef = this.dialog.open(RaPopupDialog);
+    dialogRef.afterClosed().subscribe(result => {
+      this.cfData = result;
+      console.log(this.cfData);
+      const url = 'http://49.50.76.29/api/cf/new';
+      this.restApiService.postRequest(url, result)
+        .map(res => res.json().data[0])
+        .subscribe(
+          (value: any) => {this.cfDropDown[i][j] = value;console.log(this.cfDropDown[i][j]);},
+          (err: any) => {console.error(err);}
+        );
 
+    });
+  }
+
+}

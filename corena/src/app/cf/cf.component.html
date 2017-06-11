@@ -1,0 +1,85 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12" style="margin-bottom:10px;">
+            <h3 style="border-bottom:1px solid grey;">Co-efficiency Factor Calculations</h3>
+        </div>
+    </div>
+    <div class="row" style="border:0px solid grey;overflow-y:auto;  height:70vh;">
+        <div class="col-md-12" style="border:0px solid grey;">
+
+            <md-card style="width:100%;margin-top: 10px;">
+                <md-card-header style="float: right; padding:5px;">
+                    <button md-raised-button>Save</button>
+                </md-card-header>
+                <md-card-content>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th width="40px;">
+                                  <app-icon [iconName]="'ic_add_box_black_24px'" (click)="addSubMaterial()"></app-icon>
+                                </th>
+                                <th width="40px;">Sr.No</th>
+                                <th width="200px;">Description</th>
+                                <th width="200px;">Item Name</th>
+                                <th width="40px;">Price</th>
+                                <th width="40px;">UOM</th>
+                                <th width="100px;">20mm</th>
+                                <th width="80px;">50mm</th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th>1</th>
+                                <th><input type="text" class="inp" ></th>
+                                <th>
+                                    <md-input-container>
+                                          <input mdInput placeholder="Material" type="text" [mdAutocomplete]="auto"
+                                          [(ngModel)]="cfMaterial" (keyup)="search(cfMaterial, '&conditions[has_cf]=1')">
+                                        </md-input-container>
+
+                                        <md-autocomplete #auto="mdAutocomplete">
+                                            <ng-container *ngIf="materialsList">
+                                              <md-option *ngFor="let material of materialsList" [value]="material.name">
+                                                {{ material.name }}
+                                              </md-option>
+                                            </ng-container>
+                                        </md-autocomplete>
+                                </th>
+                                <th><input type="number" class="inp" ></th>
+                                <th><input type="text" class="inp" ></th>
+                                <th><input type="number" class="inp" ></th>
+                                <th><input type="number" class="inp" ></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let subMaterial of subMaterials; let i=index">
+                                <td>
+                                  <app-icon [iconName]="'ic_delete_black_24px'" (click)="delSubMaterial(i)"></app-icon>
+                                </td>
+                                <td>{{subMaterials[i]['srno']}}</td>
+                                <td><input type="txt" class="inp" name="description" [(ngModel)]="subMaterials[i]['description']"></td>
+                                <td>
+                                        <md-input-container>
+                                          <input mdInput placeholder="Material" type="text" [mdAutocomplete]="auto"
+                                          [(ngModel)]="subMaterials[i]['item']" (keyup)="search(subMaterials[i]['item'],'')">
+                                        </md-input-container>
+
+                                        <md-autocomplete #auto="mdAutocomplete">
+                                            <ng-container *ngIf="materialsList">
+                                              <md-option *ngFor="let material of materialsList" [value]="material.name" (click)="updateRow(material, i)">
+                                                {{ material.name }}
+                                              </md-option>
+                                            </ng-container>
+                                        </md-autocomplete>
+                                </td>
+                                <td><input type="number" class="inp" name="price" [(ngModel)]="subMaterials[i]['price']"></td>
+                                <td><input type="text" class="inp" name="uom" [(ngModel)]="subMaterials[i]['uom']"></td>
+                                <td><input type="number" class="inp" name="20mm" [(ngModel)]="subMaterials[i]['20mm']"></td>
+                                <td><input type="number" class="inp" name="50mm" [(ngModel)]="subMaterials[i]['50mm']"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </md-card-content>
+            </md-card>
+        </div>
+    </div>
+</div>

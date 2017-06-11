@@ -1,0 +1,25 @@
+<h2 md-dialog-title>Select</h2>
+<md-dialog-content>
+  <md-input-container>
+    <input mdInput placeholder="Description" name="Description" [(ngModel)]="cfObj['description']">
+  </md-input-container>
+  <md-input-container>
+    <input mdInput placeholder="Item" name="Item" [(ngModel)]="cfObj['item']">
+  </md-input-container>
+  <md-input-container>
+    <input mdInput placeholder="Price" name="Price" [(ngModel)]="cfObj['price']">
+  </md-input-container>
+  <md-input-container>
+    <input mdInput placeholder="uom" name="uom" [(ngModel)]="cfObj['uom']">
+  </md-input-container>
+  <md-input-container>
+    <input mdInput placeholder="20mm" name="20mm" [(ngModel)]="cfObj['20mm']">
+  </md-input-container>
+  <md-input-container>
+    <input mdInput placeholder="50mm" name="50mm" [(ngModel)]="cfObj['50mm']">
+  </md-input-container>
+</md-dialog-content>
+<md-dialog-actions>
+  <button md-button md-dialog-close>Close</button>
+  <button md-button (click)="dialogRef.close(cfObj)">Submit</button>
+</md-dialog-actions>
