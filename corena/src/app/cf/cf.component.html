@@ -4,12 +4,12 @@
             <h3 style="border-bottom:1px solid grey;">Co-efficiency Factor Calculations</h3>
         </div>
     </div>
-    <div class="row" style="border:0px solid grey;overflow-y:auto;  height:70vh;">
+    <div class="row" style="border:0px solid grey;overflow-y:auto;">
         <div class="col-md-12" style="border:0px solid grey;">
 
             <md-card style="width:100%;margin-top: 10px;">
                 <md-card-header style="float: right; padding:5px;">
-                    <button md-raised-button>Save</button>
+                    <button md-raised-button (click)="postMaterial()">Save</button>
                 </md-card-header>
                 <md-card-content>
                     <table>
@@ -23,13 +23,13 @@
                                 <th width="200px;">Item Name</th>
                                 <th width="40px;">Price</th>
                                 <th width="40px;">UOM</th>
-                                <th width="100px;">20mm</th>
-                                <th width="80px;">50mm</th>
+                                <th width="100px;">Type</th>
+                                <th width="80px;">Cf_Price</th>
                             </tr>
                             <tr>
                                 <th></th>
                                 <th>1</th>
-                                <th><input type="text" class="inp" ></th>
+                                <th><input type="text" class="inp" [(ngModel)]="newMaterial['description']"></th>
                                 <th>
                                     <md-input-container>
                                           <input mdInput placeholder="Material" type="text" [mdAutocomplete]="auto"
@@ -38,16 +38,17 @@
 
                                         <md-autocomplete #auto="mdAutocomplete">
                                             <ng-container *ngIf="materialsList">
-                                              <md-option *ngFor="let material of materialsList" [value]="material.name">
+                                              <md-option *ngFor="let material of materialsList" [value]="material.name"
+                                              (click)="newMaterial['item_id']=material['id']">
                                                 {{ material.name }}
                                               </md-option>
                                             </ng-container>
                                         </md-autocomplete>
                                 </th>
-                                <th><input type="number" class="inp" ></th>
-                                <th><input type="text" class="inp" ></th>
-                                <th><input type="number" class="inp" ></th>
-                                <th><input type="number" class="inp" ></th>
+                                <th><input type="number" class="inp" [(ngModel)]="newMaterial['price']"></th>
+                                <th><input type="text" class="inp" [(ngModel)]="newMaterial['uom']"></th>
+                                <th><input type="number" class="inp" [(ngModel)]="newMaterial['type']"></th>
+                                <th><input type="number" class="inp" [(ngModel)]="newMaterial['cf_price']"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,7 +66,8 @@
 
                                         <md-autocomplete #auto="mdAutocomplete">
                                             <ng-container *ngIf="materialsList">
-                                              <md-option *ngFor="let material of materialsList" [value]="material.name" (click)="updateRow(material, i)">
+                                              <md-option *ngFor="let material of materialsList" [value]="material.name"
+                                              (click)="updateRow(material, i)" (click)="subMaterials[i]['item_id']=material['id']">
                                                 {{ material.name }}
                                               </md-option>
                                             </ng-container>
@@ -73,8 +75,8 @@
                                 </td>
                                 <td><input type="number" class="inp" name="price" [(ngModel)]="subMaterials[i]['price']"></td>
                                 <td><input type="text" class="inp" name="uom" [(ngModel)]="subMaterials[i]['uom']"></td>
-                                <td><input type="number" class="inp" name="20mm" [(ngModel)]="subMaterials[i]['20mm']"></td>
-                                <td><input type="number" class="inp" name="50mm" [(ngModel)]="subMaterials[i]['50mm']"></td>
+                                <td><input type="number" class="inp" name="20mm" [(ngModel)]="subMaterials[i]['type']"></td>
+                                <td><input type="number" class="inp" name="50mm" [(ngModel)]="subMaterials[i]['cf_price']"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -82,4 +84,115 @@
             </md-card>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3 style="border-bottom:1px solid grey;">
+                Co-efficiency List
+            </h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <input type='text' style='padding:8px;margin:15px auto;width:30%;'
+            placeholder='Search Whole Table...' (keyup)='updateFilter($event, 0)' />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table>
+                <tr>
+                    <th width="5%">Sr.No.</th>
+                    <th width="30%">Description</th>
+                    <th width="25%">Item Name</th>
+                    <th width="15%">Rate</th>
+                    <th width="5%">UOM</th>
+                    <th width="10%">Type</th>
+                    <th width="10%">Cf_Price</th>
+                    <th width="10%"></th>
+                </tr>
+                <tr>
+                    <td width="5%">
+                        <input type='text' style='width:100%;'
+                        placeholder='Sr.No...' (keyup)='updateFilter1(searchOpt, "srno", 0)' [(ngModel)]="searchOpt['srno']" name="srno" />
+                    </td>
+                    <td width="30%">
+                        <input type='text' style='width:100%;'
+                        placeholder='Desc...' (keyup)='updateFilter1(searchOpt, "description", 0)' [(ngModel)]="searchOpt['description']" name="description" />
+                    </td>
+                    <td width="25%">
+                        <input type='text' style='width:100%;'
+                        placeholder='ItemName...' (keyup)='updateFilter1(searchOpt, "item_name", 0)' [(ngModel)]="searchOpt['item_name']" name="item_nme" />
+                    </td>
+                    <td width="15%">
+                        <input type='text' style='width:100%;'
+                        placeholder='Rate...' (keyup)='updateFilter1(searchOpt, "rate", 0)' [(ngModel)]="searchOpt['rate']" name="rate" />
+                    </td>
+                    <td width="5%">
+                        <input type='text' style='width:100%;'
+                        placeholder='Uom' (keyup)='updateFilter1(searchOpt, "uom", 0)' [(ngModel)]="searchOpt['uom']" name="uom" />
+                    </td>
+                    <td width="5%">
+                        <input type='text' style='width:100%;'
+                        placeholder='Type' (keyup)='updateFilter1(searchOpt, "type", 0)' [(ngModel)]="searchOpt['type']" name="type" />
+                    </td>
+                    <td width="10%">
+                        <input type='text' style='width:100%;'
+                        placeholder='cf_price' (keyup)='updateFilter1(searchOpt, "cf_price", 0)' [(ngModel)]="searchOpt['cf_price']" name="cf_price" />
+                    </td>
+                    <td width="10%"></td>
+                </tr>
+            </table>
+            <div  style="height:30vh; overflow-y:auto;">
+            <table>
+                <tr *ngFor="let item of rowsToDisplay; let i=index">
+                    <ng-container *ngIf="ed[i]">
+                        <td width="5%"><input type='text' style='width:100%;' [(ngModel)]="item['srno']"></td>
+                        <td width="30%"><input type='text' style='width:100%;' [(ngModel)]="item['description']"></td>
+                        <td width="25%"><input type='text' style='width:100%;' [(ngModel)]="item['item_nme']"></td>
+                        <td width="5%"><input type='text' style='width:100%;' [(ngModel)]="item['rate']"></td>
+                        <td width="15%"><input type='text' style='width:100%;' [(ngModel)]="item['uom']"></td>
+                        <td width="10%"><input type='text' style='width:100%;' [(ngModel)]="item['type']"></td>
+                        <td width="10%"><input type='text' style='width:100%;' [(ngModel)]="item['cf_price']"></td>
+                        <td width="10%">
+                            <div style="display:inline-flex;">
+                                <button (click)="ed[i]=!ed[i]; putMaterial(item)"><app-icon [iconName]="'ic_done_black_24px'" ></app-icon></button>
+                                <!-- <button (click)="delRow(item)"><app-icon [iconName]="'ic_delete_black_24px'"></app-icon></button> -->
+                            </div>
+                        </td>
+                    </ng-container>
+                    <ng-container *ngIf="!ed[i]">
+                        <td width="5%">{{item['srno']}}</td>
+                        <td width="30%">{{item['description']}}</td>
+                        <td width="25%">{{item['item_nme']}}</td>
+                        <td width="5%">{{item['rate']}}</td>
+                        <td width="15%">{{item['uom']}}</td>
+                        <td width="10%">{{item['type']}}</td>
+                        <td width="10%">{{item['cf_price']}}</td>
+                        <td width="10%">
+                            <div style="display:inline-flex;">
+                                <button (click)="ed[i]=!ed[i]"><app-icon [iconName]="'ic_create_black_24px'" ></app-icon></button>
+                                <button (click)="deleteMaterial(item)"><app-icon [iconName]="'ic_delete_black_24px'"></app-icon></button>
+                            </div>
+                        </td>
+                    </ng-container>
+                </tr>
+            </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <label>PerPageCount</label>
+            <input type="number" placeholder="Entries per sheet" [ngModel]="perPageCount" (ngModelChange)="perPageCountChange($event)">
+        </div>
+        <div class="col-md-6">
+            <app-pagination *ngIf="pageCount" [pageCount]="pageCount" [countPerPage]="perPageCount" (pageSelected)=selPage($event) >
+            </app-pagination>
+        </div>
+    </div>
+
 </div>

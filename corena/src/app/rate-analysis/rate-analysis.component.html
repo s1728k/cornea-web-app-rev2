@@ -86,19 +86,20 @@
 
                                     <md-autocomplete #auto="mdAutocomplete">
                                         <ng-container *ngIf="materials1">
-                                          <md-option *ngFor="let material of materials1" [value]="material.name" (click)="updateRow(material,i,j)">
+                                          <md-option *ngFor="let material of materials1" [value]="material.name" (click)="calcs1[i][j]['item_id']=material['id']"
+                                          (click)="updateRow(material,i,j)">
                                             {{ material.name }}
                                           </md-option>
                                         </ng-container>
                                     </md-autocomplete>
                             </td>
-                            <td><input type="number" class="inp" name="Size1" [(ngModel)]="calcs1[i][j]['v1']"></td>
+                            <td><input type="number" class="inp" name="Size1" [(ngModel)]="calcs1[i][j]['length']"></td>
                             <td><input type="number" class="inp" name="Size2" [(ngModel)]="calcs1[i][j]['breadth']"></td>
-                            <td><input type="number" class="inp" name="Size3" [(ngModel)]="calcs1[i][j]['v2']"></td>
-                            <td><input type="number" class="inp" name="qty" [(ngModel)]="calcs1[i][j]['v3']"></td>
-                            <td><input type="text" class="inp" name="uom" [(ngModel)]="calcs1[i][j]['v4']"></td>
+                            <td><input type="number" class="inp" name="Size3" [(ngModel)]="calcs1[i][j]['thickness']"></td>
+                            <td><input type="number" class="inp" name="qty" [(ngModel)]="calcs1[i][j]['quantity']"></td>
+                            <td><input type="text" class="inp" name="uom" [(ngModel)]="calcs1[i][j]['uom']"></td>
                             <td><input type="number" class="inp" name="wastage" [(ngModel)]="calcs1[i][j]['wastage']" [attr.Value]="wastage"></td>
-                            <td><input type="number" class="inp" name="rate" [(ngModel)]="calcs1[i][j]['v6']"></td>
+                            <td><input type="number" class="inp" name="rate" [(ngModel)]="calcs1[i][j]['rate']"></td>
                             <td *ngIf="addCF[i].length>0">
                                 <md-select class="inp" [(ngModel)]="calcs1[i][j]['CF']">
                                   <md-option [value]="cfDropDown[i][j]['20mm']">{{ cfDropDown[i][j]['20mm'] }}</md-option>
@@ -106,10 +107,10 @@
                                 </md-select>
                             </td>
                             <ng-container *ngIf="calcs1[i][j]['wastage']">
-                                <td>{{calcs1[i][j]['v1']*calcs1[i][j]['breadth']*calcs1[i][j]['v2']*calcs1[i][j]['v3']*(calcs1[i][j]['wastage']/100+1)*calcs1[i][j]['v6']*(overhead/100+1)*(profit/100+1) | number : '2.2-3'| nan }}</td>
+                                <td>{{calcs1[i][j]['length']*calcs1[i][j]['breadth']*calcs1[i][j]['thickness']*calcs1[i][j]['quantity']*(calcs1[i][j]['wastage']/100+1)*calcs1[i][j]['rate']*(overhead/100+1)*(profit/100+1) | number : '2.2-3'| nan }}</td>
                             </ng-container>
                             <ng-container *ngIf="!calcs1[i][j]['wastage']">
-                                <td>{{calcs1[i][j]['v1']*calcs1[i][j]['breadth']*calcs1[i][j]['v2']*calcs1[i][j]['v3']*calcs1[i][j]['v6']*(overhead/100+1)*(profit/100+1)*(wastage/100+1) | number : '2.2-3'| nan }}</td>
+                                <td>{{calcs1[i][j]['length']*calcs1[i][j]['breadth']*calcs1[i][j]['thickness']*calcs1[i][j]['quantity']*calcs1[i][j]['rate']*(overhead/100+1)*(profit/100+1)*(wastage/100+1) | number : '2.2-3'| nan }}</td>
                             </ng-container>
                         </tr>
                     </tbody>

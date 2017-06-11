@@ -172,18 +172,13 @@ export class RateAnalysisComponent implements OnInit {
 
   submitRACalcs() {
     const url = '';
-
-    this.restApiService.getRequest(url)
-      .map(res => /*this.loggeddInUser = <User>*/res.json().data)
+    console.log(this.calcs1)
+    this.restApiService.postRequest(url, this.calcs1)
+      .map(res => res.json().data)
       .subscribe(
-        (value: LineItem[]) => {
-          this.rowItems = value;
-        },
-        (err: any) => {
-          console.error(err);
-        }
+        (value: {}[]) => { console.log(value);},
+        (err: any) => {console.error(err);}
       );
-    console.log('data returned %s', this.rowItems);
   }
 
   routeToFileUploadScreen() {
@@ -202,11 +197,11 @@ export class RateAnalysisComponent implements OnInit {
     this.grandTotalV = 0;
     for (let i = this.calcs1[j].length - 1; i >= 0; i--) {
       if (this.calcs1[i][j]['wastage']){
-        this.grandTotalV = this.grandTotalV + this.calcs1[i][j]['v1']*this.calcs1[i][j]['breadth']*this.calcs1[i][j]['v2']*this.calcs1[i][j]['v3']
-        *(this.calcs1[i][j]['wastage']/100+1)*this.calcs1[i][j]['v6']*(this.overhead/100+1)*(this.profit/100+1);
+        this.grandTotalV = this.grandTotalV + this.calcs1[i][j]['length']*this.calcs1[i][j]['breadth']*this.calcs1[i][j]['thickness']*this.calcs1[i][j]['quantity']
+        *(this.calcs1[i][j]['wastage']/100+1)*this.calcs1[i][j]['rate']*(this.overhead/100+1)*(this.profit/100+1);
       }else{
-        this.grandTotalV = this.grandTotalV + this.calcs1[i][j]['v1']*this.calcs1[i][j]['breadth']*this.calcs1[i][j]['v2']*this.calcs1[i][j]['v3']
-        *this.calcs1[i][j]['v6']*(this.overhead/100+1)*(this.profit/100+1)*(this.wastage/100+1);
+        this.grandTotalV = this.grandTotalV + this.calcs1[i][j]['length']*this.calcs1[i][j]['breadth']*this.calcs1[i][j]['thickness']*this.calcs1[i][j]['quantity']
+        *this.calcs1[i][j]['rate']*(this.overhead/100+1)*(this.profit/100+1)*(this.wastage/100+1);
       }
     }
   }
