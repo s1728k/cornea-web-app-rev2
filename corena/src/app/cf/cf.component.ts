@@ -78,6 +78,13 @@ export class CfComponent implements OnInit {
       this.subMaterials[i]['srno']=material['srno'];
   }
 
+  cfMaterial:string;
+  loadEdit(item) {
+      this.newMaterial=item['material'];
+      this.subMaterials=item['submaterials'];
+      this.cfMaterial=item['material']['name']
+  }
+
   perPageCountChange(perPageCount) {
     console.log(perPageCount)
     this.perPageCount=perPageCount;
@@ -85,7 +92,7 @@ export class CfComponent implements OnInit {
   }
 
   getPageCount(sTerm: string, fltr: string): void{
-    const url = 'http://49.50.76.29/api/cf/search?search='+ sTerm +'&' + fltr + '&perPage=10&page=0';
+    const url = 'http://49.50.76.29/api/cf/search?search='+ sTerm +'&' + fltr + '&hidden[]=pivot&perPage=10&page=0';
 
     this.restApiService.getRequest(url)
       .map(res => /*this.loggeddInUser = <User>*/res.json().total)
@@ -125,11 +132,10 @@ export class CfComponent implements OnInit {
   getMaterials(n) {
     this.lastSearchObj = {'from':'start','1':n};
 
-    const fltr = '&filter[]=cf_price&filter[]=item_id&filter[]=uom' +
-                '&filter[]=type&filter[]=price&filter[]=description&filter[]=srno'
+    const fltr = '&filter[]=cf_price&filter[]=item_id&filter[]=uom&filter[]=type&filter[]=price&filter[]=description&appends[]=material&appends[]=submaterials'
 
-    const url = 'http://49.50.76.29/api/cf/search?search='+fltr+'&perPage=' + String(this.perPageCount) + '&page=' + String(n);
-
+    const url = 'http://49.50.76.29/api/cf/search?search='+fltr+'&hidden[]=pivot&perPage=' + String(this.perPageCount) + '&page=' + String(n);
+    console.log(url)
     this.restApiService.getRequest(url)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data)
       .subscribe(
@@ -149,7 +155,7 @@ export class CfComponent implements OnInit {
     const url = 'http://49.50.76.29/api/cf/new';
     console.log(this.newMaterial);
     this.newMaterial['srno']="";
-    this.newMaterial['subMaterials']=this.subMaterials;
+    this.newMaterial['submaterials']=this.subMaterials;
     console.log(this.newMaterial['subMaterials']);
     this.restApiService.postRequest(url, this.newMaterial)
       .map(res => res.json().data[0])
@@ -220,7 +226,7 @@ export class CfComponent implements OnInit {
     this.lastSearchObj = {'from':'full','1':val, '2':n};
 
     const fltr = '&filter[]=cf_price&filter[]=item_id&filter[]=uom' +
-                '&filter[]=type&filter[]=price&filter[]=description&filter[]=srno'
+                '&filter[]=type&filter[]=price&filter[]=description&hidden[]=pivot'
 
     const url = 'http://49.50.76.29/api/cf/search?search='+fltr+'&perPage=' + String(this.perPageCount) + '&page=' + String(n);
 
@@ -241,7 +247,7 @@ export class CfComponent implements OnInit {
   updateFilter1(sParam, k, n){
     this.lastSearchObj = {'from':'ind','1':sParam, '2':k, '3':n};
     const url = 'http://49.50.76.29/api/cf/search?search='+ sParam[k] +
-                '&filter[]='+ k +'&perPage=' +
+                '&filter[]='+ k +'&hidden[]=pivot&perPage=' +
                 String(this.perPageCount) + '&page=' + String(n);
 
     this.restApiService.getRequest(url)
