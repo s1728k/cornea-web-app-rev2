@@ -134,13 +134,11 @@ export class RateAnalysisComponent implements OnInit {
 
   addRow1(i) {
     this.calcs1[i].push({});
-    this.cfDropDown[i][this.calcs1[i].length-1]={'20mm':0, '50mm':0}
   }
 
   addCF: {}= {};
   deleteRow1(i, j) {
     this.calcs1[i].splice(j, 1);
-    //this.addCF[i].pop({})
   }
 
   // get api request for line item
@@ -164,14 +162,10 @@ export class RateAnalysisComponent implements OnInit {
       this.calcs1[i][j]['v4']=material['uom'];
       this.calcs1[i][j]['v6']=material['rate'];
       this.calcs1[i][j]['srno']=material['srno'];
-      if (material['has_cf']) {
-        this.addCF[i].push({})
-        this.openDialogSup(i,j);
-      }
   }
 
   submitRACalcs() {
-    const url = '';
+    const url = 'http://49.50.76.29/api/ra/new';
     console.log(this.calcs1)
     this.restApiService.postRequest(url, this.calcs1)
       .map(res => res.json().data)
@@ -230,35 +224,5 @@ export class RateAnalysisComponent implements OnInit {
     }
   }
 
-  // increment3() {
-  //   this.calcs3.push([])
-  // }
-  // deleteTable3(i) {
-  //    this.calcs3.splice(i, 1);
-  // }
-  // addRow3(i) {
-  //   this.calcs3[i].push({})
-  // }
-  // deleteRow3(i,j) {
-  //   this.calcs3[i].splice(j, 1);
-  // }
-
-  cfData:{}={};
-  cfDropDown:{}[][]=[[]]
-  openDialogSup(i,j) {
-    const dialogRef = this.dialog.open(RaPopupDialog);
-    dialogRef.afterClosed().subscribe(result => {
-      this.cfData = result;
-      console.log(this.cfData);
-      const url = 'http://49.50.76.29/api/cf/new';
-      this.restApiService.postRequest(url, result)
-        .map(res => res.json().data[0])
-        .subscribe(
-          (value: any) => {this.cfDropDown[i][j] = value;console.log(this.cfDropDown[i][j]);},
-          (err: any) => {console.error(err);}
-        );
-
-    });
-  }
 
 }

@@ -32,7 +32,7 @@ export class CfComponent implements OnInit {
   materialsList: {}[];
   rowsToDisplay: {}[];
   searchOpt: {}= {brand: '', modal: '', job: ''};
-  ed: {}= {};
+
   lastSearchObj: {}= {};
   pageCount= 4;
   perPageCount= 2;
@@ -79,10 +79,17 @@ export class CfComponent implements OnInit {
   }
 
   cfMaterial:string;
+  ed: {}= {};
   loadEdit(item) {
-      this.newMaterial=item['material'];
+      this.newMaterial=item;
       this.subMaterials=item['submaterials'];
       this.cfMaterial=item['material']['name']
+      this.ed['edit']=true;
+  }
+  resetNew() {
+      this.newMaterial={};
+      this.subMaterials=[];
+      this.cfMaterial="";
   }
 
   perPageCountChange(perPageCount) {
@@ -139,7 +146,7 @@ export class CfComponent implements OnInit {
     this.restApiService.getRequest(url)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data)
       .subscribe(
-        (value: {}[]) => {
+        (value: {'material':{'name':1}}[]) => {
           this.rowsToDisplay = value;
           console.log(n);
           console.log(this.rowsToDisplay);
@@ -164,6 +171,8 @@ export class CfComponent implements OnInit {
           this.newMaterial = value;
           console.log(this.newMaterial);
           this.newMaterial={};
+          this.subMaterials=[];
+          this.cfMaterial="";
           this.selPage(this.activePage);
         },
         (err: any) => {
@@ -172,46 +181,39 @@ export class CfComponent implements OnInit {
       );
   }
 
-  putMaterial(material) {
-    const url = 'http://49.50.76.29/api/material/' + String(material.id);
-
-    this.restApiService.putRequest(url, material)
-      .map(res => /*this.loggeddInUser = <User>*/res.json().data)
+  putMaterial() {
+      console.log(this.subMaterials);
+    const url = 'http://49.50.76.29/api/cf/' + String(this.newMaterial['id']);
+    this.newMaterial['submaterials']=this.subMaterials;
+    this.restApiService.putRequest(url, this.newMaterial)
+      .map(res => res.json().data)
       .subscribe(
         (value: any) => {
           this.newMaterial = value;
           console.log(value);
           this.selPage(this.activePage);
-          // this.materialListDb.push(this.newMaterial);
-          // this.rowsToDisplay = this.materialListDb;
-          // console.log(this.materialListDb);
         },
         (err: any) => {
           console.error(err);
         }
       );
-    // console.log(this.materialListDb);
   }
 
   deleteMaterial(material) {
-    const url = 'http://49.50.76.29/api/material/' + String(material.id);
+    const url = 'http://49.50.76.29/api/cf/' + String(material.id);
 
     this.restApiService.deleteRequest(url)
-      .map(res => /*this.loggeddInUser = <User>*/res.json().data)
+      .map(res => res.json().data)
       .subscribe(
         (value: any) => {
           this.newMaterial = value;
           console.log(value);
           this.selPage(this.activePage);
-          // this.materialListDb.push(this.newMaterial);
-          // this.rowsToDisplay = this.materialListDb;
-          // console.log(this.materialListDb);
         },
         (err: any) => {
           console.error(err);
         }
       );
-    // console.log(this.materialListDb);
   }
 
   updateFilter(event, n) {
@@ -262,6 +264,35 @@ export class CfComponent implements OnInit {
         }
       );
     this.getPageCount(sParam[k], 'filter[]='+ k);
+  }
+
+  tcf_price:{}={}
+  keys:any[]=[]
+  cf_priceCalc(i) {
+      if (this.subMaterials[i]['uom']==='cft'){
+          this.subMaterials[i]['cf_price']=this.subMaterials[i]['rate']/304.8/this.subMaterials[i]['type']
+      }else{
+          this.subMaterials[i]['cf_price']=this.subMaterials[i]['rate']
+      }
+      this.tcf_price={}
+      for (let i = 0; i < this.subMaterials.length; i++) {
+          this.tcf_price[this.subMaterials[i]['type']]=0;
+      }
+      this.grandTotal();
+      this.keys=[];
+      for(let key in this.tcf_price){
+          this.keys.push(key);
+      }
+  }
+
+  grandTotal(){
+      for (var i = 0; i < this.subMaterials.length; i++) {
+          if (this.tcf_price[this.subMaterials[i]['type']]){
+              this.tcf_price[this.subMaterials[i]['type']]=this.tcf_price[this.subMaterials[i]['type']]+this.subMaterials[i]['cf_price'];
+          }else{
+              this.tcf_price[this.subMaterials[i]['type']]=this.subMaterials[i]['cf_price'];
+          }
+      }
   }
 
 }

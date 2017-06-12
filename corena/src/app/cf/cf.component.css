@@ -20,3 +20,8 @@ md-icon:hover{
 md-card{
     padding-top: 0px;
 }
+
+table.total {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+}

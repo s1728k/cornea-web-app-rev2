@@ -11,7 +11,7 @@
                 <md-card-header style="float: right; padding:5px;">
                     <ng-container *ngIf="ed['edit']">
                     <button md-raised-button (click)="putMaterial(); ed['edit']=false;">Edit</button>
-                    <button md-raised-button (click)="ed['edit']=false">Cancel</button>
+                    <button md-raised-button (click)="resetNew(); ed['edit']=false;">Cancel</button>
                     </ng-container>
                     <button md-raised-button (click)="postMaterial()" *ngIf="!ed['edit']">Save</button>
                 </md-card-header>
@@ -27,7 +27,7 @@
                                 <th width="200px;">Item Name</th>
                                 <th width="40px;">Price</th>
                                 <th width="40px;">UOM</th>
-                                <th width="100px;">Type</th>
+                                <th width="100px;">Type (mm)</th>
                                 <th width="80px;">Cf_Price</th>
                             </tr>
                             <tr>
@@ -61,7 +61,7 @@
                                   <app-icon [iconName]="'ic_delete_black_24px'" (click)="delSubMaterial(i)"></app-icon>
                                 </td>
                                 <td>{{subMaterials[i]['srno']}}</td>
-                                <td><input type="txt" class="inp" name="description" [(ngModel)]="subMaterials[i]['description']"></td>
+                                <td></td>
                                 <td>
                                         <md-input-container>
                                           <input mdInput placeholder="Material" type="text" [mdAutocomplete]="auto"
@@ -77,12 +77,22 @@
                                             </ng-container>
                                         </md-autocomplete>
                                 </td>
-                                <td><input type="number" class="inp" name="price" [(ngModel)]="subMaterials[i]['rate']"></td>
+                                <td><input type="number" class="inp" name="price" [(ngModel)]="subMaterials[i]['rate']" (change)="cf_priceCalc(i)"></td>
                                 <td><input type="text" class="inp" name="uom" [(ngModel)]="subMaterials[i]['uom']"></td>
-                                <td><input type="number" class="inp" name="20mm" [(ngModel)]="subMaterials[i]['type']"></td>
-                                <td><input type="number" class="inp" name="50mm" [(ngModel)]="subMaterials[i]['cf_price']"></td>
+                                <td><input type="number" class="inp" name="type" [(ngModel)]="subMaterials[i]['type']" (change)="cf_priceCalc(i)"></td>
+                                <td>{{subMaterials[i]['cf_price']}}</td>
                             </tr>
                         </tbody>
+                    </table>
+
+                    <label>Grand Total For CF Price</label>
+                    <table style="width: auto;">
+                        <thead>
+                            <th *ngFor="let key of keys">{{key}}mm</th>
+                        </thead>
+                        <thead>
+                            <td *ngFor="let key of keys">{{tcf_price[key]}}</td>
+                        </thead>
                     </table>
                 </md-card-content>
             </md-card>
