@@ -1,22 +1,25 @@
-<h2 md-dialog-title>Select</h2>
+<h2 md-dialog-title>Labour Calculations</h2>
 <md-dialog-content>
   <md-input-container>
-    <input mdInput placeholder="Description" name="Description" [(ngModel)]="cfObj['description']">
+    <input mdInput placeholder="Description" name="Description" [(ngModel)]="cfObj['length']">
   </md-input-container>
   <md-input-container>
-    <input mdInput placeholder="Item" name="Item" [(ngModel)]="cfObj['item']">
+    <input mdInput placeholder="Item" name="Item" [(ngModel)]="cfObj['breadth']">
   </md-input-container>
   <md-input-container>
-    <input mdInput placeholder="Price" name="Price" [(ngModel)]="cfObj['price']">
+    <input mdInput placeholder="Price" name="Price" [(ngModel)]="cfObj['thickness']">
   </md-input-container>
   <md-input-container>
     <input mdInput placeholder="uom" name="uom" [(ngModel)]="cfObj['uom']">
   </md-input-container>
   <md-input-container>
-    <input mdInput placeholder="20mm" name="20mm" [(ngModel)]="cfObj['20mm']">
+    <input mdInput placeholder="20mm" name="20mm" [(ngModel)]="cfObj['running_metre']">
   </md-input-container>
   <md-input-container>
-    <input mdInput placeholder="50mm" name="50mm" [(ngModel)]="cfObj['50mm']">
+    <input mdInput placeholder="50mm" name="50mm" [(ngModel)]="cfObj['rate']">
+  </md-input-container>
+  <md-input-container>
+    <input mdInput placeholder="50mm" name="50mm" [(ngModel)]="cfObj['amount']">
   </md-input-container>
 </md-dialog-content>
 <md-dialog-actions>

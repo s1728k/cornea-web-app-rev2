@@ -56,3 +56,7 @@ h3{
 .col-md-4{
     border: 1px solid red;
 }*/
+
+md-input-container{
+  width: 100%;
+}
