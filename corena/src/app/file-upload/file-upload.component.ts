@@ -6,7 +6,7 @@ import {ProjectResponseBOQUpload} from '../model/class/project-response';
 import {BOQTable} from '../model/class/boq-table.model';
 import * as Constants from '../shared/constants.globals';
 import {BoqNameId} from '../model/class';
-const URL = 'http://49.50.76.29:80/api/boq/file';
+const URL = 'http://49.50.76.29:80/api/';
 
 @Component({
   selector: 'app-file-upload',
@@ -15,7 +15,7 @@ const URL = 'http://49.50.76.29:80/api/boq/file';
 })
 
 export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
-  public uploader: FileUploader = new FileUploader({url: URL});
+  public uploader: FileUploader;
   public hasBaseDropZoneOver = false;
   public hasAnotherDropZoneOver = false;
   public projectList: ProjectResponseBOQUpload[];
@@ -23,9 +23,9 @@ export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   public boqList: BOQTable[];
   urlProject: string;
   urlBoq: string;
-  toggleCreateView= false;
+  toggleCreateView = false;
   boqSelected: {};
-  listTypesOfFileUploads: any[]= ['Boq', 'Labor', 'Material', 'Overheads'];
+  listTypesOfFileUploads: any[] = ['Boq', 'Labor', 'Material', 'Overheads'];
 
   constructor(private restApiService: RestApiService, private router: Router) {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
@@ -35,6 +35,12 @@ export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+
+    this.uploader = new FileUploader({
+      url: URL
+      + this.restApiService.getUploadServiceName() + '/file',
+      additionalParameter: this.restApiService.getAdditionParameter()
+    });
     this.restApiService.getRequest(this.urlProject)
       .map(res => /*this.projectList = <ProjectResponseBOQUpload[]>*/res.json().data)
       .subscribe(
@@ -89,24 +95,24 @@ export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
     this.toggleCreateView = false;
     console.log(object.lineItems);
     this.boqList = object.lineItems;
-    if (object.has_ra){
+    if (object.has_ra) {
       this.toggleCreateView = true;
     }
     this.boqSelected = object;
     /*this.restApiService.getRequest(Constants.BASE_URL_BOQ
-      + Constants.SERVICE_NAME_BOQ + '/' + id)
-      .map(res => /!*this.boqList = <BOQTable[]>*!/res.json().data)
-      .subscribe(
-        (value: BOQTable[]) => {
-          this.boqList = value;
-        },
-        (err: any) => {
-          console.error(err);
-        }
-      );*/
+     + Constants.SERVICE_NAME_BOQ + '/' + id)
+     .map(res => /!*this.boqList = <BOQTable[]>*!/res.json().data)
+     .subscribe(
+     (value: BOQTable[]) => {
+     this.boqList = value;
+     },
+     (err: any) => {
+     console.error(err);
+     }
+     );*/
   }
 
-  redirecToRateAnalysis(){
+  redirecToRateAnalysis() {
     this.router.navigate(['/pages/rate-analysis']);
   }
 }
