@@ -42,8 +42,9 @@ export class RateAnalysisComponent implements OnInit {
   profit: number;
   wastage: number;
   selMaterial: {}= {};
-  calcs1: RateAnalysis[][] = [];
-  calcs2: RateAnalysis[] = [];
+  calcs1: {}[][] = [];
+  calcs2: {}[] = [];
+
   // calcs3: RateAnalysis[][]=[];
 
   // old variable to be removed when api call is made it doesnt affeect anything
@@ -117,7 +118,7 @@ export class RateAnalysisComponent implements OnInit {
   }
 
   search(queryString: string) {
-    let _URL = 'http://49.50.76.29/api/material/search?search=' + queryString + '&filter[]=name&filter[]=srno&filter[]=brand';
+    let _URL = 'http://49.50.76.29/api/material/search?search=' + queryString + '&filter[]=name&filter[]=srno&filter[]=brand&appends[]=coefficiency';
     return this._http.get(_URL);
   }
 
@@ -166,15 +167,18 @@ export class RateAnalysisComponent implements OnInit {
   }
 
   updateRow(material,i,j){
-      this.calcs1[i][j]['v4']=material['uom'];
-      this.calcs1[i][j]['v6']=material['rate'];
+      this.calcs1[i][j]['uom']=material['uom'];
+      this.calcs1[i][j]['rate']=material['rate'];
       this.calcs1[i][j]['srno']=material['srno'];
       this.calcs1[i][j]['material_id']=material['id'];
-      this.calcs1[i][j]['item_id']=material['id']
+      this.calcs1[i][j]['item_id']=material['id'];
+      this.calcs1[i][j]['CF']=material['coefficiency']['cf_price'];
   }
 
-  postData:MainRateAnalysis;
-  mra:MaterialRateAnalysis[];
+  postData:{} = {};
+  mra:{}[]=[];
+  postData:MainRateAnalysis = new MainRateAnalysis();
+  mra:MaterialRateAnalysis[]=[];
   submitRACalcs(i) {
     const url = 'http://49.50.76.29/api/ra/new';
     this.postData['lineItem_id']=this.lineItem[i]['id']
@@ -183,15 +187,16 @@ export class RateAnalysisComponent implements OnInit {
     this.postData['overhead_margin']=(this.overhead/100+1)*this.grandTotalV
 
     for (let j = 0; j < this.calcs1[i].length; j++) {
+      this.mra.push(this.calcs1[i][j])
       this.mra[j]['lineItem_id']=this.calcs1[i]['lineItem']['id']
-      this.mra[j]['material_id']=this.calcs1[i][j]['material_id']
-      this.mra[j]['length']=this.calcs1[i][j]['length']
-      this.mra[j]['breadth']=this.calcs1[i][j]['breadth']
-      this.mra[j]['thickness']=this.calcs1[i][j]['thickness']
-      this.mra[j]['uom']=this.calcs1[i][j]['uom']
-      this.mra[j]['rate']=this.calcs1[i][j]['rate']
-      this.mra[j]['amount']=this.calcs1[i][j]['amount']
-      this.mra[j]['wastage']=this.calcs1[i][j]['wastage']
+      // this.mra[j]['material_id']=this.calcs1[i][j]['material_id']
+      // this.mra[j]['length']=this.calcs1[i][j]['length']
+      // this.mra[j]['breadth']=this.calcs1[i][j]['breadth']
+      // this.mra[j]['thickness']=this.calcs1[i][j]['thickness']
+      // this.mra[j]['uom']=this.calcs1[i][j]['uom']
+      // this.mra[j]['rate']=this.calcs1[i][j]['rate']
+      // this.mra[j]['amount']=this.calcs1[i][j]['amount']
+      // this.mra[j]['wastage']=this.calcs1[i][j]['wastage']
     }
 
     this.postData['material_rate_analysis']=this.mra
@@ -204,14 +209,12 @@ export class RateAnalysisComponent implements OnInit {
 
   // boq_id: number;
 
-  // labour_rate_analysis: LabourRateAnalysis[];
-
 
     console.log(this.postData)
     this.restApiService.postRequest(url, this.postData)
       .map(res => res.json().data)
       .subscribe(
-        (value: {}[]) => { console.log(value);},
+        (value: any) => { console.log(value); this.postData = new MainRateAnalysis();},
         (err: any) => {console.error(err);}
       );
   }
@@ -268,7 +271,7 @@ export class RateAnalysisComponent implements OnInit {
     }
   }
 
-  labourCalc:LabourRateAnalysis[];
+  labourCalc:LabourRateAnalysis[]=[];
   lCalc:LabourRateAnalysis=new LabourRateAnalysis;
   openDialogSup(i) {
       const dialogRef = this.dialog.open(RaPopupDialog);

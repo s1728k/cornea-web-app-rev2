@@ -3,7 +3,7 @@
  */
 export class LineItem {
   public id: number;
-  public boq_id: number;
+  public boq_id: number ;
   public description: string;
   public unit: string;
   public quantity: number;

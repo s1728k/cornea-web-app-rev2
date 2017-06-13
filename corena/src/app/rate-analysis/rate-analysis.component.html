@@ -100,9 +100,8 @@
                             <td><input type="number" class="inp" name="wastage" [(ngModel)]="calcs1[i][j]['wastage']" [attr.Value]="wastage"></td>
                             <td><input type="number" class="inp" name="rate" [(ngModel)]="calcs1[i][j]['rate']"></td>
                             <td>
-                                <md-select class="inp" [(ngModel)]="calcs1[i][j]['CF']">
-                                  <md-option [value]="cfDropDown[i][j]['20mm']">{{ cfDropDown[i][j]['20mm'] }}</md-option>
-                                  <md-option [value]="cfDropDown[i][j]['50mm']">{{ cfDropDown[i][j]['50mm'] }}</md-option>
+                                <md-select class="inp" [(ngModel)]="calcs1[i][j]['cf_price']">
+                                  <md-option [value]="calcs1[i][j]['CF']">{{ calcs1[i][j]['CF'] }}</md-option>
                                 </md-select>
                             </td>
                             <ng-container *ngIf="calcs1[i][j]['wastage']">
