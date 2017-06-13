@@ -140,8 +140,12 @@ export class RateAnalysisComponent implements OnInit {
   }
 
   addRow1(i) {
-    this.calcs1[i].push({});
-    this.calcs1[this.calcs1[i].length-1]['lineItem']={}
+    if (this.lineItem[i]['title']){
+      this.calcs1[i].push({});
+      this.calcs1[this.calcs1[i].length-1]['lineItem']={}
+    }else{
+      alert("Please Select The Line Item")
+    }
   }
 
   addCF: {}[]= [];
@@ -177,30 +181,37 @@ export class RateAnalysisComponent implements OnInit {
 
   postData:{} = {};
   mra:{}[]=[];
-  postData:MainRateAnalysis = new MainRateAnalysis();
-  mra:MaterialRateAnalysis[]=[];
+  // postData:MainRateAnalysis = new MainRateAnalysis();
+  // mra:MaterialRateAnalysis[]=[];
   submitRACalcs(i) {
     const url = 'http://49.50.76.29/api/ra/new';
     this.postData['lineItem_id']=this.lineItem[i]['id']
     this.postData['grand_total']=this.grandTotalV
-    this.postData['profit_margin']=(this.profit/100+1)*this.grandTotalV
-    this.postData['overhead_margin']=(this.overhead/100+1)*this.grandTotalV
+    this.postData['profit_margin']=this.profit/100*this.grandTotalV
+    this.postData['overhead_margin']=this.overhead/100*this.grandTotalV
+
+    this.postData['labour_total']=1
+    this.postData['material_total']=1
+    this.postData['boq_id']=this.boqObj['id'];
 
     for (let j = 0; j < this.calcs1[i].length; j++) {
-      this.mra.push(this.calcs1[i][j])
-      this.mra[j]['lineItem_id']=this.calcs1[i]['lineItem']['id']
-      // this.mra[j]['material_id']=this.calcs1[i][j]['material_id']
-      // this.mra[j]['length']=this.calcs1[i][j]['length']
-      // this.mra[j]['breadth']=this.calcs1[i][j]['breadth']
-      // this.mra[j]['thickness']=this.calcs1[i][j]['thickness']
-      // this.mra[j]['uom']=this.calcs1[i][j]['uom']
-      // this.mra[j]['rate']=this.calcs1[i][j]['rate']
-      // this.mra[j]['amount']=this.calcs1[i][j]['amount']
-      // this.mra[j]['wastage']=this.calcs1[i][j]['wastage']
+      this.mra.push({}={})
+      // this.mra[j]=this.calcs1[i][j];
+      console.log(j)
+      console.log(this.mra.length-1)
+      this.mra[j]['lineItem_id']=this.lineItem[i]['id']
+      this.mra[j]['material_id']=this.calcs1[i][j]['material_id']
+      this.mra[j]['length']=this.calcs1[i][j]['length']
+      this.mra[j]['breadth']=this.calcs1[i][j]['breadth']
+      this.mra[j]['thickness']=this.calcs1[i][j]['thickness']
+      this.mra[j]['uom']=this.calcs1[i][j]['uom']
+      this.mra[j]['rate']=this.calcs1[i][j]['rate']
+      this.mra[j]['amount']=this.calcs1[i][j]['amount']
+      this.mra[j]['wastage']=this.calcs1[i][j]['wastage']
     }
 
     this.postData['material_rate_analysis']=this.mra
-    this.postData['labour_rate_analysis']=this.labourCalc
+    this.postData['labour_rate_analysis']=this.labourCalc[i]
 
 
 
@@ -212,9 +223,9 @@ export class RateAnalysisComponent implements OnInit {
 
     console.log(this.postData)
     this.restApiService.postRequest(url, this.postData)
-      .map(res => res.json().data)
+      .map(res => res.json())
       .subscribe(
-        (value: any) => { console.log(value); this.postData = new MainRateAnalysis();},
+        (value) => { this.postData=value; console.log(value); this.postData = {}},
         (err: any) => {console.error(err);}
       );
   }
@@ -236,6 +247,21 @@ export class RateAnalysisComponent implements OnInit {
 
   grandTotal(j) {
     this.grandTotalV = 0;
+    for (let i = this.calcs1[j].length - 1; i >= 0; i--) {
+      if (this.calcs1[i][j]['wastage']){
+        this.grandTotalV = this.grandTotalV + this.calcs1[i][j]['length']*this.calcs1[i][j]['breadth']*this.calcs1[i][j]['thickness']*this.calcs1[i][j]['quantity']
+        *(this.calcs1[i][j]['wastage']/100+1)*this.calcs1[i][j]['rate']*(this.overhead/100+1)*(this.profit/100+1);
+      }else{
+        this.grandTotalV = this.grandTotalV + this.calcs1[i][j]['length']*this.calcs1[i][j]['breadth']*this.calcs1[i][j]['thickness']*this.calcs1[i][j]['quantity']
+        *this.calcs1[i][j]['rate']*(this.overhead/100+1)*(this.profit/100+1)*(this.wastage/100+1);
+      }
+    }
+  }
+
+  amountCalc(k,j){
+    this.grandTotalV = 0;
+    this.calcs1[k][j]['amount']=this.calcs1[k][j]['length']*this.calcs1[k][j]['breadth']*this.calcs1[k][j]['thickness']*this.calcs1[k][j]['quantity']
+        *(this.calcs1[k][j]['wastage']/100+1)*this.calcs1[k][j]['rate']*(this.overhead/100+1)*(this.profit/100+1);
     for (let i = this.calcs1[j].length - 1; i >= 0; i--) {
       if (this.calcs1[i][j]['wastage']){
         this.grandTotalV = this.grandTotalV + this.calcs1[i][j]['length']*this.calcs1[i][j]['breadth']*this.calcs1[i][j]['thickness']*this.calcs1[i][j]['quantity']

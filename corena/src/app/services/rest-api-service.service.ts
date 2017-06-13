@@ -14,6 +14,9 @@ export class RestApiService {
 
   headers: Headers;
   public comm_obj: {} = {};
+  public additionParameter: number;
+  public additionParameterKey: string;
+  public uploadServiceName: string;
 
   /**
    * constructor to inject
@@ -107,6 +110,33 @@ export class RestApiService {
    .catch((error: any) => Observable.throw(error.json().error || 'error returned '));
    }
    */
+    /**
+   * to set the value
+   * @param key
+   * @param id
+   */
+  setAdditionalParameter(key: string, id: number): void {
+    this.additionParameter = id;
+    this.additionParameterKey = key;
+  }
+   /** *
+   * @param service_name upload file to
+   */
+  setUploadServiceName(service_name) {
+    this.uploadServiceName = service_name;
+  }
+
+  /**
+   *
+   * @returns {[string]}
+   */
+  getAdditionParameter(): any {
+    return [this.additionParameterKey, this.additionParameter];
+  }
+
+  getUploadServiceName(): string{
+    return this.uploadServiceName;
+  }
 
 
 }

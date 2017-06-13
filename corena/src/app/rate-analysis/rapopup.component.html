@@ -28,7 +28,7 @@
         <th width="40px;">
           <app-icon [iconName]="'ic_add_box_black_24px'" (click)="addRow()"></app-icon>
         </th>
-        <th>Length</th>
+<!--         <th>Length</th> -->
         <th>Breadth</th>
         <th>Thickness</th>
         <th>UOM</th>
@@ -42,7 +42,7 @@
         <td>
           <app-icon [iconName]="'ic_delete_black_24px'" (click)="deleteRow(i)"></app-icon>
         </td>
-        <td><input type="number" class="inp" placeholder="Length" name="Length" (keyup)="calc(i)" [(ngModel)]="cfObj[i]['length']"></td>
+<!--         <td><input type="number" class="inp" placeholder="Length" name="Length" (keyup)="calc(i)" [(ngModel)]="cfObj[i]['length']"></td> -->
         <td><input type="number" class="inp" placeholder="Breadth" name="Breadth" (keyup)="calc(i)" [(ngModel)]="cfObj[i]['breadth']"></td>
         <td><input type="number" class="inp" placeholder="Thickness" name="Thickness" (keyup)="calc(i)" [(ngModel)]="cfObj[i]['thickness']"></td>
         <td><input type="text" class="inp" placeholder="UOM" name="UOM" (keyup)="calc(i)" [(ngModel)]="cfObj[i]['uom']"></td>

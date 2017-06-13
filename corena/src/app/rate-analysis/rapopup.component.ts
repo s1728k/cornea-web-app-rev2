@@ -18,10 +18,9 @@ export class RaPopupDialog {
       this.cfObj.splice(i, 1);
   }
   calc(i){
-      this.cfObj[i]['amount'] = this.cfObj[i]['length'] *
+      this.cfObj[i]['amount'] =
         this.cfObj[i]['breadth'] *
         this.cfObj[i]['thickness'] *
-        this.cfObj[i]['running_metre'] *
         this.cfObj[i]['rate'];
   }
 }

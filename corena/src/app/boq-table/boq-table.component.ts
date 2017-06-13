@@ -107,8 +107,10 @@ export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
   redirecToRateAnalysis(){
     this.router.navigate(['/pages/rate-analysis']);
   }
-  redirectToUploadScreen(boq) {
-    this.restApiService.comm_obj = boq;
+  redirectToUploadScreen(object) {
+    this.restApiService.comm_obj = object;
+    this.restApiService.setUploadServiceName(Constants.SERVICE_NAME_BOQ);
+    this.restApiService.setAdditionalParameter('project_id', object.id);
     this.router.navigate(['/pages/files-upload']);
   }
 }
