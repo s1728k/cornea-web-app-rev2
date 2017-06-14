@@ -45,6 +45,8 @@ export class RateAnalysisComponent implements OnInit {
   calcs1: {}[][] = [];
   calcs2: {}[] = [];
 
+  cfList:any;
+  cf_price:number=0;
   mainRateAnalysis:MainRateAnalysis;
   materialRateAnalysis:MaterialRateAnalysis;
   labourRateAnalysis:LabourRateAnalysis;
@@ -180,15 +182,14 @@ export class RateAnalysisComponent implements OnInit {
       this.itemRateAnalysis[i].material_rate_analysis[j]['rate']=material['rate'];
       this.itemRateAnalysis[i].material_rate_analysis[j]['srno']=material['srno'];
       this.itemRateAnalysis[i].material_rate_analysis[j]['material_id']=material['id'];
-      this.itemRateAnalysis[i].material_rate_analysis[j]['CF']=material['coefficiency']['cf_price'];
+      this.cfList=material['coefficiency']['cf_price'];
+      //this.itemRateAnalysis[i].material_rate_analysis[j]['CF']=material['coefficiency']['cf_price'];
   }
 
 
   postItemRateAnalysis(i) {
     const url = 'http://49.50.76.29/api/ra/new';
     this.itemRateAnalysis[i].lineItem_id=this.lineItem[i]['id'];
-    this.itemRateAnalysis[i].labour_total=0
-    this.itemRateAnalysis[i].material_total=this.itemRateAnalysis[i].grand_total
     this.itemRateAnalysis[i].boq_id=this.boqObj['id'];
     this.itemRateAnalysis[i].profit_margin=this.profit/100*this.itemRateAnalysis[i].grand_total
     this.itemRateAnalysis[i].overhead_margin=this.overhead/100*this.itemRateAnalysis[i].grand_total
@@ -218,7 +219,7 @@ export class RateAnalysisComponent implements OnInit {
   }
 
   amountCalc(i,j){
-    this.itemRateAnalysis[i].grand_total=0
+    this.itemRateAnalysis[i].material_total=0
     for (let j = this.itemRateAnalysis[i].material_rate_analysis.length - 1; j >= 0; j--) {
       if (this.itemRateAnalysis[i].material_rate_analysis[j]['wastage']){
         this.itemRateAnalysis[i].material_rate_analysis[j]['amount']=this.itemRateAnalysis[i].material_rate_analysis[j]['length']*
@@ -227,8 +228,9 @@ export class RateAnalysisComponent implements OnInit {
                                                                  this.itemRateAnalysis[i].material_rate_analysis[j]['quantity']*
                                                                  (this.itemRateAnalysis[i].material_rate_analysis[j]['wastage']/100+1)*
                                                                  this.itemRateAnalysis[i].material_rate_analysis[j]['rate']*
-                                                                 (this.overhead/100+1)*(this.profit/100+1);
-        this.itemRateAnalysis[i].grand_total = this.itemRateAnalysis[i].grand_total + this.itemRateAnalysis[i].material_rate_analysis[j]['amount']
+                                                                 (this.overhead/100+1)*(this.profit/100+1)+
+                                                                 +this.cf_price;
+        this.itemRateAnalysis[i].material_total = this.itemRateAnalysis[i].material_total + this.itemRateAnalysis[i].material_rate_analysis[j]['amount']
       }else{
         console.log(this.wastage);
         this.itemRateAnalysis[i].material_rate_analysis[j]['amount']=this.itemRateAnalysis[i].material_rate_analysis[j]['length']*
@@ -236,9 +238,11 @@ export class RateAnalysisComponent implements OnInit {
                                                                  this.itemRateAnalysis[i].material_rate_analysis[j]['thickness']*
                                                                  this.itemRateAnalysis[i].material_rate_analysis[j]['quantity']*
                                                                  this.itemRateAnalysis[i].material_rate_analysis[j]['rate']*
-                                                                 (this.overhead/100+1)*(this.profit/100+1)*(this.wastage/100+1);
-        this.itemRateAnalysis[i].grand_total = this.itemRateAnalysis[i].grand_total + this.itemRateAnalysis[i].material_rate_analysis[j]['amount']
+                                                                 (this.overhead/100+1)*(this.profit/100+1)*(this.wastage/100+1)+
+                                                                 +this.cf_price;
+        this.itemRateAnalysis[i].material_total = this.itemRateAnalysis[i].material_total + this.itemRateAnalysis[i].material_rate_analysis[j]['amount']
       }
+      this.itemRateAnalysis[i].grand_total= +this.itemRateAnalysis[i].labour_total + this.itemRateAnalysis[i].material_total
     }
   }
 
@@ -270,7 +274,9 @@ export class RateAnalysisComponent implements OnInit {
   openDialogSup(i) {
       const dialogRef = this.dialog.open(RaPopupDialog);
       dialogRef.afterClosed().subscribe(result => {
-        this.itemRateAnalysis[i].labour_rate_analysis = result;
+        this.itemRateAnalysis[i].labour_rate_analysis = result.data;
+        this.itemRateAnalysis[i].labour_total= result.labour_total;
+        this.itemRateAnalysis[i].grand_total=+this.itemRateAnalysis[i].material_total + +this.itemRateAnalysis[i].labour_total;
         // console.log(result);
       });
     }

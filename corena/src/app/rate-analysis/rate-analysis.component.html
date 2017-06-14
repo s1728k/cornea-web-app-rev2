@@ -14,7 +14,7 @@
             </md-card>
         </div>
         <div class="col-md-6" style="padding-top:70px;padding-left:200px;">
-            <button md-raised-button color="primary" style="padding:10px; font-size: 30px;" (click)="submitRACalcs()">Submit</button>
+<!--             <button md-raised-button color="primary" style="padding:10px; font-size: 30px;" >Submit</button> -->
         </div>
     </div>
     <div class="row">
@@ -100,8 +100,9 @@
                             <td><input type="number" class="inp" name="wastage" [(ngModel)]="itemRateAnalysis[i].material_rate_analysis[j]['wastage']" [attr.Value]="wastage" (change)="amountCalc(i,j)"></td>
                             <td><input type="number" class="inp" name="rate" [(ngModel)]="itemRateAnalysis[i].material_rate_analysis[j]['rate']" (change)="amountCalc(i,j)"></td>
                             <td>
-                                <md-select class="inp" [(ngModel)]="itemRateAnalysis[i].material_rate_analysis[j]['cf_price']" (change)="amountCalc(i,j)">
-                                  <md-option [value]="itemRateAnalysis[i].material_rate_analysis[j]['CF']">{{ itemRateAnalysis[i].material_rate_analysis[j]['CF'] }}</md-option>
+                                <md-select class="inp" [(ngModel)]="cf_price" (change)="amountCalc(i,j)">
+                                  <md-option [value]="this.cfList">{{ this.cfList }}</md-option>
+                                  <md-option [value]="0">0</md-option>
                                 </md-select>
                             </td>
                             <td>{{itemRateAnalysis[i].material_rate_analysis[j]['amount']  | number : '2.2-3'| nan}}</td>
@@ -129,7 +130,10 @@
     <div class="row" style="border:0px solid red;overflow-y:auto;  height:70vh;" *ngIf="exp2">
         <div class="col-md-12" style="border:0px solid red;">
 
-            <md-card style="width:100%;">
+            <md-card style="width:100%;padding-top: 0px;">
+            <md-card-header style="float: right; padding:5px;">
+                <button md-raised-button disabled="false">Save</button>
+            </md-card-header>
             <md-card-content>
                 <table>
                     <thead>

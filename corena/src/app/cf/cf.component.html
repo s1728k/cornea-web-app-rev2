@@ -80,7 +80,7 @@
                                 <td><input type="number" class="inp" name="price" [(ngModel)]="subMaterials[i]['rate']" (change)="cf_priceCalc(i)"></td>
                                 <td><input type="text" class="inp" name="uom" [(ngModel)]="subMaterials[i]['uom']"></td>
                                 <td><input type="number" class="inp" name="type" [(ngModel)]="subMaterials[i]['type']" (change)="cf_priceCalc(i)"></td>
-                                <td>{{subMaterials[i]['cf_price']}}</td>
+                                <td>{{subMaterials[i]['cf_price'] | number : '2.2-3'| nan}}</td>
                             </tr>
                         </tbody>
                     </table>

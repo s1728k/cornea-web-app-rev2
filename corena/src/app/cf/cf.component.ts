@@ -270,7 +270,7 @@ export class CfComponent implements OnInit {
   keys:any[]=[]
   cf_priceCalc(i) {
       if (this.subMaterials[i]['uom']==='cft'){
-          this.subMaterials[i]['cf_price']=this.subMaterials[i]['rate']/304.8/this.subMaterials[i]['type']
+          this.subMaterials[i]['cf_price']=this.subMaterials[i]['rate']/(304.8/this.subMaterials[i]['type'])
       }else{
           this.subMaterials[i]['cf_price']=this.subMaterials[i]['rate']
       }

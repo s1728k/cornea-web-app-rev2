@@ -3,7 +3,7 @@ import {LabourRateAnalysis} from "./labour-rate-analysis.model";
 import {MaterialRateAnalysis} from "./line-item-material.model";
 export class MainRateAnalysis {
   lineItem_id: number;
-  labour_total: number;
+  labour_total: number=0;
   material_total: number;
   profit_margin: number;
   overhead_margin: number;

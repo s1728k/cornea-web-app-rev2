@@ -34,5 +34,5 @@
 </md-dialog-content>
 <md-dialog-actions>
   <button md-button md-dialog-close>Close</button>
-  <button md-button (click)="dialogRef.close(labourRateAnalysis)">Submit</button>
+  <button md-button (click)="dialogRef.close({data:labourRateAnalysis, labour_total:labour_total})">Submit</button>
 </md-dialog-actions>
