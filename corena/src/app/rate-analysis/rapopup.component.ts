@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MdDialogRef} from '@angular/material';
-
+import {LabourRateAnalysis} from "../model/class/labour-rate-analysis.model";
 
 @Component({
   selector: 'app-rapopup',
@@ -8,20 +8,21 @@ import {MdDialogRef} from '@angular/material';
   styleUrls: ['./rapopup.component.css'],
 })
 export class RaPopupDialog {
-  cfObj: {}[]= [];
+  labrRateAnalysis: LabourRateAnalysis;
+  labourRateAnalysis: LabourRateAnalysis[]= [];
   constructor(public dialogRef: MdDialogRef<RaPopupDialog>) {}
 
   addRow({}={}){
-      this.cfObj.push({})
+      this.labrRateAnalysis= new LabourRateAnalysis();
+      this.labourRateAnalysis.push(this.labrRateAnalysis)
   }
   deleteRow(i){
-      this.cfObj.splice(i, 1);
+      this.labourRateAnalysis.splice(i, 1);
   }
   calc(i){
-      this.cfObj[i]['amount'] =
-        this.cfObj[i]['breadth'] *
-        this.cfObj[i]['thickness'] *
-        this.cfObj[i]['rate'];
+      this.labourRateAnalysis[i]['amount'] = this.labourRateAnalysis[i]['breadth'] *
+                                             this.labourRateAnalysis[i]['thickness'] *
+                                             this.labourRateAnalysis[i]['rate'];
   }
 }
 

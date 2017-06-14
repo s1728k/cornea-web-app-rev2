@@ -27,13 +27,13 @@
     </div>
     <div class="row" style="border:0px solid grey;overflow-y:auto;  height:70vh;" *ngIf="exp1">
         <div class="col-md-12" style="border:0px solid grey;">
-            <button md-raised-button (click)="increment1(list)" style="margin-top: 5px;">Add / Calculate Material</button>
+            <button md-raised-button (click)="addMainRateAnalysis()" style="margin-top: 5px;">Add / Calculate Material</button>
 
-            <md-card style="width:100%;margin-top: 10px;" *ngFor="let item of calcs1; let i=index;">
+            <md-card style="width:100%;margin-top: 10px;" *ngFor="let item of itemRateAnalysis; let i=index;">
             <md-card-header style="float: right; padding:5px;">
                 <button md-raised-button (click)="openDialogSup(i)">Calculate Labor</button>
-                <button md-raised-button (click)="submitRACalcs(i)" disabled="false">Save</button>
-                <button md-raised-button (click)="deleteTable1(i)">
+                <button md-raised-button (click)="postItemRateAnalysis(i)" disabled="false">Save</button>
+                <button md-raised-button (click)="deleteMainRateAnalysis(i)">
                   <app-icon [iconName]="'ic_delete_black_24px'"></app-icon>
                 </button>
             </md-card-header>
@@ -42,7 +42,7 @@
                     <thead>
                         <tr>
                             <th width="40px;">
-                              <app-icon [iconName]="'ic_add_box_black_24px'" (click)="addRow1(i)"></app-icon>
+                              <app-icon [iconName]="'ic_add_box_black_24px'" (click)="addMaterialRateAnalysis(i)"></app-icon>
                             </th>
                             <th width="40px;">Sr.No</th>
                             <th width="200px;">Particular</th>
@@ -74,11 +74,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let calc1 of calcs1[i]; let j=index">
+                        <tr *ngFor="let mat of itemRateAnalysis[i].material_rate_analysis; let j=index">
                             <td>
-                              <app-icon [iconName]="'ic_delete_black_24px'" (click)="deleteRow1(i,j)"></app-icon>
+                              <app-icon [iconName]="'ic_delete_black_24px'" (click)="deleteMaterialRateAnalysis(i,j)"></app-icon>
                             </td>
-                            <td>{{calcs1[i][j]['srno']}}</td>
+                            <td>{{itemRateAnalysis[i].material_rate_analysis[j]['srno']}}</td>
                             <td>
                                     <md-input-container>
                                       <input mdInput placeholder="Material" type="text" [mdAutocomplete]="auto" [formControl]="queryField" >
@@ -92,31 +92,31 @@
                                         </ng-container>
                                     </md-autocomplete>
                             </td>
-                            <td><input type="number" class="inp" name="Size1" [(ngModel)]="calcs1[i][j]['length']" (keyup)="amountCalc(i,j)"></td>
-                            <td><input type="number" class="inp" name="Size2" [(ngModel)]="calcs1[i][j]['breadth']" (keyup)="amountCalc(i,j)"></td>
-                            <td><input type="number" class="inp" name="Size3" [(ngModel)]="calcs1[i][j]['thickness']" (keyup)="amountCalc(i,j)"></td>
-                            <td><input type="number" class="inp" name="qty" [(ngModel)]="calcs1[i][j]['quantity']" (keyup)="amountCalc(i,j)"></td>
-                            <td><input type="text" class="inp" name="uom" [(ngModel)]="calcs1[i][j]['uom']" (keyup)="amountCalc(i,j)"></td>
-                            <td><input type="number" class="inp" name="wastage" [(ngModel)]="calcs1[i][j]['wastage']" [attr.Value]="wastage" (keyup)="amountCalc(i,j)"></td>
-                            <td><input type="number" class="inp" name="rate" [(ngModel)]="calcs1[i][j]['rate']" (keyup)="amountCalc(i,j)"></td>
+                            <td><input type="number" class="inp" name="Size1" [(ngModel)]="itemRateAnalysis[i].material_rate_analysis[j]['length']" (change)="amountCalc(i,j)"></td>
+                            <td><input type="number" class="inp" name="Size2" [(ngModel)]="itemRateAnalysis[i].material_rate_analysis[j]['breadth']" (change)="amountCalc(i,j)"></td>
+                            <td><input type="number" class="inp" name="Size3" [(ngModel)]="itemRateAnalysis[i].material_rate_analysis[j]['thickness']" (change)="amountCalc(i,j)"></td>
+                            <td><input type="number" class="inp" name="qty" [(ngModel)]="itemRateAnalysis[i].material_rate_analysis[j]['quantity']" (change)="amountCalc(i,j)"></td>
+                            <td><input type="text" class="inp" name="uom" [(ngModel)]="itemRateAnalysis[i].material_rate_analysis[j]['uom']" (change)="amountCalc(i,j)"></td>
+                            <td><input type="number" class="inp" name="wastage" [(ngModel)]="itemRateAnalysis[i].material_rate_analysis[j]['wastage']" [attr.Value]="wastage" (change)="amountCalc(i,j)"></td>
+                            <td><input type="number" class="inp" name="rate" [(ngModel)]="itemRateAnalysis[i].material_rate_analysis[j]['rate']" (change)="amountCalc(i,j)"></td>
                             <td>
-                                <md-select class="inp" [(ngModel)]="calcs1[i][j]['cf_price']" (change)="amountCalc(i,j)">
-                                  <md-option [value]="calcs1[i][j]['CF']">{{ calcs1[i][j]['CF'] }}</md-option>
+                                <md-select class="inp" [(ngModel)]="itemRateAnalysis[i].material_rate_analysis[j]['cf_price']" (change)="amountCalc(i,j)">
+                                  <md-option [value]="itemRateAnalysis[i].material_rate_analysis[j]['CF']">{{ itemRateAnalysis[i].material_rate_analysis[j]['CF'] }}</md-option>
                                 </md-select>
                             </td>
-                            <td>{{calcs1[i][j]['amount']  | number : '2.2-3'| nan}}</td>
-<!--                             <ng-container *ngIf="calcs1[i][j]['wastage']">
-                                <td>{{calcs1[i][j]['length']*calcs1[i][j]['breadth']*calcs1[i][j]['thickness']*calcs1[i][j]['quantity']*(calcs1[i][j]['wastage']/100+1)*calcs1[i][j]['rate']*(overhead/100+1)*(profit/100+1) | number : '2.2-3'| nan }}</td>
+                            <td>{{itemRateAnalysis[i].material_rate_analysis[j]['amount']  | number : '2.2-3'| nan}}</td>
+<!--                             <ng-container *ngIf="itemRateAnalysis[i].material_rate_analysis[j]['wastage']">
+                                <td>{{itemRateAnalysis[i].material_rate_analysis[j]['length']*itemRateAnalysis[i].material_rate_analysis[j]['breadth']*itemRateAnalysis[i].material_rate_analysis[j]['thickness']*itemRateAnalysis[i].material_rate_analysis[j]['quantity']*(itemRateAnalysis[i].material_rate_analysis[j]['wastage']/100+1)*itemRateAnalysis[i].material_rate_analysis[j]['rate']*(overhead/100+1)*(profit/100+1) | number : '2.2-3'| nan }}</td>
                             </ng-container>
-                            <ng-container *ngIf="!calcs1[i][j]['wastage']">
-                                <td>{{calcs1[i][j]['length']*calcs1[i][j]['breadth']*calcs1[i][j]['thickness']*calcs1[i][j]['quantity']*calcs1[i][j]['rate']*(overhead/100+1)*(profit/100+1)*(wastage/100+1) | number : '2.2-3'| nan }}</td>
+                            <ng-container *ngIf="!itemRateAnalysis[i].material_rate_analysis[j]['wastage']">
+                                <td>{{itemRateAnalysis[i].material_rate_analysis[j]['length']*itemRateAnalysis[i].material_rate_analysis[j]['breadth']*itemRateAnalysis[i].material_rate_analysis[j]['thickness']*itemRateAnalysis[i].material_rate_analysis[j]['quantity']*itemRateAnalysis[i].material_rate_analysis[j]['rate']*(overhead/100+1)*(profit/100+1)*(wastage/100+1) | number : '2.2-3'| nan }}</td>
                             </ng-container> -->
                         </tr>
                     </tbody>
                 </table>
             </md-card-content>
             <md-card-actions>
-                <button md-button (click)="grandTotal(i)"><b>GrandTotal:{{grandTotalV | number : '2.2-3'| nan}}</b></button>
+                <button md-button><b>GrandTotal:{{this.itemRateAnalysis[i].grand_total | number : '2.2-3'| nan}}</b></button>
               </md-card-actions>
             </md-card>
         </div>

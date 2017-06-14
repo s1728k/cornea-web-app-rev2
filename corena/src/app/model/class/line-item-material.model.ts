@@ -17,4 +17,7 @@ export class MaterialRateAnalysis {
   rate: number;
   amount: number;
   wastage: number;
+
+  srno:number;
+
 }

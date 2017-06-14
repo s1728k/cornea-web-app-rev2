@@ -31,10 +31,10 @@
           <ng-container *ngFor="let link of links; let i=index">
             <ng-container *ngIf="link[0].length>1">
 
-                  <md-list-item [@iconbool]="up[i][j]" (click)="up[i][j]=!up[i][j]">
+                  <md-list-item (click)="up[i][j]=!up[i][j]">
                      <a md-line><b>{{ link[0] }}</b></a>
-                     <app-icon [iconName]="'ic_keyboard_arrow_up_black_24px'" *ngIf="up[i][j]"></app-icon>
-                     <app-icon [iconName]="'ic_keyboard_arrow_down_black_24px'" *ngIf="!up[i][j]"></app-icon>
+                     <app-icon [@iconbool]="up[i][j]" [iconName]="'ic_keyboard_arrow_up_black_24px'" *ngIf="up[i][j]"></app-icon>
+                     <app-icon [@iconbool]="up[i][j]" [iconName]="'ic_keyboard_arrow_down_black_24px'" *ngIf="!up[i][j]"></app-icon>
                   </md-list-item>
 
               <ng-container *ngIf="up[i][j]">

@@ -9,6 +9,10 @@ export class MainRateAnalysis {
   overhead_margin: number;
   grand_total: number;
   boq_id: number;
-  labour_rate_analysis: LabourRateAnalysis[];
-  material_rate_analysis: MaterialRateAnalysis[];
+  labour_rate_analysis: LabourRateAnalysis[]=[];
+  material_rate_analysis: MaterialRateAnalysis[]=[];
+
+  constructor(values: Object = {}) {
+      Object.assign(this, values);
+  }
 }
