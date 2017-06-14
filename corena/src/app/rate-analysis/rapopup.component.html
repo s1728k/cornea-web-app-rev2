@@ -1,25 +1,71 @@
-<h2 md-dialog-title>Select</h2>
+<h2 md-dialog-title>Labour Calculations</h2>
 <md-dialog-content>
-  <md-input-container>
-    <input mdInput placeholder="Description" name="Description" [(ngModel)]="cfObj['description']">
+<!--   <md-input-container>
+    <input mdInput placeholder="Length" name="Length" [(ngModel)]="cfObj['length']">
   </md-input-container>
   <md-input-container>
-    <input mdInput placeholder="Item" name="Item" [(ngModel)]="cfObj['item']">
+    <input mdInput placeholder="Breadth" name="Breadth" [(ngModel)]="cfObj['breadth']">
   </md-input-container>
   <md-input-container>
-    <input mdInput placeholder="Price" name="Price" [(ngModel)]="cfObj['price']">
+    <input mdInput placeholder="Thickness" name="Thickness" [(ngModel)]="cfObj['thickness']">
   </md-input-container>
   <md-input-container>
-    <input mdInput placeholder="uom" name="uom" [(ngModel)]="cfObj['uom']">
+    <input mdInput placeholder="UOM" name="UOM" [(ngModel)]="cfObj['uom']">
   </md-input-container>
   <md-input-container>
-    <input mdInput placeholder="20mm" name="20mm" [(ngModel)]="cfObj['20mm']">
+    <input mdInput placeholder="Running_Metre" name="Running_Metre" [(ngModel)]="cfObj['running_metre']">
   </md-input-container>
   <md-input-container>
-    <input mdInput placeholder="50mm" name="50mm" [(ngModel)]="cfObj['50mm']">
+    <input mdInput placeholder="Rate" name="Rate" [(ngModel)]="cfObj['rate']">
   </md-input-container>
+  <md-input-container>
+    <input mdInput placeholder="Amount" name="Amount" [(ngModel)]="cfObj['amount']">
+  </md-input-container> -->
+  <table>
+    <caption>Labour Calculations</caption>
+    <thead>
+      <tr>
+        <th width="40px;">
+          <app-icon [iconName]="'ic_add_box_black_24px'" (click)="addRow()"></app-icon>
+        </th>
+<!--         <th>Length</th> -->
+        <th>Breadth</th>
+        <th>Thickness</th>
+        <th>UOM</th>
+        <th>Running_Metre</th>
+        <th>Rate</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of cfObj; let i=index">
+        <td>
+          <app-icon [iconName]="'ic_delete_black_24px'" (click)="deleteRow(i)"></app-icon>
+        </td>
+<!--         <td><input type="number" class="inp" placeholder="Length" name="Length" (keyup)="calc(i)" [(ngModel)]="cfObj[i]['length']"></td> -->
+        <td><input type="number" class="inp" placeholder="Breadth" name="Breadth" (keyup)="calc(i)" [(ngModel)]="cfObj[i]['breadth']"></td>
+        <td><input type="number" class="inp" placeholder="Thickness" name="Thickness" (keyup)="calc(i)" [(ngModel)]="cfObj[i]['thickness']"></td>
+        <td><input type="text" class="inp" placeholder="UOM" name="UOM" (keyup)="calc(i)" [(ngModel)]="cfObj[i]['uom']"></td>
+        <td><input type="number" class="inp" placeholder="Running_Metre" name="Running_Metre" (keyup)="calc(i)" [(ngModel)]="cfObj[i]['running_metre']"></td>
+        <td><input type="number" class="inp" placeholder="Rate" name="Rate" (keyup)="calc(i)" [(ngModel)]="cfObj[i]['rate']"></td>
+        <td>{{cfObj[i]['amount']}}</td>
+      </tr>
+    </tbody>
+  </table>
 </md-dialog-content>
 <md-dialog-actions>
   <button md-button md-dialog-close>Close</button>
   <button md-button (click)="dialogRef.close(cfObj)">Submit</button>
 </md-dialog-actions>
+<!-- <div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+
+    </div>
+    <div class="col-md-6">
+      <md-input-container>
+        <input mdInput placeholder="Description" name="Description" [(ngModel)]="cfObj['length']">
+      </md-input-container>
+    </div>
+  </div>
+</div> -->

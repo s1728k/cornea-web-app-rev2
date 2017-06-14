@@ -8,8 +8,21 @@ import {MdDialogRef} from '@angular/material';
   styleUrls: ['./rapopup.component.css'],
 })
 export class RaPopupDialog {
-  cfObj: {}= {};
+  cfObj: {}[]= [];
   constructor(public dialogRef: MdDialogRef<RaPopupDialog>) {}
+
+  addRow({}={}){
+      this.cfObj.push({})
+  }
+  deleteRow(i){
+      this.cfObj.splice(i, 1);
+  }
+  calc(i){
+      this.cfObj[i]['amount'] =
+        this.cfObj[i]['breadth'] *
+        this.cfObj[i]['thickness'] *
+        this.cfObj[i]['rate'];
+  }
 }
 
 // import { Component, Inject, Input, Output, EventEmitter, OnInit } from '@angular/core';

@@ -56,3 +56,26 @@ h3{
 .col-md-4{
     border: 1px solid red;
 }*/
+
+md-input-container{
+  width: 100%;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+.inp{
+    width:100%;
+    border:0px;
+}
+md-icon, h3:hover{
+    cursor: pointer;
+}

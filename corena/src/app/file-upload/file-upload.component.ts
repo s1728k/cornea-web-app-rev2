@@ -6,7 +6,7 @@ import {ProjectResponseBOQUpload} from '../model/class/project-response';
 import {BOQTable} from '../model/class/boq-table.model';
 import * as Constants from '../shared/constants.globals';
 import {BoqNameId} from '../model/class';
-const URL = 'http://49.50.76.29:80/api/';
+const URL = 'http://49.50.76.29:80/api';
 
 @Component({
   selector: 'app-file-upload',
@@ -35,26 +35,20 @@ export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.createUploader(this.restApiService.additionParameterKey, this.restApiService.additionParameter);
+      console.log(URL
+      + this.restApiService.getUploadServiceName() + '/file');
+      console.log(this.restApiService.getAdditionParameter());
 
-    this.uploader = new FileUploader({
-      url: URL
-      + this.restApiService.getUploadServiceName() + '/file',
-      additionalParameter: this.restApiService.getAdditionParameter()
-    });
-    this.restApiService.getRequest(this.urlProject)
-      .map(res => /*this.projectList = <ProjectResponseBOQUpload[]>*/res.json().data)
-      .subscribe(
-        (value: ProjectResponseBOQUpload[]) => {
-          this.projectList = value;
-          console.log(value);
-        },
-        (err: any) => {
-          console.error(err);
-        }
-      );
-    console.log(this.restApiService.comm_obj);
+    // console.log(this.restApiService.comm_obj);
   };
 
+createUploader(key:string, id: number){
+  this.uploader = new FileUploader({
+      url: URL
+      + this.restApiService.getUploadServiceName() + '/file',
+      additionalParameter: {key:id}});
+}
   ngAfterViewInit() {
     this.uploader.onAfterAddingFile = (item => {
       item.withCredentials = false;
