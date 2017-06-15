@@ -1,14 +1,18 @@
 import {RestApiService} from '../services/rest-api-service.service';
 import {Component, OnInit} from '@angular/core';
 import {RateAnalysis, LineItemTableRow} from '../model/class';
-import {LineItem} from '../model/class/line-item.model';
 import {NanPipe} from '../shared/pipes/nan.pipe';
 import {MdDialog, MdDialogRef} from '@angular/material';
 import {RaPopupDialog} from './rapopup.component';
+
+// ------------Models Imported------------------------------
 import {MainRateAnalysis} from '../model/class/main-rate-analysis.model'
 import {MaterialRateAnalysis} from '../model/class/line-item-material.model'
 import {LabourRateAnalysis} from '../model/class/labour-rate-analysis.model'
+import {LineItem} from '../model/class/line-item.model'
 
+
+// ------------http imports-------------------------------
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 // Observable class extensions
@@ -30,92 +34,31 @@ import {Http} from '@angular/http';
 
 export class RateAnalysisComponent implements OnInit {
 
-  boqObj: {} = {};
-  private materials: Observable<{}[]>;
-  private materials1: {}[];
-
-  private searchTerms: Subject<string>;
-
   queryField: FormControl = new FormControl();
+
+  calcs2: {}[] = [];
 
   overhead: number;
   profit: number;
   wastage: number;
-  selMaterial: {}= {};
-  calcs1: {}[][] = [];
-  calcs2: {}[] = [];
-
   cfList:any;
   cf_price:number=0;
+  materials1: {}[];
+  lineItems: LineItem[];
   mainRateAnalysis:MainRateAnalysis;
   materialRateAnalysis:MaterialRateAnalysis;
   labourRateAnalysis:LabourRateAnalysis;
   itemRateAnalysis:MainRateAnalysis[]=[];
 
-  // calcs3: RateAnalysis[][]=[];
-
-  // old variable to be removed when api call is made it doesnt affeect anything
-  rowItemsOld: LineItemTableRow[] = [{'id': 1, 'name': 'item1'}, {'id': 2, 'name': 'item2'},
-    {'id': 3, 'name': 'item3'}, {'id': 4, 'name': 'item4'}];
-
-  // variable for LineItem
-  rowItems: LineItem[];
 
   // variable for grand total one for item rate analysis and other for overhead.
-  grandTotalV: any;
   grandTotal2V: any;
 
-  // dummy data list for dropdown for material
-  dropList1: {}[] = [{'key': 'value1'}, {'key': 'value2'}, {'key': 'value3'}, {'key': 'value4'}];
-  dropList2: {}[] = [{'key': 'value1'}, {'key': 'value2'}, {'key': 'value3'}, {'key': 'value4'}];
-  filteredStates: any[] = ['sfsdF', 'fsdfs', 'dfsfsdf'];
-
-
-  constructor(private restApiService: RestApiService, private _http: Http, private dialog: MdDialog) {
-    this.searchTerms = new Subject<string>();
-    // this.searchTerms.
-  }
-
-  // Push a search term into the observable stream.
-  search1(term1: string): void {
-    console.log(term1);
-    this.searchTerms.next(term1);
-    this.restApiService.getRequest('http://49.50.76.29/api/material/search?search='
-      + term1 + '&filter[]=name&filter[]=srno&filter[]=brand')
-      .map(res => res.json().data)
-      .subscribe(
-        (value) => {
-          console.log(value);
-        },
-        (err: any) => console.log(err)
-      );
-    /*this.searchTerms
-     /!*.debounceTime(300)        // wait 300ms after each keystroke before considering the term
-     .distinctUntilChanged()*!/   // ignore if next search term is same as previous
-     .switchMap(term => this.restApiService.search(term))
-     .catch(error => {
-     // TODO: add real error handling
-     console.log(error);
-     return Observable.of<{}>([]);
-     });*/
-    console.log(this.materials);
-  }
+  constructor(private restApiService: RestApiService, private _http: Http, private dialog: MdDialog) {}
 
   ngOnInit() {
-    this.boqObj = this.restApiService.comm_obj;
-    this.materials = this.searchTerms
-    /*.debounceTime(300)        // wait 300ms after each keystroke before considering the term
-     .distinctUntilChanged()*/   // ignore if next search term is same as previous
-      .switchMap(term => this.restApiService.search(term))
-      .catch(error => {
-        // TODO: add real error handling
-        console.log(error);
-        return Observable.of<{}>([]);
-      });
-    console.log(this.boqObj['lineItems']);
-    console.log();
-
-    //this.materials=[{'name':"sdf"}]
+    this.lineItems = this.restApiService.comm_obj['lineItems'];
+    console.log(this.lineItems);
     this.queryField.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
@@ -129,24 +72,17 @@ export class RateAnalysisComponent implements OnInit {
     return this._http.get(_URL);
   }
 
-  src() {
-    console.log(this.materials);
-  }
-
   addMainRateAnalysis({}={}) {
     this.mainRateAnalysis=new MainRateAnalysis();
     this.itemRateAnalysis.push(this.mainRateAnalysis);
-    this.lineItem.push({});
-    this.addCF[this.calcs1.length-1]=[]
   }
 
   deleteMainRateAnalysis(i) {
     this.itemRateAnalysis.splice(i, 1);
-    this.lineItem.splice(i, 1);
   }
 
   addMaterialRateAnalysis(i) {
-    if (this.lineItem[i]['title']){
+    if (this.lineItems[i]['title']){
       this.materialRateAnalysis = new MaterialRateAnalysis();
       this.itemRateAnalysis[i].material_rate_analysis.push(this.materialRateAnalysis)
     }else{
@@ -159,25 +95,8 @@ export class RateAnalysisComponent implements OnInit {
     this.itemRateAnalysis[i].material_rate_analysis.splice(j, 1);
   }
 
-  // get api request for line item
-  getLineItems(id) {
-    const url = '';
-
-    this.restApiService.getRequest(url)
-      .map(res => /*this.loggeddInUser = <User>*/res.json().data)
-      .subscribe(
-        (value: LineItem[]) => {
-          this.rowItems = value;
-        },
-        (err: any) => {
-          console.error(err);
-        }
-      );
-    console.log('data returned %s', this.rowItems);
-  }
-
   updateRow(material,i,j){
-      this.itemRateAnalysis[i].material_rate_analysis[j]['lineItem_id']=this.lineItem[i]['id'];
+      this.itemRateAnalysis[i].material_rate_analysis[j]['lineItem_id']=this.lineItems[i]['id'];
       this.itemRateAnalysis[i].material_rate_analysis[j]['uom']=material['uom'];
       this.itemRateAnalysis[i].material_rate_analysis[j]['rate']=material['rate'];
       this.itemRateAnalysis[i].material_rate_analysis[j]['srno']=material['srno'];
@@ -189,8 +108,8 @@ export class RateAnalysisComponent implements OnInit {
 
   postItemRateAnalysis(i) {
     const url = 'http://49.50.76.29/api/ra/new';
-    this.itemRateAnalysis[i].lineItem_id=this.lineItem[i]['id'];
-    this.itemRateAnalysis[i].boq_id=this.boqObj['id'];
+    this.itemRateAnalysis[i].lineItem_id=this.lineItems[i]['id'];
+    this.itemRateAnalysis[i].boq_id=this.lineItems[i]['boq_id'];
     this.itemRateAnalysis[i].profit_margin=this.profit/100*this.itemRateAnalysis[i].grand_total
     this.itemRateAnalysis[i].overhead_margin=this.overhead/100*this.itemRateAnalysis[i].grand_total
 
@@ -211,12 +130,6 @@ export class RateAnalysisComponent implements OnInit {
 
   }
 
-  lineItem:{}[]=[];
-  selLineItem(lineItem,i) {
-    console.log(this.lineItem[i])
-    this.lineItem[i] = lineItem;
-    console.log(this.lineItem[i])
-  }
 
   amountCalc(i,j){
     this.itemRateAnalysis[i].material_total=0

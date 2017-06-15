@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {RestApiService} from '../services/rest-api-service.service';
 
+// ------models used-----------------
+import {Material} from '../model/class/material.model'
 
 @Component({
   selector: 'app-material',
@@ -8,17 +10,8 @@ import {RestApiService} from '../services/rest-api-service.service';
   styleUrls: ['./material.component.css']
 })
 export class MaterialComponent implements OnInit {
-  materialList: {}[]= [{id: 1, name: 'Maruthi 800'}, {id: 2, name: 'Jesrsy'}, {id: 3, name: 'Ambzidor'}, {id: 4, name: 'Jeep'}, {id: 5, name: 'BMTC Bus'}];
-  brandList: {}[]= [{id: 1, name: 'Maruthi 800'}, {id: 2, name: 'Jesrsy'}, {id: 3, name: 'Ambzidor'}, {id: 4, name: 'Jeep'}, {id: 5, name: 'BMTC Bus'}];
-  uomList: {}[]= [{id: 1, name: '800'}, {id: 2, name: '600'}, {id: 3, name: '400'}, {id: 4, name: '200'}, {id: 5, name: '100'}];
+
   hasCfList: {}[]= [{id: 1, name: 'Yes'}, {id: 2, name: 'No'}];
-  materialListDb: {}[]= [{'sr.no.': 1, 'brand': 'lflsfjs', 'modal': 'fsdfsfsdf', 'job': 'fsdfsdf', 'price': 46546},
-  {'sr.no.': 1, 'brand': 'fddsf', 'modal': 'dddddd', 'job': 'fsdfsdf', 'price': 46546},
-  {'sr.no.': 1, 'brand': 'rwerwr', 'modal': 'eeeeee', 'job': 'fsdfsdf', 'price': 46546},
-  {'sr.no.': 1, 'brand': 'fsdrewr', 'modal': 'fsdfsfsdf', 'job': 'rrrr', 'price': 555555},
-];
-  rowsToDisplay: {}[]= [];
-  newMaterial: {}= {};
   searchOpt: {}= {brand: '', modal: '', job: ''};
   ed: {}= {};
   lastSearchObj: {}= {};
@@ -26,10 +19,13 @@ export class MaterialComponent implements OnInit {
   perPageCount= 2;
   activePage=0;
 
+  newMaterial: Material= new Material;
+  materials:Material[];
+
+
   constructor(private restApiService: RestApiService) { }
 
   ngOnInit() {
-    this.rowsToDisplay = this.materialListDb;
     this.getMaterials(0);
   }
 
@@ -60,11 +56,11 @@ export class MaterialComponent implements OnInit {
     this.activePage=p;
     switch (this.lastSearchObj['from']) {
       case "full":
-        this.updateFilter(this.lastSearchObj['1'], p);
+        this.generalFilter(this.lastSearchObj['1'], p);
         break;
 
     case "ind":
-        this.updateFilter1(this.lastSearchObj['1'], this.lastSearchObj['2'], p)
+        this.individualFilter(this.lastSearchObj['1'], this.lastSearchObj['2'], p)
         break;
 
     case "start":
@@ -90,11 +86,10 @@ export class MaterialComponent implements OnInit {
     this.restApiService.getRequest(url)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data)
       .subscribe(
-        (value: {}[]) => {
-          this.materialListDb = value;
-          this.rowsToDisplay = this.materialListDb;
+        (value: Material[]) => {
+          this.materials = value;
           console.log(n);
-          console.log(this.materialListDb);
+          console.log(this.materials);
         },
         (err: any) => {
           console.error(err);
@@ -110,19 +105,16 @@ export class MaterialComponent implements OnInit {
     this.restApiService.postRequest(url, this.newMaterial)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data[0])
       .subscribe(
-        (value: {}) => {
+        (value: Material) => {
           this.newMaterial = value;
           console.log(this.newMaterial);
-          this.newMaterial={};
+          this.newMaterial= new Material;
           this.selPage(this.activePage);
-          this.rowsToDisplay = this.materialListDb;
-          console.log(this.materialListDb);
         },
         (err: any) => {
           console.error(err);
         }
       );
-    console.log(this.materialListDb);
   }
 
   putMaterial(material) {
@@ -131,7 +123,7 @@ export class MaterialComponent implements OnInit {
     this.restApiService.putRequest(url, material)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data)
       .subscribe(
-        (value: any) => {
+        (value: Material) => {
           this.newMaterial = value;
           console.log(value);
           this.selPage(this.activePage);
@@ -152,7 +144,7 @@ export class MaterialComponent implements OnInit {
     this.restApiService.deleteRequest(url)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data)
       .subscribe(
-        (value: any) => {
+        (value: Material) => {
           this.newMaterial = value;
           console.log(value);
           this.selPage(this.activePage);
@@ -167,29 +159,7 @@ export class MaterialComponent implements OnInit {
     // console.log(this.materialListDb);
   }
 
-  addNewBrand(){
-    this.brandList.push({});
-  }
-  addNewModal(){
-    this.uomList.push({});
-  }
-
-
-  addPriceList(newMaterial){
-    // this.materialListDb.push(newMaterial);
-    // this.rowsToDisplay=this.materialListDb
-  }
-
-  editRow(i){
-    this.ed[i] = !this.ed[i];
-    this.rowsToDisplay = this.materialListDb;
-  }
-  delRow(item){
-    this.materialListDb.splice(this.materialListDb.indexOf(item), 1);
-    //this.updateFilter1(this.searchOpt);
-  }
-
-  updateFilter(event, n) {
+  generalFilter(event, n) {
     console.log(n)
     let val
     if (event){
@@ -207,21 +177,19 @@ export class MaterialComponent implements OnInit {
     this.restApiService.getRequest(url)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data)
       .subscribe(
-        (value: {}[]) => {
-          this.materialListDb = value;
-          this.rowsToDisplay = this.materialListDb;
-          console.log(this.materialListDb);
+        (value: Material[]) => {
+          this.materials = value;
+          console.log(this.materials);
         },
         (err: any) => {
           console.error(err);
         }
       );
-    console.log(this.materialListDb);
     this.getPageCount(val, 'filter[]=name&filter[]=srno&filter[]=brand');
 
   }
 
-  updateFilter1(sParam, k, n){
+  individualFilter(sParam, k, n){
     this.lastSearchObj = {'from':'ind','1':sParam, '2':k, '3':n};
     const url = 'http://49.50.76.29/api/material/search?search='+ sParam[k] +
                 '&filter[]='+ k +'&perPage=' +
@@ -230,16 +198,14 @@ export class MaterialComponent implements OnInit {
     this.restApiService.getRequest(url)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data)
       .subscribe(
-        (value: {}[]) => {
-          this.materialListDb = value;
-          this.rowsToDisplay = this.materialListDb;
-          console.log(this.materialListDb);
+        (value: Material[]) => {
+          this.materials = value;
+          console.log(this.materials);
         },
         (err: any) => {
           console.error(err);
         }
       );
-    console.log(this.materialListDb);
     this.getPageCount(sParam[k], 'filter[]='+ k);
   }
 

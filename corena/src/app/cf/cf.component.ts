@@ -6,7 +6,11 @@ import {NanPipe} from '../shared/pipes/nan.pipe';
 import {MdDialog, MdDialogRef} from '@angular/material';
 // import {RaPopupDialog} from './rapopup.component';
 
+// --Models Used--------------------
+import {CFFactor, SubMaterial} from '../model/class/co-efficiency-factor.model'
+import {Material} from '../model/class/material.model'
 
+// --HTTP Service------------------
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 // Observable class extensions
@@ -19,7 +23,6 @@ import 'rxjs/add/operator/switchMap';
 import {FormControl} from '@angular/forms';
 import {Http} from '@angular/http';
 
-
 @Component({
   selector: 'app-cf',
   templateUrl: './cf.component.html',
@@ -27,75 +30,84 @@ import {Http} from '@angular/http';
 })
 
 export class CfComponent implements OnInit {
-  newMaterial:{}={};
-  subMaterials:{}[]=[];
-  materialsList: {}[];
-  rowsToDisplay: {}[];
-  searchOpt: {}= {brand: '', modal: '', job: ''};
 
+  cfMaterial:string;
+  ed: {}= {};
+  tcf_price:{}={}
+  keys:any[]=[]
+
+  searchOpt: {}= {brand: '', modal: '', job: ''};
   lastSearchObj: {}= {};
   pageCount= 4;
   perPageCount= 2;
   activePage=0;
 
-  private materials: Observable<{}[]>;
-  private searchTerms: Subject<string> = new Subject<string>();
+  materialsDropDown: Material[];
+
+  newCFFactor:CFFactor= new CFFactor();
+  cfFactors:CFFactor[];
 
   constructor(private restApiService: RestApiService, private _http: Http) { }
 
   ngOnInit() {
-      this.materials = this.searchTerms
-         .debounceTime(300)        // wait 300ms after each keystroke before considering the term
-         .distinctUntilChanged()   // ignore if next search term is same as previous
-          .switchMap(term => this.restApiService.search(term))
-          .catch(error => {console.log(error); return Observable.of<{}>([]);});
-
-    this.getMaterials(0);
+    this.getCFFactors(0);
   }
 
   search(term1: string, cnd: string): void {
-    this.searchTerms.next(term1);
     this.restApiService.getRequest('http://49.50.76.29/api/material/search?search='
       + term1 + '&filter[]=name&filter[]=srno&filter[]=brand' + cnd)
       .map(res => res.json().data)
       .subscribe(
-        (value) => {this.materialsList=value;},
+        (value) => {this.materialsDropDown=value;},
         (err: any) => console.log(err)
       );
   }
 
-  addSubMaterial({}={}) {
-    this.subMaterials.push({});
+  addSubMaterial() {
+    if(this.cfMaterial){
+      this.newCFFactor.submaterials.push(new SubMaterial);
+    }else{
+      alert("Please Select The Material Which Has CF....")
+    }
   }
 
-  delSubMaterial(i) {
-    this.subMaterials.splice(i, 1);
+  deleteSubMaterial(i) {
+    this.newCFFactor.submaterials.splice(i, 1);
   }
 
   updateRow(material,i) {
-      this.subMaterials[i]['uom']=material['uom'];
-      this.subMaterials[i]['price']=material['rate'];
-      this.subMaterials[i]['srno']=material['srno'];
+      this.newCFFactor.submaterials[i].uom = material.uom;
+      this.newCFFactor.submaterials[i].rate = material.rate;
+      this.newCFFactor.submaterials[i].srno = material.srno;
   }
 
-  cfMaterial:string;
-  ed: {}= {};
-  loadEdit(item) {
-      this.newMaterial=item;
-      this.subMaterials=item['submaterials'];
-      this.cfMaterial=item['material']['name']
+  loadCFFactorForEdit(cfFactor) {
+      // this.newCFFactor=cfFactor;
+      // this.subMaterials=cfFactor['submaterials'];
+      this.cfMaterial=cfFactor.material.name
       this.ed['edit']=true;
   }
+
+  loadCfMaterial(material){
+    if(material){
+      this.newCFFactor.item_id = material.id
+      this.newCFFactor.price = material.rate
+      this.newCFFactor.uom = material.uom
+    }else{
+      this.newCFFactor = new CFFactor();
+    }
+  }
+
   resetNew() {
-      this.newMaterial={};
-      this.subMaterials=[];
+      this.newCFFactor=new CFFactor();
+      // this.subMaterials=[];
       this.cfMaterial="";
   }
 
   perPageCountChange(perPageCount) {
     console.log(perPageCount)
     this.perPageCount=perPageCount;
-    this.getMaterials(0);
+    this.getCFFactors(0);
   }
 
   getPageCount(sTerm: string, fltr: string): void{
@@ -119,15 +131,15 @@ export class CfComponent implements OnInit {
     this.activePage=p;
     switch (this.lastSearchObj['from']) {
       case "full":
-        this.updateFilter(this.lastSearchObj['1'], p);
+        this.generalFilter(this.lastSearchObj['1'], p);
         break;
 
     case "ind":
-        this.updateFilter1(this.lastSearchObj['1'], this.lastSearchObj['2'], p)
+        this.individualFilter(this.lastSearchObj['1'], this.lastSearchObj['2'], p)
         break;
 
     case "start":
-        this.getMaterials(p)
+        this.getCFFactors(p)
         break;
 
       default:
@@ -136,7 +148,7 @@ export class CfComponent implements OnInit {
     }
   }
 
-  getMaterials(n) {
+  getCFFactors(n) {
     this.lastSearchObj = {'from':'start','1':n};
 
     const fltr = '&filter[]=cf_price&filter[]=item_id&filter[]=uom&filter[]=type&filter[]=price&filter[]=description&appends[]=material&appends[]=submaterials'
@@ -146,10 +158,10 @@ export class CfComponent implements OnInit {
     this.restApiService.getRequest(url)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data)
       .subscribe(
-        (value: {'material':{'name':1}}[]) => {
-          this.rowsToDisplay = value;
+        (value: CFFactor[]) => {
+          this.cfFactors = value;
           console.log(n);
-          console.log(this.rowsToDisplay);
+          console.log(this.cfFactors);
         },
         (err: any) => {
           console.error(err);
@@ -158,20 +170,20 @@ export class CfComponent implements OnInit {
     this.getPageCount('',fltr);
   }
 
-  postMaterial() {
+  postCFFactor() {
     const url = 'http://49.50.76.29/api/cf/new';
-    console.log(this.newMaterial);
-    this.newMaterial['srno']="";
-    this.newMaterial['submaterials']=this.subMaterials;
-    console.log(this.newMaterial['subMaterials']);
-    this.restApiService.postRequest(url, this.newMaterial)
+    console.log(this.newCFFactor);
+    this.newCFFactor.srno="";
+    // this.newCFFactor['submaterials']=this.subMaterials;
+    console.log(this.newCFFactor.submaterials);
+    this.restApiService.postRequest(url, this.newCFFactor)
       .map(res => res.json().data[0])
       .subscribe(
-        (value: {}) => {
-          this.newMaterial = value;
-          console.log(this.newMaterial);
-          this.newMaterial={};
-          this.subMaterials=[];
+        (value: CFFactor) => {
+          this.newCFFactor = value;
+          console.log(this.newCFFactor);
+          this.newCFFactor= new CFFactor();
+          // this.subMaterials=[];
           this.cfMaterial="";
           this.selPage(this.activePage);
         },
@@ -181,15 +193,15 @@ export class CfComponent implements OnInit {
       );
   }
 
-  putMaterial() {
-      console.log(this.subMaterials);
-    const url = 'http://49.50.76.29/api/cf/' + String(this.newMaterial['id']);
-    this.newMaterial['submaterials']=this.subMaterials;
-    this.restApiService.putRequest(url, this.newMaterial)
+  putCFFactor() {
+    console.log(this.newCFFactor.submaterials);
+    const url = 'http://49.50.76.29/api/cf/' + String(this.newCFFactor.id);
+    // this.newCFFactor['submaterials']=this.subMaterials;
+    this.restApiService.putRequest(url, this.newCFFactor)
       .map(res => res.json().data)
       .subscribe(
-        (value: any) => {
-          this.newMaterial = value;
+        (value: CFFactor) => {
+          this.newCFFactor = value;
           console.log(value);
           this.selPage(this.activePage);
         },
@@ -199,14 +211,14 @@ export class CfComponent implements OnInit {
       );
   }
 
-  deleteMaterial(material) {
-    const url = 'http://49.50.76.29/api/cf/' + String(material.id);
+  deleteCFFactor(cfFactor) {
+    const url = 'http://49.50.76.29/api/cf/' + String(cfFactor.id);
 
     this.restApiService.deleteRequest(url)
       .map(res => res.json().data)
       .subscribe(
-        (value: any) => {
-          this.newMaterial = value;
+        (value: CFFactor) => {
+          this.newCFFactor = value;
           console.log(value);
           this.selPage(this.activePage);
         },
@@ -216,7 +228,7 @@ export class CfComponent implements OnInit {
       );
   }
 
-  updateFilter(event, n) {
+  generalFilter(event, n) {
     console.log(n)
     let val
     if (event){
@@ -235,9 +247,9 @@ export class CfComponent implements OnInit {
     this.restApiService.getRequest(url)
       .map(res => res.json().data)
       .subscribe(
-        (value: {}[]) => {
-          this.rowsToDisplay = value;
-          console.log(this.rowsToDisplay);
+        (value: CFFactor[]) => {
+          this.cfFactors = value;
+          console.log(this.cfFactors);
         },
         (err: any) => {
           console.error(err);
@@ -246,7 +258,7 @@ export class CfComponent implements OnInit {
     this.getPageCount(val, fltr);
   }
 
-  updateFilter1(sParam, k, n){
+  individualFilter(sParam, k, n){
     this.lastSearchObj = {'from':'ind','1':sParam, '2':k, '3':n};
     const url = 'http://49.50.76.29/api/cf/search?search='+ sParam[k] +
                 '&filter[]='+ k +'&hidden[]=pivot&perPage=' +
@@ -255,9 +267,9 @@ export class CfComponent implements OnInit {
     this.restApiService.getRequest(url)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data)
       .subscribe(
-        (value: {}[]) => {
-          this.rowsToDisplay = value;
-          console.log(this.rowsToDisplay);
+        (value: CFFactor[]) => {
+          this.cfFactors = value;
+          console.log(this.cfFactors);
         },
         (err: any) => {
           console.error(err);
@@ -266,33 +278,33 @@ export class CfComponent implements OnInit {
     this.getPageCount(sParam[k], 'filter[]='+ k);
   }
 
-  tcf_price:{}={}
-  keys:any[]=[]
   cf_priceCalc(i) {
-      if (this.subMaterials[i]['uom']==='cft'){
-          this.subMaterials[i]['cf_price']=this.subMaterials[i]['rate']/(304.8/this.subMaterials[i]['type'])
+      if (this.newCFFactor.submaterials[i].uom==='cft'){
+          this.newCFFactor.submaterials[i].cf_price=this.newCFFactor.submaterials[i].rate/(304.8/this.newCFFactor.submaterials[i].type)
       }else{
-          this.subMaterials[i]['cf_price']=this.subMaterials[i]['rate']
+          this.newCFFactor.submaterials[i].cf_price=this.newCFFactor.submaterials[i].rate
       }
       this.tcf_price={}
-      for (let i = 0; i < this.subMaterials.length; i++) {
-          this.tcf_price[this.subMaterials[i]['type']]=0;
+      for (let i = 0; i < this.newCFFactor.submaterials.length; i++) {
+          this.tcf_price[this.newCFFactor.submaterials[i].type]=0;
       }
       this.grandTotal();
       this.keys=[];
       for(let key in this.tcf_price){
           this.keys.push(key);
       }
+      this.newCFFactor.type=this.keys;
   }
 
   grandTotal(){
-      for (var i = 0; i < this.subMaterials.length; i++) {
-          if (this.tcf_price[this.subMaterials[i]['type']]){
-              this.tcf_price[this.subMaterials[i]['type']]=this.tcf_price[this.subMaterials[i]['type']]+this.subMaterials[i]['cf_price'];
+      for (var i = 0; i < this.newCFFactor.submaterials.length; i++) {
+          if (this.tcf_price[this.newCFFactor.submaterials[i].type]){
+              this.tcf_price[this.newCFFactor.submaterials[i].type]=this.tcf_price[this.newCFFactor.submaterials[i].type]+this.newCFFactor.submaterials[i].cf_price;
           }else{
-              this.tcf_price[this.subMaterials[i]['type']]=this.subMaterials[i]['cf_price'];
+              this.tcf_price[this.newCFFactor.submaterials[i].type]=this.newCFFactor.submaterials[i].cf_price;
           }
       }
+      this.newCFFactor.cf_price=this.tcf_price;
   }
 
 }

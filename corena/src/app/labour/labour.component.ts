@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {RestApiService} from '../services/rest-api-service.service';
 
+// ----Models Used-------------
+import {Labour} from '../model/class/labour.model'
 
 @Component({
   selector: 'app-labour',
@@ -8,17 +10,9 @@ import {RestApiService} from '../services/rest-api-service.service';
   styleUrls: ['./labour.component.css']
 })
 export class LabourComponent implements OnInit {
-  materialList: {}[]= [{id: 1, name: 'Maruthi 800'}, {id: 2, name: 'Jesrsy'}, {id: 3, name: 'Ambzidor'}, {id: 4, name: 'Jeep'}, {id: 5, name: 'BMTC Bus'}];
-  brandList: {}[]= [{id: 1, name: 'Maruthi 800'}, {id: 2, name: 'Jesrsy'}, {id: 3, name: 'Ambzidor'}, {id: 4, name: 'Jeep'}, {id: 5, name: 'BMTC Bus'}];
+
   uomList: {}[]= ['hourly', 'daily', 'monthly'];
   typeList: any[]= ['Internal', 'Contract'];
-  materialListDb: {}[]= [{'sr.no.': 1, 'brand': 'lflsfjs', 'modal': 'fsdfsfsdf', 'job': 'fsdfsdf', 'price': 46546},
-  {'sr.no.': 1, 'brand': 'fddsf', 'modal': 'dddddd', 'job': 'fsdfsdf', 'price': 46546},
-  {'sr.no.': 1, 'brand': 'rwerwr', 'modal': 'eeeeee', 'job': 'fsdfsdf', 'price': 46546},
-  {'sr.no.': 1, 'brand': 'fsdrewr', 'modal': 'fsdfsfsdf', 'job': 'rrrr', 'price': 555555},
-];
-  rowsToDisplay: {}[]= [];
-  newMaterial: {}= {};
   searchOpt: {}= {brand: '', modal: '', job: ''};
   ed: {}= {};
   lastSearchObj: {}= {};
@@ -26,16 +20,18 @@ export class LabourComponent implements OnInit {
   perPageCount= 2;
   activePage=0;
 
+  newLabour: Labour= new Labour();
+  labours: Labour[];
+
   constructor(private restApiService: RestApiService) { }
 
   ngOnInit() {
-    this.rowsToDisplay = this.materialListDb;
-    this.getMaterials(0);
+    this.getLabours(0);
   }
 
   perPageCountChange(perPageCount) {
     this.perPageCount=perPageCount;
-    this.getMaterials(0);
+    this.getLabours(0);
   }
 
   getPageCount(sTerm: string, fltr: string): void{
@@ -59,15 +55,15 @@ export class LabourComponent implements OnInit {
     this.activePage=p;
     switch (this.lastSearchObj['from']) {
       case "full":
-        this.updateFilter(this.lastSearchObj['1'], p);
+        this.generalFilter(this.lastSearchObj['1'], p);
         break;
 
     case "ind":
-        this.updateFilter1(this.lastSearchObj['1'], this.lastSearchObj['2'], p)
+        this.individualFilter(this.lastSearchObj['1'], this.lastSearchObj['2'], p)
         break;
 
     case "start":
-        this.getMaterials(p)
+        this.getLabours(p)
         break;
 
       default:
@@ -76,11 +72,7 @@ export class LabourComponent implements OnInit {
     }
   }
 
-  check(perPageCount) {
-    console.log(this.perPageCount);
-  }
-
-  getMaterials(n) {
+  getLabours(n) {
     this.lastSearchObj = {'from':'start','1':n};
 
     const url = 'http://49.50.76.29/api/labour/search?search=&filter[]=srno&filter[]=name&filter[]=age&filter[]=type&filter[]=category&filter[]=uom&perPage=' +
@@ -89,11 +81,10 @@ export class LabourComponent implements OnInit {
     this.restApiService.getRequest(url)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data)
       .subscribe(
-        (value: {}[]) => {
-          this.materialListDb = value;
-          this.rowsToDisplay = this.materialListDb;
+        (value: Labour[]) => {
+          this.labours = value;
           console.log(n);
-          console.log(this.materialListDb);
+          console.log(this.labours);
         },
         (err: any) => {
           console.error(err);
@@ -102,40 +93,34 @@ export class LabourComponent implements OnInit {
     this.getPageCount('','filter[]=srno&filter[]=name&filter[]=age&filter[]=type&filter[]=category&filter[]=uom');
   }
 
-  postMaterial() {
+  postLabour() {
     const url = 'http://49.50.76.29/api/labour/new';
-    this.newMaterial['srno']=""
-    this.restApiService.postRequest(url, this.newMaterial)
+    this.newLabour['srno']=""
+    this.restApiService.postRequest(url, this.newLabour)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data[0])
       .subscribe(
-        (value: {}) => {
-          this.newMaterial = value;
-          console.log(this.newMaterial);
-          this.newMaterial={};
+        (value: Labour) => {
+          this.newLabour = value;
+          console.log(this.newLabour);
+          this.newLabour= new Labour();
           this.selPage(this.activePage);
-          this.rowsToDisplay = this.materialListDb;
-          console.log(this.materialListDb);
         },
         (err: any) => {
           console.error(err);
         }
       );
-    console.log(this.materialListDb);
   }
 
-  putMaterial(material) {
+  putLabour(material) {
     const url = 'http://49.50.76.29/api/labour/' + String(material.id);
 
     this.restApiService.putRequest(url, material)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data)
       .subscribe(
-        (value: any) => {
-          this.newMaterial = value;
+        (value: Labour) => {
+          this.newLabour = value;
           console.log(value);
           this.selPage(this.activePage);
-          // this.materialListDb.push(this.newMaterial);
-          // this.rowsToDisplay = this.materialListDb;
-          // console.log(this.materialListDb);
         },
         (err: any) => {
           console.error(err);
@@ -145,50 +130,24 @@ export class LabourComponent implements OnInit {
 
   }
 
-  deleteMaterial(material) {
+  deleteLabour(material) {
     const url = 'http://49.50.76.29/api/labour/' + String(material.id);
 
     this.restApiService.deleteRequest(url)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data)
       .subscribe(
-        (value: any) => {
-          this.newMaterial = value;
+        (value: Labour) => {
+          this.newLabour = value;
           console.log(value);
           this.selPage(this.activePage);
-          // this.materialListDb.push(this.newMaterial);
-          // this.rowsToDisplay = this.materialListDb;
-          // console.log(this.materialListDb);
         },
         (err: any) => {
           console.error(err);
         }
       );
-    // console.log(this.materialListDb);
   }
 
-  addNewBrand(){
-    this.brandList.push({});
-  }
-  addNewModal(){
-    this.uomList.push({});
-  }
-
-
-  addPriceList(newMaterial){
-    // this.materialListDb.push(newMaterial);
-    // this.rowsToDisplay=this.materialListDb
-  }
-
-  editRow(i){
-    this.ed[i] = !this.ed[i];
-    this.rowsToDisplay = this.materialListDb;
-  }
-  delRow(item){
-    this.materialListDb.splice(this.materialListDb.indexOf(item), 1);
-    //this.updateFilter1(this.searchOpt);
-  }
-
-  updateFilter(event, n) {
+  generalFilter(event, n) {
 
     let val
     if (event){
@@ -205,21 +164,19 @@ export class LabourComponent implements OnInit {
     this.restApiService.getRequest(url)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data)
       .subscribe(
-        (value: {}[]) => {
-          this.materialListDb = value;
-          this.rowsToDisplay = this.materialListDb;
-          console.log(this.materialListDb);
+        (value: Labour[]) => {
+          this.labours = value;
+          console.log(this.labours);
         },
         (err: any) => {
           console.error(err);
         }
       );
-    console.log(this.materialListDb);
     this.getPageCount(val, 'filter[]=srno&filter[]=name&filter[]=age&filter[]=type&filter[]=category&filter[]=uom');
 
   }
 
-  updateFilter1(sParam, k, n){
+  individualFilter(sParam, k, n){
     this.lastSearchObj = {'from':'ind','1':sParam, '2':k, '3':n};
     const url = 'http://49.50.76.29/api/labour/search?search='+ sParam[k] +
                 '&filter[]='+ k +'&perPage=' +
@@ -228,16 +185,14 @@ export class LabourComponent implements OnInit {
     this.restApiService.getRequest(url)
       .map(res => /*this.loggeddInUser = <User>*/res.json().data)
       .subscribe(
-        (value: {}[]) => {
-          this.materialListDb = value;
-          this.rowsToDisplay = this.materialListDb;
-          console.log(this.materialListDb);
+        (value: Labour[]) => {
+          this.labours = value;
+          console.log(this.labours);
         },
         (err: any) => {
           console.error(err);
         }
       );
-    console.log(this.materialListDb);
     this.getPageCount(sParam[k], 'filter[]='+ k);
   }
 

@@ -1,6 +1,8 @@
-
 <md-toolbar color="primary" [class.m2app-dark]="true">
-       <app-icon [iconName]="'domain'"></app-icon> Cornea
+    <button md-icon-button (click)="sidenav.toggle()">
+       <app-icon [iconName]="'domain'"></app-icon>
+    </button>
+        Cornea
 
     <span class="example-spacer"></span>
     <button md-icon-button [mdMenuTriggerFor]="appMenu">
@@ -25,7 +27,7 @@
   </div>
 
 <md-sidenav-container class="example-sidenav-fab-container" [class.m2app-dark]="true">
-  <md-sidenav #sidenav mode="side" opened="true">
+  <md-sidenav #sidenav mode="push" opened="false">
     <div class="example-scrolling-content">
         <md-nav-list dense>
           <ng-container *ngFor="let link of links; let i=index">
@@ -60,8 +62,8 @@
         </md-nav-list>
     </div>
   </md-sidenav>
-  <!--<div style="border:0px solid red;">-->
+<!--   <div class="main-container" style="border:0px solid red;"> -->
     <!--<label>I am from pages component</label>-->
     <router-outlet></router-outlet>
-  <!--</div>-->
+<!--   </div> -->
 </md-sidenav-container>
