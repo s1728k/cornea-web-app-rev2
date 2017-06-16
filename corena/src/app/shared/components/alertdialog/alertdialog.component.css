@@ -1,0 +1,29 @@
+.dialogbox{
+  width: 400px;
+  height: 200px;
+}
+.title{
+  font-weight: bold;
+  color: black;
+}
+.message{
+
+  margin-top: 10px;
+
+}
+
+.okbutton{
+  color: white;
+  margin-top: 40px;
+  background-color:green ;
+}
+.cancelbutton{
+  color: white;
+  margin-top: 40px;
+  background-color: red;
+}
+.divbutton{
+  text-align: right;
+}
+
+

@@ -6,7 +6,7 @@ import {ProjectResponseBOQUpload} from '../model/class/project-response';
 import {BOQTable} from '../model/class/boq-table.model';
 import * as Constants from '../shared/constants.globals';
 import {BoqNameId} from '../model/class';
-import {KeyValue} from '../model/class/key-value.model';
+// import {KeyValue} from '../model/class/key-value.model';
 const URL = 'http://49.50.76.29:80/api/';
 
 @Component({
@@ -29,10 +29,10 @@ export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   urlBoq: string;
   toggleCreateView = false;
   boqSelected: {};
-  listTypesOfFileUploads: KeyValue[] = [{key: 'Boq', value: 'boq'}
-  , {key: 'Overheads', value: 'overhead'}
-  , {key: 'Material', value: 'material'}
-  , {key: 'Labor', value: 'labor'}];
+  // listTypesOfFileUploads: KeyValue[] = [{key: 'Boq', value: 'boq'}
+  // , {key: 'Overheads', value: 'overhead'}
+  // , {key: 'Material', value: 'material'}
+  // , {key: 'Labor', value: 'labor'}];
   constructor(private restApiService: RestApiService, private router: Router) {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
       + Constants.ACTION_ALL + '?visible[]=id&visible[]=name';

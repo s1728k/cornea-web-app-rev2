@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {RestApiService} from '../services/rest-api-service.service';
+import {LoaderService} from '../shared/services/loader.service';
 
 
 @Component({
@@ -26,7 +27,7 @@ export class MaterialComponent implements OnInit {
   perPageCount= 2;
   activePage=0;
 
-  constructor(private restApiService: RestApiService) { }
+  constructor(private restApiService: RestApiService,  private loaderService: LoaderService) { }
 
   ngOnInit() {
     this.rowsToDisplay = this.materialListDb;
@@ -48,6 +49,7 @@ export class MaterialComponent implements OnInit {
         (value: any) => {
           this.pageCount = value;
           console.log(this.pageCount);
+          this.loaderService.display(false);
         },
         (err: any) => {
           console.error(err);

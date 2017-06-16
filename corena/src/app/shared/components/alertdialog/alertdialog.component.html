@@ -1,0 +1,13 @@
+<div class="dialogbox" >
+
+  <p class ="title">{{ title }} </p>
+  <hr/>
+  <p class="message" >{{ message }}</p>
+
+  <div class="divbutton">
+    <button class="okbutton" type="button" md-raised-button
+            (click)="dialogRef.close(true)">OK</button>
+    <button class="cancelbutton" type="button" md-button
+            (click)="dialogRef.close()">Cancel</button>
+  </div>
+</div>

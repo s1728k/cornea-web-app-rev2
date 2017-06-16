@@ -1,4 +1,6 @@
 <!--<div style="border:0px solid red;">-->
   <!--<label>I am from app component</label>-->
-  <router-outlet></router-outlet>
+  <router-outlet>
+    <span *ngIf="showLoader" class="loading"></span>
+  </router-outlet>
 <!--</div>-->

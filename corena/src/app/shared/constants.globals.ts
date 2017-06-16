@@ -32,3 +32,26 @@ export const SERVICE_NAME_PROJECT = '/project';
 export const SERVICE_NAME_BOQ = '/boq';
 export const BASE_URL_BOQ = 'http://49.50.76.29:80/api';
 export const APPENDS_LINE_ITEMS_BOQ = 'appends[]=lineitems';
+
+// HTTP Error Messages
+export const BAD_REQUEST_TITLE = '400 Bad Request';
+export const BAD_REQUEST_DESCRIPTION = 'The request cannot be fulfilled due to bad syntax';
+export const UNAUTHORIZED_TITLE = '401 Unauthorized';
+export const UNAUTHORIZED_DESCRIPTION = 'The request was a legal request, but the server is refusing to respond to it.'
+export const NOT_FOUND_TITLE = '404 Not Found';
+export const NOT_FOUND_DESCRIPTION = 'The requested page could not be found but may be available again in the future';
+export const INTERNAL_SERVER_ERROR_TITLE = '500 Internal Server Error';
+export const INTERNAL_SERVER_ERROR_DESCRIPTION = 'Internal Server Error has occured';
+export const NETWORK_AUTHENTICATION_TITLE = '511 Network Authentication Required';
+export const NETWORK_AUTHENTICATION_DESCRIPTION = 'The client needs to authenticate to gain network access';
+export const PAYMENT_REQUIRED_TITLE = '402 Payment Required';
+export const PAYMENT_REQUIRED_DESCRIPTION = 'Reserved for future use';
+export const FORBIDDEN_TITLE = '403 Forbidden';
+export const FORBIDDEN_DESCRIPTION = 'The request was a legal request, but the server is refusing to respond to it';
+export const SERVERNOTFOUND = 'Server Not Found';
+export const USERNOTEXIST = 'USER NOT EXIST';
+export const SERVICE_UNAVAILABLE_TITLE = '503 Service Unavailable';
+export const SERVICE_UNAVAILABLE_DESCRIPTION = 'The server is currently unavailable (overloaded or down)';
+export const INVALID_USERNAME_PASSWORD = 'INVALID USERNAME AND PASSWORD';
+export const SERVER_PROBLEM = 'There is some problem in the server';
+export const TITLE = 'This is an Alert Dialog';

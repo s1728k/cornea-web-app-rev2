@@ -5,6 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import * as Constants from '../shared/constants.globals';
+import {LoaderService} from '../shared/services/loader.service';
 /**
  * generic http call service
  * supported by Observables
@@ -23,7 +24,7 @@ export class RestApiService {
    * dependencies needed at runtime
    * @param http
    */
-  constructor(private http: Http /*private requestMethod: RequestMethod*/) {
+  constructor(private http: Http, private loaderService: LoaderService) {
     this.headers = new Headers({'Content-Type': 'application/json'});
   }
 

@@ -40,6 +40,7 @@ import { BoqTableComponent } from './boq-table/boq-table.component';
 import { MaterialComponent } from './material/material.component';
 import { LabourComponent } from './labour/labour.component';
 import { CfComponent } from './cf/cf.component';
+import {LoaderService} from './shared/services/loader.service';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,7 @@ import { CfComponent } from './cf/cf.component';
       storageType: 'sessionStorage'
     })
   ],
-  providers: [RestApiService, StorageService, SharedService, SearchService],
+  providers: [RestApiService, StorageService, SharedService, SearchService, LoaderService],
   bootstrap: [AppComponent]
 })
 /**
