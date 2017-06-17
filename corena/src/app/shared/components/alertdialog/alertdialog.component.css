@@ -1,5 +1,5 @@
 .dialogbox{
-  width: 400px;
+  width: 550px;
   height: 200px;
 }
 .title{
@@ -14,14 +14,10 @@
 
 .okbutton{
   color: white;
-  margin-top: 40px;
-  background-color:green ;
+  margin-top: 70px;
+  background-color:#009688 ;
 }
-.cancelbutton{
-  color: white;
-  margin-top: 40px;
-  background-color: red;
-}
+
 .divbutton{
   text-align: right;
 }

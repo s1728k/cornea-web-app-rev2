@@ -14,12 +14,12 @@ export class NextCompComponent implements OnInit {
   public result: any;
   config: MdDialogConfig = {
     disableClose: false,
-  }
+  };
 
 
   constructor(private dialogsService: DialogService) {
   }
-
+  // For opening Dialog
   public openDialog() {
     this.dialogsService
       .confirm(Constants.NOT_FOUND_TITLE, Constants.NOT_FOUND_DESCRIPTION)

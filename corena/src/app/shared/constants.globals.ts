@@ -35,6 +35,7 @@ export const APPENDS_LINE_ITEMS_BOQ = 'appends[]=lineitems';
 
 // HTTP Error Messages
 export const BAD_REQUEST_TITLE = '400 Bad Request';
+export const HTTP_ERROR_TITLE =  'HTTP ERROR';
 export const BAD_REQUEST_DESCRIPTION = 'The request cannot be fulfilled due to bad syntax';
 export const UNAUTHORIZED_TITLE = '401 Unauthorized';
 export const UNAUTHORIZED_DESCRIPTION = 'The request was a legal request, but the server is refusing to respond to it.'

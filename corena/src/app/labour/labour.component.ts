@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import {RestApiService} from '../services/rest-api-service.service';
+import {LoaderService} from '../shared/services/loader.service';
+import {DialogService} from '../shared/services/dialog.service';
 
 
 @Component({
   selector: 'app-labour',
   templateUrl: './labour.component.html',
-  styleUrls: ['./labour.component.css']
+  styleUrls: ['./labour.component.css'],
+  providers: [DialogService]
 })
 export class LabourComponent implements OnInit {
   materialList: {}[]= [{id: 1, name: 'Maruthi 800'}, {id: 2, name: 'Jesrsy'}, {id: 3, name: 'Ambzidor'}, {id: 4, name: 'Jeep'}, {id: 5, name: 'BMTC Bus'}];
@@ -26,7 +29,7 @@ export class LabourComponent implements OnInit {
   perPageCount= 2;
   activePage=0;
 
-  constructor(private restApiService: RestApiService) { }
+  constructor(private restApiService: RestApiService, private loaderService: LoaderService,private dialogsService: DialogService) { }
 
   ngOnInit() {
     this.rowsToDisplay = this.materialListDb;
@@ -47,6 +50,7 @@ export class LabourComponent implements OnInit {
         (value: any) => {
           this.pageCount = value;
           console.log(this.pageCount);
+          this.loaderService.display(false);
         },
         (err: any) => {
           console.error(err);
@@ -94,6 +98,7 @@ export class LabourComponent implements OnInit {
           this.rowsToDisplay = this.materialListDb;
           console.log(n);
           console.log(this.materialListDb);
+          this.loaderService.display(false);
         },
         (err: any) => {
           console.error(err);
@@ -115,6 +120,7 @@ export class LabourComponent implements OnInit {
           this.selPage(this.activePage);
           this.rowsToDisplay = this.materialListDb;
           console.log(this.materialListDb);
+
         },
         (err: any) => {
           console.error(err);
@@ -209,6 +215,7 @@ export class LabourComponent implements OnInit {
           this.materialListDb = value;
           this.rowsToDisplay = this.materialListDb;
           console.log(this.materialListDb);
+          this.loaderService.display(false);
         },
         (err: any) => {
           console.error(err);
@@ -232,6 +239,7 @@ export class LabourComponent implements OnInit {
           this.materialListDb = value;
           this.rowsToDisplay = this.materialListDb;
           console.log(this.materialListDb);
+          this.loaderService.display(false);
         },
         (err: any) => {
           console.error(err);

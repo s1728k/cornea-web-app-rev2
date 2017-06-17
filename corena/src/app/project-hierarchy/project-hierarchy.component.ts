@@ -6,11 +6,13 @@ import * as Constants from '../shared/constants.globals';
 import {RestApiService} from '../services/rest-api-service.service';
 import {executive} from '../shared/constants.globals';
 import {User} from '../model/interface/User';
+import {LoaderService} from '../shared/services/loader.service';
 
 @Component({
   selector: 'app-project-hierarchy',
   templateUrl: './project-hierarchy.component.html',
   styleUrls: ['./project-hierarchy.component.css'],
+  providers: [LoaderService]
 })
 export class ProjectHierarchyComponent implements OnInit {
 
@@ -112,7 +114,7 @@ export class ProjectHierarchyComponent implements OnInit {
   executives: UserModel[] = [];
 
   constructor(private restApiService: RestApiService,
-              private dialog: MdDialog) {
+              private dialog: MdDialog, private loaderService:  LoaderService) {
     this.user = new UserModel();
     this.url = Constants.USER_END_POINT + Constants.USER_SERVICE_NAME + Constants.ACTION_ALL
       + '?visible[]=id&visible[]=first_name&visible[]=last_name&visible[]=role&';
@@ -193,14 +195,16 @@ export class ProjectHierarchyComponent implements OnInit {
 
 
   ngOnInit() {
-    this.restApiService.getRequest(this.url)
+    /*this.restApiService.getRequest(this.url)
       .map(response => <UserModel[]>response.json().data)
       .subscribe(
         (value) => {
+          console.log(value);
+          this.loaderService.display(false);
         },
         (error2 => console.log(error2)),
         () => this.getSupList()
-      );
+      );*/
   }
 
   getSupList() {

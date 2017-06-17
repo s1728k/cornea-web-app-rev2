@@ -45,6 +45,7 @@ export class RestApiService {
    */
   getRequest(url: string): Observable<any> {
     console.log(url);
+    // this.loaderService.display(true);
     return this.http.get(url, this.headers);
   }
 
