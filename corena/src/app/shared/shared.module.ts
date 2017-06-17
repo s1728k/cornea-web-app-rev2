@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/Forms';
 import {MaterialModule, MdNativeDateModule, MdButtonModule} from '@angular/material';
 import {DndModule} from 'ng2-dnd';
 import { IconsComponent } from './components/icons/icons.component';
@@ -9,7 +10,7 @@ import {PaginationComponent} from "./components/pagination/pagination.component"
 @NgModule({
   imports: [
     CommonModule,
-    MaterialModule, MdNativeDateModule, MdButtonModule,
+    MaterialModule, MdNativeDateModule, MdButtonModule, FormsModule,
     DndModule.forRoot()
   ],
   declarations: [IconsComponent, PaginationComponent, NanPipe],

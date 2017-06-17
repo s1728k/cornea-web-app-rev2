@@ -1,10 +1,10 @@
-<md-toolbar color="primary" [class.m2app-dark]="true">
+<md-toolbar color="primary">
     <button md-icon-button (click)="sidenav.toggle()">
        <app-icon [iconName]="'domain'"></app-icon>
     </button>
-        Cornea
+    Cornea
 
-    <span class="example-spacer"></span>
+    <span class="spacer"></span>
     <button md-icon-button [mdMenuTriggerFor]="appMenu">
        <app-icon [iconName]="'ic_more_vert_black_24px'"></app-icon>
     </button>
@@ -27,7 +27,7 @@
   </div>
 
 <md-sidenav-container class="example-sidenav-fab-container" [class.m2app-dark]="true">
-  <md-sidenav #sidenav mode="push" opened="false">
+  <md-sidenav #sidenav mode="over" opened="false">
     <div class="example-scrolling-content">
         <md-nav-list dense>
           <ng-container *ngFor="let link of links; let i=index">

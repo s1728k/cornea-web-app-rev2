@@ -35,7 +35,6 @@ import { GanttchartComponent } from './shared/components/ganttchart/ganttchart.c
 // dependency for local storage
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { StorageService } from './services/local-storage.service';
-import { SearchService } from './shared/';
 import { BoqTableComponent } from './boq-table/boq-table.component';
 import { MaterialComponent } from './material/material.component';
 import { LabourComponent } from './labour/labour.component';
@@ -76,7 +75,7 @@ import { CfComponent } from './cf/cf.component';
       storageType: 'sessionStorage'
     })
   ],
-  providers: [RestApiService, StorageService, SharedService, SearchService],
+  providers: [RestApiService, StorageService, SharedService],
   bootstrap: [AppComponent]
 })
 /**

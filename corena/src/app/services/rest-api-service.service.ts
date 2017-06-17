@@ -1,10 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Http, RequestMethod, Response, Headers, RequestOptions} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
-// Import RxJs required methods
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+
 import * as Constants from '../shared/constants.globals';
+
+import {Observable} from 'rxjs/Observable';
+// Observable class extensions
+import 'rxjs/add/observable/of';
+// Observable operators
+import 'rxjs/add/operator/map';
+
+
 /**
  * generic http call service
  * supported by Observables
@@ -13,6 +18,8 @@ import * as Constants from '../shared/constants.globals';
 export class RestApiService {
 
   headers: Headers;
+  public url1:string;
+  public url2:string;
   public comm_obj: {} = {};
   public additionParameter: number;
   public additionParameterKey: string;
@@ -69,9 +76,28 @@ export class RestApiService {
     );
   }
 
-  search(term: string): Observable<any> {
+  search(url: string): Observable<{}[]> {
+    // this.url='http://49.50.76.29/api/material/search?search=' + term + '&filter[]=name&filter[]=srno&filter[]=brand'
+    console.log("search")
+    console.log(url)
     return this.http
-      .get('http://49.50.76.29/api/material/search?search=' + term + '&filter[]=name&filter[]=srno&filter[]=brand')
+      .get(url)
+      .map(response => response.json().data as {}[]);
+  }
+
+  getLength(url: string): Observable<number> {
+    // this.url='http://49.50.76.29/api/material/search?search=' + term + '&filter[]=name&filter[]=srno&filter[]=brand'
+    console.log("length")
+    console.log(url)
+    return this.http
+      .get(url)
+      .map(response => response.json().total as number);
+  }
+
+  getObs(): Observable<{}[]> {
+    console.log(this.url1)
+    return this.http
+      .get(this.url1)
       .map(response => response.json().data as {}[]);
   }
 

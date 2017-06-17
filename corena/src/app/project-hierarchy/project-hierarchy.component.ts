@@ -211,16 +211,29 @@ export class ProjectHierarchyComponent implements OnInit {
     return this.projectManagerUsers != null;
   }
 
-  /**
-   * method to allow click event
-   * on Selected Supervisor's
-   * @param item
-   */
+  // *
+  //  * method to allow click event
+  //  * on Selected Supervisor's
+  //  * @param item
+
 
   openDialogSup() {
     if (this.projectManagerUsers.length > 1) {
       const dialogRef = this.dialog.open(PopupDialog, {
         data: ['Select PM', this.projectManagerUsers]
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        this.selectedOption = result;
+        console.log(this.selectedOption);
+      });
+    }
+
+  }
+
+  openDialogExe() {
+    if (this.supervisorUsers.length > 1) {
+      const dialogRef = this.dialog.open(PopupDialog, {
+        data: ['Select Supervisor', this.supervisorUsers]
       });
       dialogRef.afterClosed().subscribe(result => {
         this.selectedOption = result;

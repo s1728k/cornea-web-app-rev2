@@ -1,4 +1,4 @@
-.screenMargin{
+/* .screenMargin{
   height: 100%;
   width: 95%;
   background-color: white;
@@ -10,9 +10,6 @@
 
 }
 
-h3{
-    border-bottom: 1px solid grey;
-}
 .panel-danger .panel-heading{
     background-color: #B71C1C;
     border-bottom: 0px solid #B71C1C;
@@ -49,7 +46,7 @@ h3{
 .panel-default .panel-body{
   height: 10%;
 }
-
+ */
 /*.row{
     border: 1px solid red;
 }

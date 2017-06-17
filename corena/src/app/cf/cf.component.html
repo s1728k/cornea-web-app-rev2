@@ -1,21 +1,18 @@
-<div class="container-fluid">
+<div class="container-fluid unselectable">
     <div class="row">
-        <div class="col-md-12" style="margin-bottom:10px;">
-            <h3 style="border-bottom:1px solid grey;">Co-efficiency Factor Calculations</h3>
+        <div class="col-md-12">
+            <h3 class="unselectable heading">Co-efficiency Factor Calculations</h3>
         </div>
     </div>
-    <div class="row" style="border:0px solid grey;overflow-y:auto;">
-        <div class="col-md-12" style="border:0px solid grey;">
-
-            <md-card style="width:100%;margin-top: 10px;">
-                <md-card-header style="float: right; padding:5px;">
+    <div class="row">
+        <div class="col-md-12">
+                <div class="flex-box float-right">
                     <ng-container *ngIf="ed['edit']">
-                    <button md-raised-button (click)="putMaterial(); ed['edit']=false;">Edit</button>
+                    <button md-raised-button (click)="putCFFactor(); ed['edit']=false;">Edit</button>
                     <button md-raised-button (click)="resetNew(); ed['edit']=false;">Cancel</button>
                     </ng-container>
-                    <button md-raised-button (click)="postMaterial()" *ngIf="!ed['edit']">Save</button>
-                </md-card-header>
-                <md-card-content>
+                    <button md-raised-button (click)="postCFFactor()" *ngIf="!ed['edit']">Save</button>
+                </div>
                     <table>
                         <thead>
                             <tr>
@@ -86,7 +83,7 @@
                     </table>
 
                     <label>Grand Total For CF Price</label>
-                    <table style="width: auto;">
+                    <table class="auto-table">
                         <thead>
                             <th *ngFor="let key of keys">{{key}}mm</th>
                         </thead>
@@ -94,102 +91,104 @@
                             <td *ngFor="let key of keys">{{tcf_price[key] | number : '2.1-2'| nan}}</td>
                         </thead>
                     </table>
-                </md-card-content>
-            </md-card>
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-12">
-            <h3 style="border-bottom:1px solid grey;">
+            <h3 class="unselectable heading">
                 Co-efficiency List
             </h3>
         </div>
     </div>
 
-    <div class="row">
+<!--     <div class="row">
         <div class="col-md-12">
             <input type='text' style='padding:8px;margin:15px auto;width:30%;'
             placeholder='Search Whole Table...' (keyup)='updateFilter($event, 0)' />
         </div>
+    </div> -->
+
+    <div class="row flex-box b-margin">
+        <div class="col-md-9" >
+            <app-pagination *ngIf="pageCount" [pageCount]="pageCount" (pageSelected)=selPage($event) (perPageCount)="perPageCountChange($event)">
+            </app-pagination>
+        </div>
+        <div class="col-md-3">
+            <input type='text' class="full-width search-box" placeholder='Search Whole Table...' (keyup)='generalFilter($event, 0)' />
+        </div>
     </div>
 
     <div class="row">
         <div class="col-md-12">
             <table>
-                <tr>
-                    <th width="5%">Sr.No.</th>
-                    <th width="30%">Description</th>
-                    <th width="25%">Item Name</th>
-                    <th width="15%">Rate</th>
-                    <th width="5%">UOM</th>
-                    <th width="10%">Type</th>
-                    <th width="10%">Cf_Price</th>
-                    <th width="10%"></th>
-                </tr>
-                <tr>
-                    <td width="5%">
-                        <input type='text' style='width:100%;'
-                        placeholder='Sr.No...' (keyup)='updateFilter1(searchOpt, "srno", 0)' [(ngModel)]="searchOpt['srno']" name="srno" />
-                    </td>
-                    <td width="30%">
-                        <input type='text' style='width:100%;'
-                        placeholder='Desc...' (keyup)='updateFilter1(searchOpt, "description", 0)' [(ngModel)]="searchOpt['description']" name="description" />
-                    </td>
-                    <td width="25%">
-                        <input type='text' style='width:100%;'
-                        placeholder='ItemName...' (keyup)='updateFilter1(searchOpt, "item_name", 0)' [(ngModel)]="searchOpt['item_name']" name="item_nme" />
-                    </td>
-                    <td width="15%">
-                        <input type='text' style='width:100%;'
-                        placeholder='Rate...' (keyup)='updateFilter1(searchOpt, "rate", 0)' [(ngModel)]="searchOpt['rate']" name="rate" />
-                    </td>
-                    <td width="5%">
-                        <input type='text' style='width:100%;'
-                        placeholder='Uom' (keyup)='updateFilter1(searchOpt, "uom", 0)' [(ngModel)]="searchOpt['uom']" name="uom" />
-                    </td>
-                    <td width="5%">
-                        <input type='text' style='width:100%;'
-                        placeholder='Type' (keyup)='updateFilter1(searchOpt, "type", 0)' [(ngModel)]="searchOpt['type']" name="type" />
-                    </td>
-                    <td width="10%">
-                        <input type='text' style='width:100%;'
-                        placeholder='cf_price' (keyup)='updateFilter1(searchOpt, "cf_price", 0)' [(ngModel)]="searchOpt['cf_price']" name="cf_price" />
-                    </td>
-                    <td width="10%"></td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th width="5%">Sr.No.</th>
+                        <th width="30%">Description</th>
+                        <th width="25%">Item Name</th>
+                        <th width="15%">Rate</th>
+                        <th width="5%">UOM</th>
+                        <th width="10%">Type</th>
+                        <th width="10%">Cf_Price</th>
+                        <th width="10%"></th>
+                    </tr>
+                    <tr>
+                        <td width="5%">
+                            <input type='text' class="full-width"
+                            placeholder='Sr.No...' (keyup)='individualFilter(searchOpt, "srno", 0)' [(ngModel)]="searchOpt['srno']" name="srno" />
+                        </td>
+                        <td width="30%">
+                            <input type='text' class="full-width"
+                            placeholder='Desc...' (keyup)='individualFilter(searchOpt, "description", 0)' [(ngModel)]="searchOpt['description']" name="description" />
+                        </td>
+                        <td width="25%">
+                            <input type='text' class="full-width"
+                            placeholder='ItemName...' (keyup)='individualFilter(searchOpt, "item_name", 0)' [(ngModel)]="searchOpt['item_name']" name="item_nme" />
+                        </td>
+                        <td width="15%">
+                            <input type='text' class="full-width"
+                            placeholder='Rate...' (keyup)='individualFilter(searchOpt, "rate", 0)' [(ngModel)]="searchOpt['rate']" name="rate" />
+                        </td>
+                        <td width="5%">
+                            <input type='text' class="full-width"
+                            placeholder='Uom' (keyup)='individualFilter(searchOpt, "uom", 0)' [(ngModel)]="searchOpt['uom']" name="uom" />
+                        </td>
+                        <td width="5%">
+                            <input type='text' class="full-width"
+                            placeholder='Type' (keyup)='individualFilter(searchOpt, "type", 0)' [(ngModel)]="searchOpt['type']" name="type" />
+                        </td>
+                        <td width="10%">
+                            <input type='text' class="full-width"
+                            placeholder='cf_price' (keyup)='individualFilter(searchOpt, "cf_price", 0)' [(ngModel)]="searchOpt['cf_price']" name="cf_price" />
+                        </td>
+                        <td width="10%"></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let cfFactor of cfFactors; let i=index">
+                        <td width="5%">{{cfFactor['srno']}}</td>
+                        <td width="30%">{{cfFactor['description']}}</td>
+                        <td width="25%">{{cfFactor['material']['name']}}</td>
+                        <td width="5%">{{cfFactor['price']}}</td>
+                        <td width="15%">{{cfFactor['uom']}}</td>
+                        <td width="10%">{{cfFactor['type']}}</td>
+                        <td width="10%">{{cfFactor['cf_price']}}</td>
+                        <td width="10%">
+                            <div class="flex-box">
+                                <button (click)="loadCFFactorForEdit(cfFactor)"><app-icon [iconName]="'ic_create_black_24px'" ></app-icon></button>
+                                <button (click)="deleteCFFactor(cfFactor)"><app-icon [iconName]="'ic_delete_black_24px'"></app-icon></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
-            <div  style="height:30vh; overflow-y:auto;">
-            <table>
-                <tr *ngFor="let cfFactor of cfFactors; let i=index">
-                    <td width="5%">{{cfFactor['srno']}}</td>
-                    <td width="30%">{{cfFactor['description']}}</td>
-                    <td width="25%">{{cfFactor['material']['name']}}</td>
-                    <td width="5%">{{cfFactor['price']}}</td>
-                    <td width="15%">{{cfFactor['uom']}}</td>
-                    <td width="10%">{{cfFactor['type']}}</td>
-                    <td width="10%">{{cfFactor['cf_price']}}</td>
-                    <td width="10%">
-                        <div style="display:inline-flex;">
-                            <button (click)="loadCFFactorForEdit(cfFactor)"><app-icon [iconName]="'ic_create_black_24px'" ></app-icon></button>
-                            <button (click)="deleteCFFactor(cfFactor)"><app-icon [iconName]="'ic_delete_black_24px'"></app-icon></button>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-            </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-6">
-            <label>PerPageCount</label>
-            <input type="number" placeholder="Entries per sheet" [ngModel]="perPageCount" (ngModelChange)="perPageCountChange($event)">
-        </div>
-        <div class="col-md-6">
-            <app-pagination *ngIf="pageCount" [pageCount]="pageCount" [countPerPage]="perPageCount" (pageSelected)=selPage($event) >
-            </app-pagination>
-        </div>
-    </div>
+<!--     <div class="row">
+        <app-pagination *ngIf="pageCount" [pageCount]="pageCount" (pageSelected)=selPage($event) (perPageCount)="perPageCountChange($event)">
+        </app-pagination>
+    </div> -->
 
 </div>

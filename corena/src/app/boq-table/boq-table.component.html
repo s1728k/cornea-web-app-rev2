@@ -1,21 +1,21 @@
-<div class="container-fluid">
+<div class="container-fluid unselectable">
   <div class="row">
     <div class="col-md-12">
-      <h3 class="unselectable" style="border-bottom: 1px solid grey">BOQs</h3>
+      <h3 class="heading">BOQs</h3>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-md-12" style="height:20vh;overflow-y:auto">
+    <div class="col-md-12 overflow" style="height:20vh">
       <div class="row">
         <div class="col-md-4" *ngFor="let project of projectList; let i=index">
           <md-card style="padding:0px; width:100%; border: 0px solid red;">
             <md-list>
-            <div style="display:flex">
-              <button md-button (click)="getBoqList(project)" style="width:100%"><h4>{{project.name}}</h4></button><button md-button (click)="redirectToUploadScreen(project)"><app-icon [iconName]="'ic_add_box_black_24px'"></app-icon></button>
+            <div class="flex-box">
+              <button md-button (click)="getBoqList(project)" class="full-width"><h4>{{project.name}}</h4></button><button md-button (click)="redirectToUploadScreen(project)"><app-icon [iconName]="'ic_add_box_black_24px'"></app-icon></button>
             </div>
               <md-list-item class="md-2-line" *ngFor="let boq of projectList[i].boq">
-                <button md-button (click)="updateBoqTable(boq)" style="width:100%"> {{boq.name}}</button>
+                <button md-button (click)="updateBoqTable(boq)" class="full-width"> {{boq.name}}</button>
 <!--                 <button md-button (click)="redirectToUploadScreen(project)"><app-icon [iconName]="'ic_add_box_black_24px'"></app-icon></button> -->
               </md-list-item>
             </md-list>
@@ -27,21 +27,21 @@
 
   <div class="row">
     <div class="col-md-12">
-      <h3 style="border-bottom: 1px solid grey">Selected BOQ</h3>
+      <h3 class="heading">Selected BOQ</h3>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-10"></div>
     <div class="col-md-2">
-      <button md-raised-button *ngIf="toggleCreateView" style="width:100%" (click)="redirecToRateAnalysis()">View Rate Analysis</button>
-      <button md-raised-button *ngIf="!toggleCreateView" style="width:100%" (click)="redirecToRateAnalysis()">Create Rate Analysis</button>
+      <button md-raised-button *ngIf="toggleCreateView" class="full-width" (click)="redirecToRateAnalysis()">View Rate Analysis</button>
+      <button md-raised-button *ngIf="!toggleCreateView" class="full-width" (click)="redirecToRateAnalysis()">Create Rate Analysis</button>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-md-12" style="border: 0px solid red; padding-top:10px;">
-      <md-card style="padding: 0px;">
+    <div class="col-md-12">
+      <md-card>
         <table>
           <thead>
           <tr>

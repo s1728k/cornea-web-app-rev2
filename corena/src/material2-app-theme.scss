@@ -9,7 +9,7 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue.
-$candy-app-primary: mat-palette($mat-teal);
+$candy-app-primary: mat-palette($mat-cyan);
 $candy-app-accent:  mat-palette($mat-pink, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
@@ -22,5 +22,238 @@ $candy-app-theme: mat-light-theme($candy-app-primary, $candy-app-accent, $candy-
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($candy-app-theme);
+@include mat-button-theme($candy-app-theme);
+@include mat-checkbox-theme($candy-app-theme);
 
-.material-icons.orange600 { color: #FB8C00; }
+.material-icons.orange600 {
+    color: #FB8C00;
+    // background-color: mat-color($candy-app-primary);
+    // border-color: mat-color($candy-app-accent, A400)
+}
+.input-label {
+    color:mat-color($candy-app-primary);
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+h3.heading{
+  border-bottom:1px solid mat-color($candy-app-primary);
+  margin-bottom:10px;
+  margin-top:10px;
+}
+
+h4.heading{
+  border-bottom:1px solid mat-color($candy-app-primary);
+  margin-bottom:10px;
+  margin-top:10px;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid mat-color($candy-app-primary);
+    text-align: left;
+    padding-left: 2px;
+}
+
+md-card{
+    padding-top: 0px;
+}
+
+md-chip {
+  min-width: 200px;
+}
+
+table.total {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: auto;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.inp{
+    width:100%;
+    border:0px;
+}
+
+.full-width{
+    width:100%;
+}
+
+.search-box{
+    padding:10px;
+}
+
+.flex-box{
+    display: inline-flex;
+}
+
+.float-right{
+    float: right
+}
+
+.align-right{
+    text-align: right
+}
+
+.overflow{
+    overflow-y:auto;
+}
+
+.auto-table{
+    width: auto;
+}
+
+.test-border{
+    border:1px solid red;
+}
+
+.b-margin{
+    margin-bottom:10px;
+}
+
+
+/* this section is panels used in project heirarchy */
+.panel-danger .panel-heading{
+    background-color: mat-color($candy-app-warn);
+    border-bottom: 0px solid #B71C1C;
+    color: white;
+}
+.panel-warning .panel-heading{
+    background-color: mat-color($candy-app-accent);
+    border-bottom: 0px solid #B71C1C;
+    color: white;
+}
+.panel-primary .panel-heading{
+    background-color: mat-color($candy-app-primary);
+    border-bottom: 0px solid #B71C1C;
+    color: white;
+}
+.panel-danger .panel-body{
+    border: 1px solid mat-color($candy-app-warn);
+    border-top: 1px solid mat-color($candy-app-warn);
+    height: 40vh;
+    overflow-y:auto;
+}
+.panel-warning .panel-body{
+    border: 1px solid mat-color($candy-app-accent);
+    border-top: 1px solid mat-color($candy-app-accent);
+    height: 40vh;
+    overflow-y:auto;
+}
+.panel-primary .panel-body{
+    border: 1px solid mat-color($candy-app-primary);
+    border-top: 1px solid mat-color($candy-app-primary);
+    height: 40vh;
+    overflow-y:auto;
+}
+.panel-default .panel-body{
+  height: 10%;
+}
+/*  end of css for projct hierarchy */
+
+/* css for file-upload-- */
+.my-drop-zone {
+  border: dotted 3px mat-color($candy-app-primary);
+  text-align: center;
+    margin-top: 2%; /* Add a top margin to avoid content overlay */
+    padding: 30px;
+}
+
+.nv-file-over {
+  border: dotted 3px red;
+}
+
+            /* Default class applied to drop zones on over */
+.another-file-over-class {
+  border: dotted 3px green;
+}
+
+/* end of css for file-upload-- */
+
+/* css for pagination */
+li{
+  padding: 10px;
+  border: 1px solid mat-color($candy-app-primary);
+}
+
+li.active{
+    border: 1px solid mat-color($candy-app-primary);
+    color: white;
+    background-color: mat-color($candy-app-primary) !important;
+}
+
+li:hover{
+  cursor: pointer;
+  color: white;
+  background-color: mat-color($candy-app-primary) !important;
+}
+
+li:hover .inpwidth{
+  color: black;
+}
+
+     /* Prevent double borders */
+ul li:not(:last-child) {
+    border-right: none;
+}
+
+.inpwidth {
+  width:50px;
+}
+
+.pagination {
+    display: inline-flex;
+    margin: 0px;
+}
+
+/* end of css for pagination */
+
+button{
+    background-color: mat-color($candy-app-primary);
+}
+
+.btn-success, .btn-primary{
+    background-color: mat-color($candy-app-primary);
+    color: white;
+    padding: .5em;
+    padding-left: 1em;
+    padding-right: 1em;
+    border: 0px;
+}
+
+.btn-warning{
+    background-color: mat-color($candy-app-accent);
+    color: white;
+    padding: .5em;
+    padding-left: 1em;
+    padding-right: 1em;
+    border: 0px;
+}
+
+.btn-danger{
+    background-color: mat-color($candy-app-warn);
+    color: white;
+    padding: .5em;
+    padding-left: 1em;
+    padding-right: 1em;
+    border: 0px;
+}

@@ -12,6 +12,7 @@ export class IconsComponent implements OnInit{
 
     @Input() iconName:string;
     @Input() prefix:boolean=false;
+    @Input() suffix:boolean=false;
     @Output() clicked = new EventEmitter();
 
     constructor(private iconRegistry: MdIconRegistry, private sanitizer: DomSanitizer) {

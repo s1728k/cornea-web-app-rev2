@@ -1,11 +1,35 @@
-li{
+/* li{
   padding: 10px;
-  border: 1px solid grey;
+  border: 1px solid #009688;
 }
+
+li.active{
+    border: 1px solid #009688;
+    color: white;
+    background-color: #009688 !important;
+}
+
 li:hover{
   cursor: pointer;
-  background-color: grey !important;
+  color: white;
+  background-color: #009688 !important;
 }
+
+li:hover .inpwidth{
+  color: black;
+}
+
+
 ul li:not(:last-child) {
-    border-right: none; /* Prevent double borders */
+    border-right: none;
 }
+
+.inpwidth {
+  width:50px;
+}
+
+.pagination {
+    display: inline-flex;
+    margin: 0px;
+}
+*/

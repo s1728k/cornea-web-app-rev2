@@ -1,17 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import {RestApiService} from '../services/rest-api-service.service';
 
 // ------models used-----------------
 import {Material} from '../model/class/material.model'
+
+// ------------http imports-------------------------------
+import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
+// Observable class extensions
+import 'rxjs/add/observable/of';
+// Observable operators
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
 
 @Component({
   selector: 'app-material',
   templateUrl: './material.component.html',
   styleUrls: ['./material.component.css']
 })
-export class MaterialComponent implements OnInit {
+export class MaterialComponent implements OnInit, AfterViewInit {
 
-  hasCfList: {}[]= [{id: 1, name: 'Yes'}, {id: 2, name: 'No'}];
+  materials: Observable<Material[]>;
+  searchLoad:Subject<string> = new Subject<string>();
+  searchTotal:Subject<string> = new Subject<string>();
+  quickLoad:Subject<string> = new Subject<string>();
+  quickTotal:Subject<string> = new Subject<string>();
+  loadTime:number=300;
+
+  hasCfList: {}[]= [{id: 1, name: 'Yes'}, {id: 0, name: 'No'}];
+  hasCfDisp:{}={0:'No',1:'Yes'};
   searchOpt: {}= {brand: '', modal: '', job: ''};
   ed: {}= {};
   lastSearchObj: {}= {};
@@ -20,12 +39,42 @@ export class MaterialComponent implements OnInit {
   activePage=0;
 
   newMaterial: Material= new Material;
-  materials:Material[];
-
+  //materials:Material[];
 
   constructor(private restApiService: RestApiService) { }
 
   ngOnInit() {
+    this.materials = this.searchLoad
+      .debounceTime(this.loadTime)        // wait 300ms after each keystroke before considering the term
+      .distinctUntilChanged()   // ignore if next search term is same as previous
+      .switchMap(term => this.restApiService.search(term))
+      .catch(error => {
+        // TODO: add real error handling
+        console.log(error);
+        return Observable.of<Material[]>([]);
+      });
+
+    this.searchTotal
+      .debounceTime(this.loadTime)        // wait 300ms after each keystroke before considering the term
+      .distinctUntilChanged()   // ignore if next search term is same as previous
+      .switchMap((term)=> this.restApiService.getLength(term))
+      .subscribe((value)=>{this.pageCount = value})
+
+    // this.materials = this.quickLoad
+    //   .switchMap(term => this.restApiService.search(term))
+    //   .catch(error => {
+    //     // TODO: add real error handling
+    //     console.log(error);
+    //     return Observable.of<Material[]>([]);
+    //   });
+
+    // this.quickTotal
+    //   .switchMap((term)=> this.restApiService.getLength(term))
+    //   .subscribe((value)=>{this.pageCount = value})
+
+  }
+
+  ngAfterViewInit(){
     this.getMaterials(0);
   }
 
@@ -36,23 +85,27 @@ export class MaterialComponent implements OnInit {
   }
 
   getPageCount(sTerm: string, fltr: string): void{
-    const url = 'http://49.50.76.29/api/material/search?search='+ sTerm +'&' + fltr + '&perPage=10&page=0';
 
-    this.restApiService.getRequest(url)
-      .map(res => /*this.loggeddInUser = <User>*/res.json().total)
-      .subscribe(
-        (value: any) => {
-          this.pageCount = value;
-          console.log(this.pageCount);
-        },
-        (err: any) => {
-          console.error(err);
-        }
-      );
-    console.log(this.pageCount);
+    // const url = 'http://49.50.76.29/api/material/search?search='+ sTerm +'&' + fltr + '&perPage=1&page=0';
+    // this.restApiService.url2 = url
+    // this.searchTerms2.next(sTerm);
+
+    // this.restApiService.getRequest(url)
+    //   .map(res => /*this.loggeddInUser = <User>*/res.json().total)
+    //   .subscribe(
+    //     (value: any) => {
+    //       this.pageCount = value;
+    //       console.log(this.pageCount);
+    //     },
+    //     (err: any) => {
+    //       console.error(err);
+    //     }
+    //   );
+    // console.log(this.pageCount);
   }
 
   selPage(p){
+    console.log(this.lastSearchObj['from'])
     this.activePage=p;
     switch (this.lastSearchObj['from']) {
       case "full":
@@ -79,23 +132,22 @@ export class MaterialComponent implements OnInit {
 
   getMaterials(n) {
     this.lastSearchObj = {'from':'start','1':n};
+    this.loadTime=0;
 
-    const url = 'http://49.50.76.29/api/material/search?search=&filter[]=name&filter[]=srno&filter[]=brand&perPage=' +
+    let url = 'http://49.50.76.29/api/material/search?search=&filter[]=name&filter[]=srno&filter[]=brand&filter[]=uom&perPage=' +
                 String(this.perPageCount) + '&page=' + String(n);
 
-    this.restApiService.getRequest(url)
-      .map(res => /*this.loggeddInUser = <User>*/res.json().data)
-      .subscribe(
-        (value: Material[]) => {
-          this.materials = value;
-          console.log(n);
-          console.log(this.materials);
-        },
-        (err: any) => {
-          console.error(err);
-        }
-      );
-    this.getPageCount('','filter[]=name&filter[]=srno&filter[]=brand');
+
+                console.log(n);
+    this.searchLoad.next(url);
+
+
+    url = 'http://49.50.76.29/api/material/search?search=&filter[]=name&filter[]=srno&filter[]=brand&filter[]=uom&perPage=' +
+                String(1) + '&page=' + String(0);
+
+
+    this.searchTotal.next(url);
+
   }
 
   postMaterial() {
@@ -169,44 +221,40 @@ export class MaterialComponent implements OnInit {
     }
 
     this.lastSearchObj = {'from':'full','1':val, '2':n};
+    this.loadTime=300;
 
-    const url = 'http://49.50.76.29/api/material/search?search='+val+
-                '&filter[]=name&filter[]=srno&filter[]=brand&perPage=' +
+    let url = 'http://49.50.76.29/api/material/search?search='+val+
+                '&filter[]=name&filter[]=srno&filter[]=brand&filter[]=uom&perPage=' +
                 String(this.perPageCount) + '&page=' + String(n);
 
-    this.restApiService.getRequest(url)
-      .map(res => /*this.loggeddInUser = <User>*/res.json().data)
-      .subscribe(
-        (value: Material[]) => {
-          this.materials = value;
-          console.log(this.materials);
-        },
-        (err: any) => {
-          console.error(err);
-        }
-      );
-    this.getPageCount(val, 'filter[]=name&filter[]=srno&filter[]=brand');
+    this.searchLoad.next(url)
+
+    url = 'http://49.50.76.29/api/material/search?search='+val+
+                '&filter[]=name&filter[]=srno&filter[]=brand&filter[]=uom&perPage=' +
+                String(1) + '&page=' + String(0);
+
+    this.searchTotal.next(url)
 
   }
 
   individualFilter(sParam, k, n){
     this.lastSearchObj = {'from':'ind','1':sParam, '2':k, '3':n};
-    const url = 'http://49.50.76.29/api/material/search?search='+ sParam[k] +
+    this.loadTime=300;
+
+    let url = 'http://49.50.76.29/api/material/search?search='+ sParam[k] +
                 '&filter[]='+ k +'&perPage=' +
                 String(this.perPageCount) + '&page=' + String(n);
 
-    this.restApiService.getRequest(url)
-      .map(res => /*this.loggeddInUser = <User>*/res.json().data)
-      .subscribe(
-        (value: Material[]) => {
-          this.materials = value;
-          console.log(this.materials);
-        },
-        (err: any) => {
-          console.error(err);
-        }
-      );
-    this.getPageCount(sParam[k], 'filter[]='+ k);
+
+    this.searchLoad.next(url)
+
+
+    url = 'http://49.50.76.29/api/material/search?search='+ sParam[k] +
+                '&filter[]='+ k +'&perPage=' +
+                String(1) + '&page=' + String(0);
+
+    this.searchTotal.next(url)
+
   }
 
 }

@@ -10,7 +10,7 @@ import {MainRateAnalysis} from '../model/class/main-rate-analysis.model'
 import {MaterialRateAnalysis} from '../model/class/line-item-material.model'
 import {LabourRateAnalysis} from '../model/class/labour-rate-analysis.model'
 import {LineItem} from '../model/class/line-item.model'
-
+import {Material} from '../model/class/material.model'
 
 // ------------http imports-------------------------------
 import {Observable} from 'rxjs/Observable';
@@ -22,9 +22,6 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
-import {FormControl} from '@angular/forms';
-import {Http} from '@angular/http';
-
 
 @Component({
   selector: 'app-rate-analysis',
@@ -34,7 +31,8 @@ import {Http} from '@angular/http';
 
 export class RateAnalysisComponent implements OnInit {
 
-  queryField: FormControl = new FormControl();
+  materials: Observable<Material[]>;
+  materialSuggestion:Subject<string> = new Subject<string>();
 
   calcs2: {}[] = [];
 
@@ -43,33 +41,63 @@ export class RateAnalysisComponent implements OnInit {
   wastage: number;
   cfList:any;
   cf_price:number=0;
-  materials1: {}[];
+
   lineItems: LineItem[];
   mainRateAnalysis:MainRateAnalysis;
   materialRateAnalysis:MaterialRateAnalysis;
   labourRateAnalysis:LabourRateAnalysis;
   itemRateAnalysis:MainRateAnalysis[]=[];
 
-
   // variable for grand total one for item rate analysis and other for overhead.
   grandTotal2V: any;
 
-  constructor(private restApiService: RestApiService, private _http: Http, private dialog: MdDialog) {}
+  constructor(private restApiService: RestApiService, private dialog: MdDialog) {}
 
   ngOnInit() {
-    this.lineItems = this.restApiService.comm_obj['lineItems'];
-    console.log(this.lineItems);
-    this.queryField.valueChanges
-      .debounceTime(200)
-      .distinctUntilChanged()
-      .switchMap((query) =>  this.search(query))
-      .subscribe( result => {  if (result.status === 400) { return; } else { this.materials1 = result.json().data; console.log(this.materials1) }
+    this.materials = this.materialSuggestion
+      .debounceTime(300)        // wait 300ms after each keystroke before considering the term
+      .distinctUntilChanged()   // ignore if next search term is same as previous
+      .switchMap(term => term   // switch to new observable each time the term changes
+        // return the http search observable
+        ? this.restApiService.search(term)
+        // or the observable of empty heroes if there was no search term
+        : Observable.of<Material[]>([]))
+      .catch(error => {
+        // TODO: add real error handling
+        console.log(error);
+        return Observable.of<Material[]>([]);
       });
+
+    // this.lineItems = this.restApiService.comm_obj['lineItems'];
+    // for (let i = 0; i < this.lineItems.length; i++) {
+    //   this.addMainRateAnalysis();
+    //   this.lineItems[i]
+    // }
+    // console.log(this.lineItems);
+    this.getBoqList()
   }
 
-  search(queryString: string) {
-    let _URL = 'http://49.50.76.29/api/material/search?search=' + queryString + '&filter[]=name&filter[]=srno&filter[]=brand&appends[]=coefficiency';
-    return this._http.get(_URL);
+  getBoqList(): void {
+    const url ="http://49.50.76.29/api/boq/1?appends[]=lineItems&hidden[]=created_at&hidden[]=updated_at"
+    this.restApiService.getRequest(url)
+      .map(response => response.json().data[0])
+      .subscribe( (value)=> {
+        console.log(value);
+          this.lineItems = value['lineItems'];
+          for (let i = 0; i < this.lineItems.length; i++) {
+            this.addMainRateAnalysis();
+          }
+          console.log(this.lineItems);
+        },
+        (error: any) => {
+          console.log(error);
+        },
+      );
+  }
+
+  searchMaterials(term: string){
+    const url ="http://49.50.76.29/api/material/search?search=" + term + "&filter[]=name&filter[]=srno&filter[]=brand"
+    this.materialSuggestion.next(url);
   }
 
   addMainRateAnalysis({}={}) {
@@ -90,7 +118,6 @@ export class RateAnalysisComponent implements OnInit {
     }
   }
 
-  addCF: {}[]= [];
   deleteMaterialRateAnalysis(i, j) {
     this.itemRateAnalysis[i].material_rate_analysis.splice(j, 1);
   }
@@ -104,7 +131,6 @@ export class RateAnalysisComponent implements OnInit {
       this.cfList=material['coefficiency']['cf_price'];
       //this.itemRateAnalysis[i].material_rate_analysis[j]['CF']=material['coefficiency']['cf_price'];
   }
-
 
   postItemRateAnalysis(i) {
     const url = 'http://49.50.76.29/api/ra/new';
@@ -130,8 +156,28 @@ export class RateAnalysisComponent implements OnInit {
 
   }
 
+  overheadCurrection(){
+    for (var i = 0; i < this.lineItems.length; i++) {
+      this.grandTotal(i);
+    }
+  }
 
-  amountCalc(i,j){
+  profitCurrection(){
+    for (var i = 0; i < this.lineItems.length; i++) {
+      this.grandTotal(i);
+    }
+  }
+
+  wastageCurrection(){
+    for (var i = 0; i < this.lineItems.length; i++) {
+      this.grandTotal(i);
+    }
+  }
+
+  grandTotal(i){
+    if (!this.itemRateAnalysis[i].labour_total){
+      this.itemRateAnalysis[i].labour_total=0
+    }
     this.itemRateAnalysis[i].material_total=0
     for (let j = this.itemRateAnalysis[i].material_rate_analysis.length - 1; j >= 0; j--) {
       if (this.itemRateAnalysis[i].material_rate_analysis[j]['wastage']){
@@ -156,6 +202,8 @@ export class RateAnalysisComponent implements OnInit {
         this.itemRateAnalysis[i].material_total = this.itemRateAnalysis[i].material_total + this.itemRateAnalysis[i].material_rate_analysis[j]['amount']
       }
       this.itemRateAnalysis[i].grand_total= +this.itemRateAnalysis[i].labour_total + this.itemRateAnalysis[i].material_total
+      this.itemRateAnalysis[i].profit_margin=this.profit/100*this.itemRateAnalysis[i].grand_total
+      this.itemRateAnalysis[i].overhead_margin=this.overhead/100*this.itemRateAnalysis[i].grand_total
     }
   }
 

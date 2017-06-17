@@ -1,2 +1,3 @@
-<md-icon *ngIf="prefix" svgIcon="{{iconName}}" color="primary" class="material-icons orange600"></md-icon>
-<md-icon *ngIf="!prefix" mdSuffix svgIcon="{{iconName}}" color="primary" class="clickable material-icons orange600" (click)="clickedIcon()" style="float: right;"></md-icon>
+<md-icon *ngIf="!prefix && !suffix" svgIcon="{{iconName}}" color="primary" class="material-icons orange600" style="font-size: 1em"></md-icon>
+<md-icon *ngIf="prefix" mdPrefix svgIcon="{{iconName}}" color="primary" class="material-icons orange600" style="font-size: 1em"></md-icon>
+<md-icon *ngIf="suffix" mdSuffix svgIcon="{{iconName}}" color="primary" class="clickable material-icons orange600" (click)="clickedIcon()" style="float: right; font-size: 1em"></md-icon>

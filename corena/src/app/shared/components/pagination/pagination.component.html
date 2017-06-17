@@ -1,3 +1,22 @@
-<ul class="pagination">
-  <li *ngFor="let Page of Pages" (click)="loadPage(Page)" [style.background-color]="bgClr[Page]">{{Page+1}}</li>
-</ul>
+<ng-container *ngIf="Pages.length<=vPages">
+    <ul class="pagination">
+      <li>PerPageCount: <input type="number" [(ngModel)]="countPerPage" (change)="refreshPagination(countPerPage)" class="inpwidth"></li>
+      <li>GoToPage: <input type="number" [(ngModel)]="goToPage" (change)="refreshVpages(goToPage-1)" class="inpwidth"></li>
+      <ng-container *ngFor="let Page of Pages">
+        <li *ngIf="Page>=fPage && Page<=lPage" (click)="loadPage(Page)" [class.active]="clActive[Page]">{{Page+1}}</li>
+      </ng-container>
+    </ul>
+</ng-container>
+<ng-container *ngIf="Pages.length>vPages">
+    <ul class="pagination" >
+      <li>PerPageCount: <input type="number" [(ngModel)]="countPerPage" (change)="refreshPagination(countPerPage)" class="inpwidth"></li>
+      <li>GoToPage: <input type="number" [(ngModel)]="goToPage" (change)="refreshVpages(goToPage-1)" class="inpwidth"></li>
+      <li (click)="refreshVpages(0)" [style.background-color]="grey"><<</li>
+      <li (click)="refreshVpages(pageSelOld-1)" [style.background-color]="grey"><</li>
+      <ng-container *ngFor="let Page of Pages">
+        <li *ngIf="Page>=fPage && Page<=lPage" (click)="loadPage(Page)" [class.active]="clActive[Page]">{{Page+1}}</li>
+      </ng-container>
+      <li (click)="refreshVpages(pageSelOld+1)" [style.background-color]="grey">></li>
+      <li (click)="refreshVpages(Pages.length-1)" [style.background-color]="grey">>></li>
+    </ul>
+</ng-container>

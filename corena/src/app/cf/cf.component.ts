@@ -84,6 +84,8 @@ export class CfComponent implements OnInit {
   loadCFFactorForEdit(cfFactor) {
       // this.newCFFactor=cfFactor;
       // this.subMaterials=cfFactor['submaterials'];
+      console.log(cfFactor)
+      this.newCFFactor=cfFactor
       this.cfMaterial=cfFactor.material.name
       this.ed['edit']=true;
   }
@@ -203,6 +205,8 @@ export class CfComponent implements OnInit {
         (value: CFFactor) => {
           this.newCFFactor = value;
           console.log(value);
+          this.newCFFactor=new CFFactor();
+          this.cfMaterial="";
           this.selPage(this.activePage);
         },
         (err: any) => {
@@ -239,8 +243,7 @@ export class CfComponent implements OnInit {
 
     this.lastSearchObj = {'from':'full','1':val, '2':n};
 
-    const fltr = '&filter[]=cf_price&filter[]=item_id&filter[]=uom' +
-                '&filter[]=type&filter[]=price&filter[]=description&hidden[]=pivot'
+    const fltr = '&filter[]=cf_price&filter[]=item_id&filter[]=uom&filter[]=type&filter[]=price&filter[]=description&appends[]=material&appends[]=submaterials'
 
     const url = 'http://49.50.76.29/api/cf/search?search='+fltr+'&perPage=' + String(this.perPageCount) + '&page=' + String(n);
 
@@ -261,7 +264,7 @@ export class CfComponent implements OnInit {
   individualFilter(sParam, k, n){
     this.lastSearchObj = {'from':'ind','1':sParam, '2':k, '3':n};
     const url = 'http://49.50.76.29/api/cf/search?search='+ sParam[k] +
-                '&filter[]='+ k +'&hidden[]=pivot&perPage=' +
+                '&filter[]='+ k +'&appends[]=material&appends[]=submaterials&hidden[]=pivot&perPage=' +
                 String(this.perPageCount) + '&page=' + String(n);
 
     this.restApiService.getRequest(url)
