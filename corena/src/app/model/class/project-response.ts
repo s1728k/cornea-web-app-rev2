@@ -1,4 +1,4 @@
-import {BoqNameId} from './name.id.model';
+import {BoqNameId} from './name-id.model';
 /**
  * Created by DELL on 6/5/2017.
  */

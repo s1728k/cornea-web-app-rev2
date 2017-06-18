@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/Forms';
+import { FormsModule } from '@angular/forms';
 import {MaterialModule, MdNativeDateModule, MdButtonModule} from '@angular/material';
 import {DndModule} from 'ng2-dnd';
 import { IconsComponent } from './components/icons/icons.component';

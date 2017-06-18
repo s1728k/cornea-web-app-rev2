@@ -9,7 +9,7 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue.
-$candy-app-primary: mat-palette($mat-cyan);
+$candy-app-primary: mat-palette($mat-teal);
 $candy-app-accent:  mat-palette($mat-pink, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
@@ -65,6 +65,10 @@ td, th {
     border: 1px solid mat-color($candy-app-primary);
     text-align: left;
     padding-left: 2px;
+}
+
+.index {
+    background-color: mat-color($candy-app-primary);
 }
 
 md-card{
@@ -123,7 +127,7 @@ table.total {
 }
 
 .test-border{
-    border:1px solid red;
+    border:1px solid mat-color($candy-app-primary);
 }
 
 .b-margin{
@@ -217,7 +221,7 @@ ul li:not(:last-child) {
 }
 
 .inpwidth {
-  width:50px;
+  width:3em;
 }
 
 .pagination {
@@ -256,4 +260,8 @@ button{
     padding-left: 1em;
     padding-right: 1em;
     border: 0px;
+}
+
+.btn-icon{
+    padding: 3em;
 }

@@ -1,57 +1,80 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import {RestApiService} from '../services/rest-api-service.service';
 
 // ----Models Used-------------
 import {Labour} from '../model/class/labour.model'
+
+// ------------http imports-------------------------------
+import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
+// Observable class extensions
+import 'rxjs/add/observable/of';
+// Observable operators
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
 
 @Component({
   selector: 'app-labour',
   templateUrl: './labour.component.html',
   styleUrls: ['./labour.component.css']
 })
-export class LabourComponent implements OnInit {
+export class LabourComponent implements OnInit, AfterViewInit {
 
-  uomList: {}[]= ['hourly', 'daily', 'monthly'];
-  typeList: any[]= ['Internal', 'Contract'];
-  searchOpt: {}= {brand: '', modal: '', job: ''};
-  ed: {}= {};
-  lastSearchObj: {}= {};
+  labours: Observable<Labour[]>;
+  searchLoad:Subject<string> = new Subject<string>(); // subject used to monitor labours observable
+  searchTotal:Subject<string> = new Subject<string>(); // subject used to monitor total count of labours
+
+  uomList: {}[]= ['hourly', 'daily', 'monthly']; // for Dropdown select purpose
+  typeList: any[]= ['Internal', 'Contract']; // for Dropdown select purpose
+  searchOpt: {}= {brand: '', modal: '', job: ''}; // empty object used to pass the individual column searched for
+  ed: {}= {}; // boolean for editing mode
+  lastSearchObj: {}= {}; // used as a token to identify request is comming from normal get request or general search or individual search
   pageCount= 4;
   perPageCount= 2;
   activePage=0;
 
   newLabour: Labour= new Labour();
-  labours: Labour[];
+  //labours: Labour[];
 
   constructor(private restApiService: RestApiService) { }
 
   ngOnInit() {
+    this.labours = this.searchLoad
+      .debounceTime(300)        // wait 300ms after each keystroke before considering the term
+      .distinctUntilChanged()   // ignore if next search term is same as previous
+      .switchMap(term => this.restApiService.search(term))
+      .catch(error => {
+        // TODO: add real error handling
+        console.log(error);
+        return Observable.of<Labour[]>([]);
+      });
+
+    this.searchTotal
+      .debounceTime(300)        // wait 300ms after each keystroke before considering the term
+      .distinctUntilChanged()   // ignore if next search term is same as previous
+      .switchMap((term)=> this.restApiService.getLength(term))
+      .subscribe((value)=>{this.pageCount = value})
+
+  }
+
+  ngAfterViewInit(){
+    // console.log("ngAfterViewInit")
     this.getLabours(0);
   }
 
   perPageCountChange(perPageCount) {
+    // console.log("Entered page count change")
+    // console.log(perPageCount)
     this.perPageCount=perPageCount;
     this.getLabours(0);
   }
 
-  getPageCount(sTerm: string, fltr: string): void{
-    const url = 'http://49.50.76.29/api/labour/search?search='+ sTerm +'&' + fltr + '&perPage=10&page=0';
-
-    this.restApiService.getRequest(url)
-      .map(res => /*this.loggeddInUser = <User>*/res.json().total)
-      .subscribe(
-        (value: any) => {
-          this.pageCount = value;
-          console.log(this.pageCount);
-        },
-        (err: any) => {
-          console.error(err);
-        }
-      );
-    console.log(this.pageCount);
-  }
-
-  selPage(p){
+  selectPage(p){
+    // console.log("Entered select page")
+    // console.log(p)
+    // console.log(this.lastSearchObj['from'])
     this.activePage=p;
     switch (this.lastSearchObj['from']) {
       case "full":
@@ -73,37 +96,34 @@ export class LabourComponent implements OnInit {
   }
 
   getLabours(n) {
+    // console.log("Entered get labours")
+    // console.log(n)
     this.lastSearchObj = {'from':'start','1':n};
 
-    const url = 'http://49.50.76.29/api/labour/search?search=&filter[]=srno&filter[]=name&filter[]=age&filter[]=type&filter[]=category&filter[]=uom&perPage=' +
+    let url = 'http://49.50.76.29/api/labour/search?search=&filter[]=name&filter[]=srno&filter[]=uom&filter[]=category&filter[]=age&filter[]=type&filter[]=rate&perPage=' +
                 String(this.perPageCount) + '&page=' + String(n);
 
-    this.restApiService.getRequest(url)
-      .map(res => /*this.loggeddInUser = <User>*/res.json().data)
-      .subscribe(
-        (value: Labour[]) => {
-          this.labours = value;
-          console.log(n);
-          console.log(this.labours);
-        },
-        (err: any) => {
-          console.error(err);
-        }
-      );
-    this.getPageCount('','filter[]=srno&filter[]=name&filter[]=age&filter[]=type&filter[]=category&filter[]=uom');
+    this.searchLoad.next(url);
+
+    url = 'http://49.50.76.29/api/labour/search?search=&filter[]=name&filter[]=srno&filter[]=uom&filter[]=category&filter[]=age&filter[]=type&filter[]=rate&perPage=' +
+                String(1) + '&page=' + String(0);
+
+    this.searchTotal.next(url);
   }
 
   postLabour() {
+    // console.log("Entered post labour")
     const url = 'http://49.50.76.29/api/labour/new';
-    this.newLabour['srno']=""
+    this.newLabour['srno']="";
+    // console.log(this.newLabour);
     this.restApiService.postRequest(url, this.newLabour)
-      .map(res => /*this.loggeddInUser = <User>*/res.json().data[0])
+      .map(res => res.json().data[0])
       .subscribe(
         (value: Labour) => {
           this.newLabour = value;
-          console.log(this.newLabour);
-          this.newLabour= new Labour();
-          this.selPage(this.activePage);
+          // console.log(this.newLabour);
+          this.newLabour= new Labour;
+          this.selectPage(this.activePage);
         },
         (err: any) => {
           console.error(err);
@@ -111,35 +131,37 @@ export class LabourComponent implements OnInit {
       );
   }
 
-  putLabour(material) {
-    const url = 'http://49.50.76.29/api/labour/' + String(material.id);
-
-    this.restApiService.putRequest(url, material)
-      .map(res => /*this.loggeddInUser = <User>*/res.json().data)
+  putLabour(labour) {
+    // console.log("Entered put labour")
+    // console.log(labour)
+    const url = 'http://49.50.76.29/api/labour/' + String(labour.id);
+    // console.log(labour)
+    this.restApiService.putRequest(url, labour)
+      .map(res => res.json().data)
       .subscribe(
         (value: Labour) => {
           this.newLabour = value;
-          console.log(value);
-          this.selPage(this.activePage);
+          // console.log(this.newLabour)
+          this.selectPage(this.activePage);
         },
         (err: any) => {
           console.error(err);
         }
       );
-    // console.log(this.materialListDb);
-
   }
 
-  deleteLabour(material) {
-    const url = 'http://49.50.76.29/api/labour/' + String(material.id);
+  deleteLabour(labour) {
+    // console.log("Entered delete labour")
+    // console.log(labour)
+    const url = 'http://49.50.76.29/api/labour/' + String(labour.id);
 
     this.restApiService.deleteRequest(url)
-      .map(res => /*this.loggeddInUser = <User>*/res.json().data)
+      .map(res => res.json().data)
       .subscribe(
         (value: Labour) => {
           this.newLabour = value;
-          console.log(value);
-          this.selPage(this.activePage);
+          // console.log(this.newLabour)
+          this.selectPage(this.activePage);
         },
         (err: any) => {
           console.error(err);
@@ -148,52 +170,54 @@ export class LabourComponent implements OnInit {
   }
 
   generalFilter(event, n) {
-
+    // console.log("Entered general filter")
     let val
     if (event){
       val = event.target.value.toLowerCase();
     }else{
       val = ""
     }
+    // console.log(val)
+    // console.log(n)
+
     this.lastSearchObj = {'from':'full','1':val, '2':n};
 
-    const url = 'http://49.50.76.29/api/labour/search?search='+val+
-                '&filter[]=srno&filter[]=name&filter[]=age&filter[]=type&filter[]=category&filter[]=uom&perPage=' +
+    let url = 'http://49.50.76.29/api/labour/search?search='+val+
+                '&filter[]=name&filter[]=srno&filter[]=uom&filter[]=category&filter[]=age&filter[]=type&filter[]=rate&perPage=' +
                 String(this.perPageCount) + '&page=' + String(n);
 
-    this.restApiService.getRequest(url)
-      .map(res => /*this.loggeddInUser = <User>*/res.json().data)
-      .subscribe(
-        (value: Labour[]) => {
-          this.labours = value;
-          console.log(this.labours);
-        },
-        (err: any) => {
-          console.error(err);
-        }
-      );
-    this.getPageCount(val, 'filter[]=srno&filter[]=name&filter[]=age&filter[]=type&filter[]=category&filter[]=uom');
+    this.searchLoad.next(url)
+
+    url = 'http://49.50.76.29/api/labour/search?search='+val+
+                '&filter[]=name&filter[]=srno&filter[]=uom&filter[]=category&filter[]=age&filter[]=type&filter[]=rate&perPage=' +
+                String(1) + '&page=' + String(0);
+
+    this.searchTotal.next(url)
 
   }
 
   individualFilter(sParam, k, n){
+    // console.log("Entered individual filter")
+    // console.log(sParam)
+    // console.log(k)
+    // console.log(n)
+
     this.lastSearchObj = {'from':'ind','1':sParam, '2':k, '3':n};
-    const url = 'http://49.50.76.29/api/labour/search?search='+ sParam[k] +
+
+    let url = 'http://49.50.76.29/api/labour/search?search='+ sParam[k] +
                 '&filter[]='+ k +'&perPage=' +
                 String(this.perPageCount) + '&page=' + String(n);
 
-    this.restApiService.getRequest(url)
-      .map(res => /*this.loggeddInUser = <User>*/res.json().data)
-      .subscribe(
-        (value: Labour[]) => {
-          this.labours = value;
-          console.log(this.labours);
-        },
-        (err: any) => {
-          console.error(err);
-        }
-      );
-    this.getPageCount(sParam[k], 'filter[]='+ k);
+
+    this.searchLoad.next(url)
+
+
+    url = 'http://49.50.76.29/api/labour/search?search='+ sParam[k] +
+                '&filter[]='+ k +'&perPage=' +
+                String(1) + '&page=' + String(0);
+
+    this.searchTotal.next(url)
+
   }
 
 }

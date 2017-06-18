@@ -2,18 +2,73 @@
   <md-tab label="Rate Analysis">
     <div class="container-fluid unselectable">
         <div class="row">
-            <div class="col-md-4 flex-box">
-                    <md-input-container>
-                        <input mdInput color="primary" type="number" placeholder="Over Head (%)" [(ngModel)]="overhead" (change)="overheadCurrection()">
-                    </md-input-container>
-                    <md-input-container>
-                        <input mdInput type="number" placeholder="Profit (%)" [(ngModel)]="profit" (change)="profitCurrection()">
-                    </md-input-container>
-                    <md-input-container>
-                        <input mdInput type="number" placeholder="Wastage (%)" [(ngModel)]="wastage" (change)="wastageCurrection()">
-                    </md-input-container>
+            <div class="col-md-7">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Project Name</th>
+                            <th>Boq Name</th>
+                            <th>Rate Analysis</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <td>
+                            <input mdInput placeholder="Project Name" class="inp" type="text" [mdAutocomplete]="projectss" #projectTerm
+                                    (keyup)="searchProjects(projectTerm.value)">
+                            <md-autocomplete #projectss="mdAutocomplete">
+                              <md-option *ngFor="let project of projects | async" [value]="project.id">
+                                {{ project.name }}
+                              </md-option>
+                            </md-autocomplete>
+                        </td>
+                        <td>
+                            <input mdInput placeholder="Boq Name" class="inp" type="text" [mdAutocomplete]="boqss" #boqTerm
+                                    (keyup)="searchBoqs(boqTerm.value)">
+                            <md-autocomplete #boqss="mdAutocomplete">
+                              <md-option *ngFor="let boq of boqs | async" [value]="boq.name">
+                                {{ boq.name }}
+                              </md-option>
+                            </md-autocomplete>
+                        </td>
+                        <td>
+                            <input mdInput placeholder="Boq Name" class="inp" type="text" [mdAutocomplete]="boqss" #boqTerm
+                                    (keyup)="searchBoqs(boqTerm.value)">
+                            <md-autocomplete #boqss="mdAutocomplete">
+                              <md-option *ngFor="let boq of boqs | async" [value]="boq.name">
+                                {{ boq.name }}
+                              </md-option>
+                            </md-autocomplete>
+                        </td>
+                        <td class="index">
+                            <app-icon [iconName]="'ic_library_add_white_24px'"></app-icon>
+                            <app-icon [iconName]="'ic_delete_white_24px'"></app-icon>
+                        </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="col-md-8"></div>
+            <div class="col-md-1"></div>
+            <div class="col-md-4 align-right">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Over Head (%)</th>
+                            <th>Profit (%)</th>
+                            <th>Wastage (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <td><input mdInput class="inp" color="primary" type="number" placeholder="Over Head (%)" [(ngModel)]="overhead" (change)="overheadCurrection()"></td>
+                        <td><input mdInput class="inp" type="number" placeholder="Profit (%)" [(ngModel)]="profit" (change)="profitCurrection()"></td>
+                        <td><input mdInput class="inp" type="number" placeholder="Wastage (%)" [(ngModel)]="wastage" (change)="wastageCurrection()"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
         </div>
 
         <div class="row">
@@ -22,7 +77,7 @@
 <ng-container *ngFor="let lineItem of lineItems; let i=index">
         <div class="row">
             <div class="col-md-12">
-                <h4 class="heading">{{lineItem['title']}} Rate analysis</h4>
+                <h4 class="heading" (click)="dl[i]=!dl[i]">{{lineItem['title']}} Rate analysis</h4>
             </div>
         </div>
 
@@ -31,8 +86,8 @@
                     <table>
                         <thead>
                             <tr>
-                                <th width="2%">
-                                  <app-icon [iconName]="'ic_add_box_black_24px'" (click)="addMaterialRateAnalysis(i)"></app-icon>
+                                <th width="2%" class="index">
+                                  <app-icon [iconName]="'ic_add_box_white_24px'" (click)="addMaterialRateAnalysis(i)"></app-icon>
                                 </th>
                                 <th width="3%">Sr.No</th>
                                 <th width="30%">Particular</th>
@@ -61,12 +116,12 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let mat of itemRateAnalysis[i].material_rate_analysis; let j=index">
-                                <td>
-                                  <app-icon [iconName]="'ic_delete_black_24px'" (click)="deleteMaterialRateAnalysis(i,j)"></app-icon>
+                                <td class="index">
+                                  <app-icon [iconName]="'ic_delete_white_24px'" (click)="deleteMaterialRateAnalysis(i,j)"></app-icon>
                                 </td>
                                 <td>{{itemRateAnalysis[i].material_rate_analysis[j]['srno']}}</td>
                                 <td>
-                                    <input mdInput placeholder="Material" type="text" [mdAutocomplete]="auto" #searchBox
+                                    <input mdInput placeholder="Material" class="inp" type="text" [mdAutocomplete]="auto" #searchBox
                                     (keyup)="searchMaterials(searchBox.value)">
                                     <md-autocomplete #auto="mdAutocomplete">
                                       <md-option *ngFor="let material of materials | async" [value]="material.name" (click)="updateRow(material,i,j)">
@@ -91,8 +146,8 @@
                             </tr>
                             <tr>
                                 <td colspan=12>
-                                <button  class="btn-primary" (click)="openDialogSup(i)">Labour Calculation</button>
-                                <button  class="btn-primary">Save</button>
+                                <button md-raised-button color="primary" (click)="openDialogSup(i)">Labour Calculation</button>
+                                <button md-raised-button color="primary" (click)="postItemRateAnalysis(i)">Save</button>
                                 <span class="example-spacer"></span>
                                 <md-chip-list class="float-right">
                                 <md-chip color="primary" selected="true">Overhead Margin: <b>{{itemRateAnalysis[i].overhead_margin | number : '2.1-2'| nan}}</b></md-chip>
@@ -123,8 +178,8 @@
                 <table>
                     <thead>
                         <tr>
-                            <th width="40px;">
-                              <app-icon [iconName]="'ic_add_box_black_24px'" (click)="addRow2(0)"></app-icon>
+                            <th width="40px;" class="index">
+                              <app-icon [iconName]="'ic_add_box_white_24px'" (click)="addRow2(0)"></app-icon>
                             </th>
                             <th width="40px;">Sr.No</th>
                             <th width="300px;">Description</th>
@@ -138,8 +193,8 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let calc2 of calcs2; let j=index">
-                            <td>
-                              <app-icon [iconName]="'ic_delete_black_24px'" (click)="deleteRow2(0,j)"></app-icon>
+                            <td class="index">
+                              <app-icon [iconName]="'ic_delete_white_24px'" (click)="deleteRow2(0,j)"></app-icon>
                             </td>
                             <!-- delete button -->
                             <td>{{j+1}}</td>

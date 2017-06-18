@@ -1,12 +1,12 @@
-<md-toolbar color="primary">
+<md-toolbar color="primary" style="padding-top:0px;margin-top:0px;">
     <button md-icon-button (click)="sidenav.toggle()">
-       <app-icon [iconName]="'domain'"></app-icon>
+       <app-icon [iconName]="'ic_domain_white_24px'"></app-icon>
     </button>
     Cornea
 
     <span class="spacer"></span>
     <button md-icon-button [mdMenuTriggerFor]="appMenu">
-       <app-icon [iconName]="'ic_more_vert_black_24px'"></app-icon>
+       <app-icon [iconName]="'ic_more_vert_white_24px'"></app-icon>
     </button>
     <md-menu #appMenu="mdMenu" yPosition="below" xPosition="before">
       <button md-menu-item> Settings </button>

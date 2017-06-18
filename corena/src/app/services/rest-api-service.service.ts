@@ -18,9 +18,7 @@ import 'rxjs/add/operator/map';
 export class RestApiService {
 
   headers: Headers;
-  public url1:string;
-  public url2:string;
-  public comm_obj: {} = {};
+  public comm_obj: {} = {}; // empty temporary object used to pass objects from one component to other.
   public additionParameter: number;
   public additionParameterKey: string;
   public uploadServiceName: string;
@@ -78,7 +76,7 @@ export class RestApiService {
 
   search(url: string): Observable<{}[]> {
     // this.url='http://49.50.76.29/api/material/search?search=' + term + '&filter[]=name&filter[]=srno&filter[]=brand'
-    console.log("search")
+    console.log("Api service for getting stream of observables")
     console.log(url)
     return this.http
       .get(url)
@@ -87,18 +85,11 @@ export class RestApiService {
 
   getLength(url: string): Observable<number> {
     // this.url='http://49.50.76.29/api/material/search?search=' + term + '&filter[]=name&filter[]=srno&filter[]=brand'
-    console.log("length")
+    console.log("Api service for getting total of observables")
     console.log(url)
     return this.http
       .get(url)
       .map(response => response.json().total as number);
-  }
-
-  getObs(): Observable<{}[]> {
-    console.log(this.url1)
-    return this.http
-      .get(this.url1)
-      .map(response => response.json().data as {}[]);
   }
 
   // makeHttpReuqest(method: string, url: string, body: any): Observable<any> {
