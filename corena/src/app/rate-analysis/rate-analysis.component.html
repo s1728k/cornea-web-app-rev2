@@ -18,7 +18,7 @@
                             <input mdInput placeholder="Project Name" class="inp" type="text" [mdAutocomplete]="projectss" #projectTerm
                                     (keyup)="searchProjects(projectTerm.value)">
                             <md-autocomplete #projectss="mdAutocomplete">
-                              <md-option *ngFor="let project of projects | async" [value]="project.id">
+                              <md-option *ngFor="let project of projects | async" [value]="project.name">
                                 {{ project.name }}
                               </md-option>
                             </md-autocomplete>

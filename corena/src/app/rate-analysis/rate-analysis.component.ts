@@ -141,7 +141,11 @@ export class RateAnalysisComponent implements OnInit, AfterViewInit {
   }
 
   getBoqList(): void {
+<<<<<<< HEAD
     const url = "http://49.50.76.29/api/boq/1?appends[]=lineItems&hidden[]=created_at&hidden[]=updated_at"
+=======
+    const url ="http://49.50.76.29/api/boq/1?appends[]=lineItems&hidden[]=created_at&hidden[]=updated_at";
+>>>>>>> a2999dd64f5034a206674b48377f546b5bc500da
     this.restApiService.getRequest(url)
       .map(response => response.json().data[0])
       .subscribe((value) => {
@@ -158,8 +162,14 @@ export class RateAnalysisComponent implements OnInit, AfterViewInit {
       );
   }
 
+<<<<<<< HEAD
   searchProjects(term: string) {
     const url = "http://49.50.76.29:8090/api/project/1?visible[]=id&visible[]=name$" + term
+=======
+  searchProjects(term: string){
+    const url ="http://49.50.76.29:8090/api/project/search?search=" + term + "&filter[]=name";
+    //"http://49.50.76.29:8090/api/project/search?visible[0]=name$"+term;
+>>>>>>> a2999dd64f5034a206674b48377f546b5bc500da
     this.projectSuggestion.next(url);
   }
 
