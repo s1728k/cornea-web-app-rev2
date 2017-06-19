@@ -222,6 +222,61 @@
     </div>
   </md-tab>
   <md-tab label="Report">
-    Space For Report
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <h3 class="heading">Reports</h3>
+        </div>
+      </div>
+
+      <div class="row overflow">
+        <div class="col-md-12">
+          <button md-raised-button class="float-right">Save</button>
+          <table>
+            <thead>
+            <tr>
+              <th width="40px;" class="index">
+                <app-icon [iconName]="'ic_add_box_white_24px'" (click)="addRow2(0)"></app-icon>
+              </th>
+              <th width="40px;">Sr.No</th>
+              <th width="300px;">Material Name</th>
+              <th width="40px;">Usage Count</th>
+              <th width="40px;">Rate</th>
+              <th width="40px;">Amount</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let calc2 of calcs2; let j=index">
+              <td class="index">
+                <app-icon [iconName]="'ic_delete_white_24px'" (click)="deleteRow2(0,j)"></app-icon>
+              </td>
+              <!-- delete button -->
+              <td>{{j+1}}</td>
+              <!-- Sr. No -->
+              <td><input type="text" class="inp" ></td>
+              <!-- Material Name -->
+              <td><input type="text" class="inp" ></td>
+              <!-- Usage Count -->
+              <td><input type="number" class="inp" [(ngModel)]="calc2['v3']" ></td>
+              <!-- Rate -->
+              <td>{{calc2['v1']*calc2['v2']*calc2['v3'] | number : '2.2-3' | nan}}</td>
+              <!-- Amount -->
+            </tr>
+            </tbody>
+          </table>
+          <button md-button  (click)="grandTotal2()"><b>GrandTotal:{{grandTotal2V}}</b></button>
+        </div>
+
+
+
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <app-dashboard></app-dashboard>
+
+        </div>
+
+      </div>
+    </div>
   </md-tab>
 </md-tab-group>

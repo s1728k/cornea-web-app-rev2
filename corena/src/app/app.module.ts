@@ -39,6 +39,9 @@ import { BoqTableComponent } from './boq-table/boq-table.component';
 import { MaterialComponent } from './material/material.component';
 import { LabourComponent } from './labour/labour.component';
 import { CfComponent } from './cf/cf.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
+import {NgxChartsModule} from '@swimlane/ngx-charts';
+// import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -53,12 +56,14 @@ import { CfComponent } from './cf/cf.component';
     MaterialComponent,
     LabourComponent,
     CfComponent,
+    DashboardComponent
   ],
   // provide modules throughout
   imports: [
     BrowserModule,
     GanttModule,
     BrowserAnimationsModule,
+    NgxChartsModule,
     FormsModule,
     HttpModule,
     FileUploadModule,

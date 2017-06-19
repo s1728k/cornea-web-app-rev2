@@ -24,47 +24,50 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
+import {CRUDService} from '../shared/services/crud.service';
 
 @Component({
   selector: 'app-rate-analysis',
   templateUrl: './rate-analysis.component.html',
-  styleUrls: ['./rate-analysis.component.css']
+  styleUrls: ['./rate-analysis.component.css'],
+  providers: [CRUDService]
 })
 
 export class RateAnalysisComponent implements OnInit, AfterViewInit {
 
   projects: Observable<ProjectResponseBOQUpload[]>;
-  projectSuggestion:Subject<string> = new Subject<string>();
+  projectSuggestion: Subject<string> = new Subject<string>();
 
   boqs: Observable<BoqNameId[]>;
-  boqSuggestion:Subject<string> = new Subject<string>();
+  boqSuggestion: Subject<string> = new Subject<string>();
 
   // lineItems: Observable<LineItem[]>;
   // lineItemSuggestion:Subject<string> = new Subject<string>();
 
   materials: Observable<Material[]>;
-  materialSuggestion:Subject<string> = new Subject<string>();
+  materialSuggestion: Subject<string> = new Subject<string>();
 
   calcs2: {}[] = [];
 
-  overhead: number=0;
-  profit: number=20;
-  wastage: number=0;
-  cfList:any;
-  cf_price:number=0;
-  dl:{}={}; //boolean array to hide and open the line items.
-  projectIdSelected:number=1;
+  overhead: number = 0;
+  profit: number = 20;
+  wastage: number = 0;
+  cfList: any;
+  cf_price: number = 0;
+  dl: {} = {}; //boolean array to hide and open the line items.
+  projectIdSelected: number = 1;
 
   lineItems: LineItem[];
-  mainRateAnalysis:MainRateAnalysis;
-  materialRateAnalysis:MaterialRateAnalysis;
-  labourRateAnalysis:LabourRateAnalysis;
-  itemRateAnalysis:MainRateAnalysis[]=[];
+  mainRateAnalysis: MainRateAnalysis;
+  materialRateAnalysis: MaterialRateAnalysis;
+  labourRateAnalysis: LabourRateAnalysis;
+  itemRateAnalysis: MainRateAnalysis[] = [];
 
   // variable for grand total one for item rate analysis and other for overhead.
   grandTotal2V: any;
 
-  constructor(private restApiService: RestApiService, private dialog: MdDialog) {}
+  constructor(private restApiService: RestApiService, private dialog: MdDialog) {
+  }
 
   ngOnInit() {
     this.projects = this.projectSuggestion
@@ -132,17 +135,17 @@ export class RateAnalysisComponent implements OnInit, AfterViewInit {
     this.getBoqList()
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.searchProjects("1");
     // this.searchLineItems("1");
   }
 
   getBoqList(): void {
-    const url ="http://49.50.76.29/api/boq/1?appends[]=lineItems&hidden[]=created_at&hidden[]=updated_at"
+    const url = "http://49.50.76.29/api/boq/1?appends[]=lineItems&hidden[]=created_at&hidden[]=updated_at"
     this.restApiService.getRequest(url)
       .map(response => response.json().data[0])
-      .subscribe( (value)=> {
-        console.log(value);
+      .subscribe((value) => {
+          console.log(value);
           this.lineItems = value['lineItems'];
           for (let i = 0; i < this.lineItems.length; i++) {
             this.addMainRateAnalysis();
@@ -155,13 +158,13 @@ export class RateAnalysisComponent implements OnInit, AfterViewInit {
       );
   }
 
-  searchProjects(term: string){
-    const url ="http://49.50.76.29:8090/api/project/1?visible[]=id&visible[]=name$"+term
+  searchProjects(term: string) {
+    const url = "http://49.50.76.29:8090/api/project/1?visible[]=id&visible[]=name$" + term
     this.projectSuggestion.next(url);
   }
 
-  searchBoqs(term: string){
-    const url ="http://49.50.76.29/api/boq/1?appends[]=lineItems&hidden[]=created_at&hidden[]=updated_at&"+term
+  searchBoqs(term: string) {
+    const url = "http://49.50.76.29/api/boq/1?appends[]=lineItems&hidden[]=created_at&hidden[]=updated_at&" + term
     this.boqSuggestion.next(url);
   }
 
@@ -170,13 +173,13 @@ export class RateAnalysisComponent implements OnInit, AfterViewInit {
   //   this.materialSuggestion.next(url);
   // }
 
-  searchMaterials(term: string){
-    const url ="http://49.50.76.29/api/material/search?search=" + term + "&filter[]=name&filter[]=srno&filter[]=brand"
+  searchMaterials(term: string) {
+    const url = "http://49.50.76.29/api/material/search?search=" + term + "&filter[]=name&filter[]=srno&filter[]=brand"
     this.materialSuggestion.next(url);
   }
 
-  addMainRateAnalysis({}={}) {
-    this.mainRateAnalysis=new MainRateAnalysis();
+  addMainRateAnalysis({} = {}) {
+    this.mainRateAnalysis = new MainRateAnalysis();
     this.itemRateAnalysis.push(this.mainRateAnalysis);
   }
 
@@ -185,10 +188,10 @@ export class RateAnalysisComponent implements OnInit, AfterViewInit {
   }
 
   addMaterialRateAnalysis(i) {
-    if (this.lineItems[i]['title']){
+    if (this.lineItems[i]['title']) {
       this.materialRateAnalysis = new MaterialRateAnalysis();
       this.itemRateAnalysis[i].material_rate_analysis.push(this.materialRateAnalysis)
-    }else{
+    } else {
       alert("Please Select The Line Item")
     }
   }
@@ -197,33 +200,38 @@ export class RateAnalysisComponent implements OnInit, AfterViewInit {
     this.itemRateAnalysis[i].material_rate_analysis.splice(j, 1);
   }
 
-  updateRow(material,i,j){
-      this.itemRateAnalysis[i].material_rate_analysis[j]['lineItem_id']=this.lineItems[i]['id'];
-      this.itemRateAnalysis[i].material_rate_analysis[j]['uom']=material['uom'];
-      this.itemRateAnalysis[i].material_rate_analysis[j]['rate']=material['rate'];
-      this.itemRateAnalysis[i].material_rate_analysis[j]['srno']=material['srno'];
-      this.itemRateAnalysis[i].material_rate_analysis[j]['material_id']=material['id'];
-      this.cfList=material['coefficiency']['cf_price'];
-      //this.itemRateAnalysis[i].material_rate_analysis[j]['CF']=material['coefficiency']['cf_price'];
+  updateRow(material, i, j) {
+    this.itemRateAnalysis[i].material_rate_analysis[j]['lineItem_id'] = this.lineItems[i]['id'];
+    this.itemRateAnalysis[i].material_rate_analysis[j]['uom'] = material['uom'];
+    this.itemRateAnalysis[i].material_rate_analysis[j]['rate'] = material['rate'];
+    this.itemRateAnalysis[i].material_rate_analysis[j]['srno'] = material['srno'];
+    this.itemRateAnalysis[i].material_rate_analysis[j]['material_id'] = material['id'];
+    this.cfList = material['coefficiency']['cf_price'];
+    //this.itemRateAnalysis[i].material_rate_analysis[j]['CF']=material['coefficiency']['cf_price'];
   }
 
   postItemRateAnalysis(i) {
     const url = 'http://49.50.76.29/api/ra/new';
-    this.itemRateAnalysis[i].lineItem_id=this.lineItems[i]['id'];
-    this.itemRateAnalysis[i].boq_id=this.lineItems[i]['boq_id'];
-    this.itemRateAnalysis[i].profit_margin=this.profit/100*this.itemRateAnalysis[i].grand_total
-    this.itemRateAnalysis[i].overhead_margin=this.overhead/100*this.itemRateAnalysis[i].grand_total
+    this.itemRateAnalysis[i].lineItem_id = this.lineItems[i]['id'];
+    this.itemRateAnalysis[i].boq_id = this.lineItems[i]['boq_id'];
+    this.itemRateAnalysis[i].profit_margin = this.profit / 100 * this.itemRateAnalysis[i].grand_total
+    this.itemRateAnalysis[i].overhead_margin = this.overhead / 100 * this.itemRateAnalysis[i].grand_total
 
     for (var j = 0; j < this.itemRateAnalysis[i].labour_rate_analysis.length; j++) {
-      this.itemRateAnalysis[i].labour_total=this.itemRateAnalysis[i].labour_total+
-                                            this.itemRateAnalysis[i].labour_rate_analysis[j].amount;
+      this.itemRateAnalysis[i].labour_total = this.itemRateAnalysis[i].labour_total +
+        this.itemRateAnalysis[i].labour_rate_analysis[j].amount;
     }
 
     this.restApiService.postRequest(url, this.itemRateAnalysis[i])
       .map(res => res.json())
       .subscribe(
-        (value) => {value; console.log(value);},
-        (err: any) => {console.error(err);}
+        (value) => {
+          value;
+          console.log(value);
+        },
+        (err: any) => {
+          console.error(err);
+        }
       );
   }
 
@@ -231,27 +239,27 @@ export class RateAnalysisComponent implements OnInit, AfterViewInit {
 
   }
 
-  overheadCurrection(){
+  overheadCurrection() {
     for (var i = 0; i < this.itemRateAnalysis.length; i++) {
       this.grandTotal(i);
     }
   }
 
-  profitCurrection(){
+  profitCurrection() {
     for (var i = 0; i < this.itemRateAnalysis.length; i++) {
       this.grandTotal(i);
     }
   }
 
-  wastageCurrection(){
+  wastageCurrection() {
     for (var i = 0; i < this.itemRateAnalysis.length; i++) {
       this.grandTotal(i);
     }
   }
 
-  grandTotal(i){
-    if (!this.itemRateAnalysis[i].labour_total){
-      this.itemRateAnalysis[i].labour_total=0
+  grandTotal(i) {
+    if (!this.itemRateAnalysis[i].labour_total) {
+      this.itemRateAnalysis[i].labour_total = 0
     }
 
     this.itemRateAnalysis[i].material_total = 0;
@@ -259,32 +267,32 @@ export class RateAnalysisComponent implements OnInit, AfterViewInit {
     this.itemRateAnalysis[i].overhead_margin = 0;
     this.itemRateAnalysis[i].grand_total = 0
 
-    this.itemRateAnalysis[i].material_total=0
+    this.itemRateAnalysis[i].material_total = 0
     for (let j = this.itemRateAnalysis[i].material_rate_analysis.length - 1; j >= 0; j--) {
-      if (this.itemRateAnalysis[i].material_rate_analysis[j]['wastage']){
-        this.itemRateAnalysis[i].material_rate_analysis[j]['amount']=this.itemRateAnalysis[i].material_rate_analysis[j]['length']*
-                                                                 this.itemRateAnalysis[i].material_rate_analysis[j]['breadth']*
-                                                                 this.itemRateAnalysis[i].material_rate_analysis[j]['thickness']*
-                                                                 this.itemRateAnalysis[i].material_rate_analysis[j]['quantity']*
-                                                                 (this.itemRateAnalysis[i].material_rate_analysis[j]['wastage']/100+1)*
-                                                                 this.itemRateAnalysis[i].material_rate_analysis[j]['rate']*
-                                                                 (this.overhead/100+1)*(this.profit/100+1)+
-                                                                 +this.cf_price;
+      if (this.itemRateAnalysis[i].material_rate_analysis[j]['wastage']) {
+        this.itemRateAnalysis[i].material_rate_analysis[j]['amount'] = this.itemRateAnalysis[i].material_rate_analysis[j]['length'] *
+          this.itemRateAnalysis[i].material_rate_analysis[j]['breadth'] *
+          this.itemRateAnalysis[i].material_rate_analysis[j]['thickness'] *
+          this.itemRateAnalysis[i].material_rate_analysis[j]['quantity'] *
+          (this.itemRateAnalysis[i].material_rate_analysis[j]['wastage'] / 100 + 1) *
+          this.itemRateAnalysis[i].material_rate_analysis[j]['rate'] *
+          (this.overhead / 100 + 1) * (this.profit / 100 + 1) +
+          +this.cf_price;
         this.itemRateAnalysis[i].material_total = this.itemRateAnalysis[i].material_total + this.itemRateAnalysis[i].material_rate_analysis[j]['amount']
-      }else{
+      } else {
         console.log(this.wastage);
-        this.itemRateAnalysis[i].material_rate_analysis[j]['amount']=this.itemRateAnalysis[i].material_rate_analysis[j]['length']*
-                                                                 this.itemRateAnalysis[i].material_rate_analysis[j]['breadth']*
-                                                                 this.itemRateAnalysis[i].material_rate_analysis[j]['thickness']*
-                                                                 this.itemRateAnalysis[i].material_rate_analysis[j]['quantity']*
-                                                                 this.itemRateAnalysis[i].material_rate_analysis[j]['rate']*
-                                                                 (this.overhead/100+1)*(this.profit/100+1)*(this.wastage/100+1)+
-                                                                 +this.cf_price;
+        this.itemRateAnalysis[i].material_rate_analysis[j]['amount'] = this.itemRateAnalysis[i].material_rate_analysis[j]['length'] *
+          this.itemRateAnalysis[i].material_rate_analysis[j]['breadth'] *
+          this.itemRateAnalysis[i].material_rate_analysis[j]['thickness'] *
+          this.itemRateAnalysis[i].material_rate_analysis[j]['quantity'] *
+          this.itemRateAnalysis[i].material_rate_analysis[j]['rate'] *
+          (this.overhead / 100 + 1) * (this.profit / 100 + 1) * (this.wastage / 100 + 1) +
+          +this.cf_price;
         this.itemRateAnalysis[i].material_total = this.itemRateAnalysis[i].material_total + this.itemRateAnalysis[i].material_rate_analysis[j]['amount']
       }
-      this.itemRateAnalysis[i].grand_total= +this.itemRateAnalysis[i].labour_total + this.itemRateAnalysis[i].material_total
-      this.itemRateAnalysis[i].profit_margin=this.profit/100*this.itemRateAnalysis[i].grand_total
-      this.itemRateAnalysis[i].overhead_margin=this.overhead/100*this.itemRateAnalysis[i].grand_total
+      this.itemRateAnalysis[i].grand_total = +this.itemRateAnalysis[i].labour_total + this.itemRateAnalysis[i].material_total
+      this.itemRateAnalysis[i].profit_margin = this.profit / 100 * this.itemRateAnalysis[i].grand_total
+      this.itemRateAnalysis[i].overhead_margin = this.overhead / 100 * this.itemRateAnalysis[i].grand_total
       console.log(this.itemRateAnalysis[i].labour_total)
       console.log(this.itemRateAnalysis[i].material_total)
       console.log(this.itemRateAnalysis[i].profit_margin)
@@ -315,18 +323,18 @@ export class RateAnalysisComponent implements OnInit, AfterViewInit {
     }
   }
 
-  labourCalc:LabourRateAnalysis[]=[];
-  lCalc:LabourRateAnalysis=new LabourRateAnalysis;
-  openDialogSup(i) {
-      const dialogRef = this.dialog.open(RaPopupDialog);
-      dialogRef.afterClosed().subscribe(result => {
-        this.itemRateAnalysis[i].labour_rate_analysis = result.data;
-        this.itemRateAnalysis[i].labour_total= result.labour_total;
-        this.itemRateAnalysis[i].grand_total=+this.itemRateAnalysis[i].material_total + +this.itemRateAnalysis[i].labour_total;
-        // console.log(result);
-      });
-    }
+  labourCalc: LabourRateAnalysis[] = [];
+  lCalc: LabourRateAnalysis = new LabourRateAnalysis;
 
+  openDialogSup(i) {
+    const dialogRef = this.dialog.open(RaPopupDialog);
+    dialogRef.afterClosed().subscribe(result => {
+      this.itemRateAnalysis[i].labour_rate_analysis = result.data;
+      this.itemRateAnalysis[i].labour_total = result.labour_total;
+      this.itemRateAnalysis[i].grand_total = +this.itemRateAnalysis[i].material_total + +this.itemRateAnalysis[i].labour_total;
+      // console.log(result);
+    });
+  }
 
 
 }
