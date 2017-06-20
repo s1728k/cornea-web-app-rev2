@@ -58,6 +58,8 @@ export class RateAnalysisComponent implements OnInit {
   cf_price:number=0;
   dl:{}={}; //boolean array to hide and open the line items.
   titleRateAnalysis:string="";
+  firstPost:boolean=true;
+  gra_id:number;
 
   projectSelected:ProjectResponseBOQUpload;
   projects: ProjectResponseBOQUpload[];
@@ -323,7 +325,7 @@ export class RateAnalysisComponent implements OnInit {
       this.itemRateAnalysis[i].materialRateAnalysis[j]['uom']=material['uom'];
       this.itemRateAnalysis[i].materialRateAnalysis[j]['rate']=material['rate'];
       this.itemRateAnalysis[i].materialRateAnalysis[j]['srno']=material['srno'];
-      this.itemRateAnalysis[i].materialRateAnalysis[j]['material_id']=material['id'];
+      this.itemRateAnalysis[i].materialRateAnalysis[j]['lineItem_material_id']=material['id'];
       this.cfList=material['coefficiency']['cf_price'];
       //this.itemRateAnalysis[i].materialRateAnalysis[j]['CF']=material['coefficiency']['cf_price'];
   }
@@ -355,37 +357,77 @@ export class RateAnalysisComponent implements OnInit {
     this.grandTotal(i);
   }
 
-  postItemRateAnalysis(i) {
+  firstPostRequest() {
+
+    console.log("Entered firstPost")
+    const url = 'http://49.50.76.29/api/gra/new?appends[]=labourRateAnalysis&aappends[]=materialRateAnlysis';
+    for (var i = 0; i < this.itemRateAnalysis.length; i++) {
+      if(this.itemRateAnalysis[i].grand_total>0){
+        this.itemRateAnalysis[i].lineItem_id=this.lineItems[i]['id'];
+        this.itemRateAnalysis[i].boq_id=this.lineItems[i]['boq_id'];
+        this.newRateAnalysis.mainRateAnalysis.push(this.itemRateAnalysis[i])
+        this.newRateAnalysis.boq_id=this.itemRateAnalysis[i].boq_id;
+      }
+    }
+
+    // this.lineItemLabour = new LineItemLabour();
+    // this.newRateAnalysis.lineItem_labour=[];
+    // for (var j = 0; j < this.itemRateAnalysis[i].labourRateAnalysis.length; j++) {
+    //   this.lineItemLabour.line_item_id=this.lineItems[i]['id']
+    //   console.log(this.itemRateAnalysis[i].labourRateAnalysis[j])
+    //   this.lineItemLabour.master_labour_id=this.itemRateAnalysis[i].labourRateAnalysis[j].lineItem_labour_id
+    //   this.newRateAnalysis.lineItem_labour.push(this.lineItemLabour)
+    // }
+
+    // this.lineItemMaterial = new LineItemMaterial();
+    // this.newRateAnalysis.lineItem_material=[];
+    // for (var j = 0; j < this.itemRateAnalysis[i].materialRateAnalysis.length; j++) {
+    //   this.lineItemMaterial.line_item_id=this.lineItems[i]['id']
+    //   this.lineItemMaterial.master_material_id=this.itemRateAnalysis[i].materialRateAnalysis[j].material_id
+    //   this.newRateAnalysis.lineItem_material.push(this.lineItemMaterial);
+    // }
+
+
+    console.log(this.newRateAnalysis);
+    this.validatePostRequest(this.newRateAnalysis);
+    this.restApiService.postRequest(url, this.newRateAnalysis)
+      .map(res => res.json().data)
+      .subscribe(
+        (value) => {this.gra_id=value[0].id; console.log(value); this.firstPost=false;},
+        (err: any) => {console.error(err);}
+      );
+  }
+
+  postItemRateAnalysis(i:number) {
+
     console.log("Entered postItemRateAnalysis")
     const url = 'http://49.50.76.29/api/ra/new?appends[]=labourRateAnalysis&aappends[]=materialRateAnlysis';
     this.itemRateAnalysis[i].lineItem_id=this.lineItems[i]['id'];
     this.itemRateAnalysis[i].boq_id=this.lineItems[i]['boq_id'];
-    this.itemRateAnalysis[i].profit_margin=this.profit/100*this.itemRateAnalysis[i].grand_total
-    this.itemRateAnalysis[i].overhead_margin=this.overhead/100*this.itemRateAnalysis[i].grand_total
 
     this.newRateAnalysis.mainRateAnalysis=[this.itemRateAnalysis[i]]
 
-    this.lineItemLabour = new LineItemLabour();
-    this.newRateAnalysis.lineItem_labour=[];
-    for (var j = 0; j < this.itemRateAnalysis[i].labourRateAnalysis.length; j++) {
-      this.lineItemLabour.line_item_id=this.lineItems[i]['id']
-      console.log(this.itemRateAnalysis[i].labourRateAnalysis[j])
-      this.lineItemLabour.master_labour_id=this.itemRateAnalysis[i].labourRateAnalysis[j].lineItem_labour_id
-      this.newRateAnalysis.lineItem_labour.push(this.lineItemLabour)
-    }
+    // this.lineItemLabour = new LineItemLabour();
+    // this.newRateAnalysis.lineItem_labour=[];
+    // for (var j = 0; j < this.itemRateAnalysis[i].labourRateAnalysis.length; j++) {
+    //   this.lineItemLabour.line_item_id=this.lineItems[i]['id']
+    //   console.log(this.itemRateAnalysis[i].labourRateAnalysis[j])
+    //   this.lineItemLabour.master_labour_id=this.itemRateAnalysis[i].labourRateAnalysis[j].lineItem_labour_id
+    //   this.newRateAnalysis.lineItem_labour.push(this.lineItemLabour)
+    // }
 
-    this.lineItemMaterial = new LineItemMaterial();
-    this.newRateAnalysis.lineItem_material=[];
-    for (var j = 0; j < this.itemRateAnalysis[i].materialRateAnalysis.length; j++) {
-      this.lineItemMaterial.line_item_id=this.lineItems[i]['id']
-      this.lineItemMaterial.master_material_id=this.itemRateAnalysis[i].materialRateAnalysis[j].material_id
-      this.newRateAnalysis.lineItem_material.push(this.lineItemMaterial);
-    }
-
-    this.newRateAnalysis.boq_id=this.itemRateAnalysis[i].boq_id;
-    console.log(this.newRateAnalysis);
-    this.validatePostRequest(this.newRateAnalysis);
-    this.restApiService.postRequest(url, this.newRateAnalysis)
+    // this.lineItemMaterial = new LineItemMaterial();
+    // this.newRateAnalysis.lineItem_material=[];
+    // for (var j = 0; j < this.itemRateAnalysis[i].materialRateAnalysis.length; j++) {
+    //   this.lineItemMaterial.line_item_id=this.lineItems[i]['id']
+    //   this.lineItemMaterial.master_material_id=this.itemRateAnalysis[i].materialRateAnalysis[j].lineItem_material_id
+    //   this.newRateAnalysis.lineItem_material.push(this.lineItemMaterial);
+    // }
+    this.itemRateAnalysis[i].gra_id=this.gra_id;
+    // this.newRateAnalysis.boq_id=this.lineItems[i]['boq_id'];
+    // console.log(this.newRateAnalysis);
+    // this.validatePostRequest(this.newRateAnalysis);
+    this.restApiService.postRequest(url, this.itemRateAnalysis[i])
       .map(res => res.json())
       .subscribe(
         (value) => {value; console.log(value);},

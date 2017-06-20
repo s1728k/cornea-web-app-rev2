@@ -9,6 +9,7 @@ export class MainRateAnalysis {
   overhead_margin: number;
   grand_total: number;
   boq_id: number;
+  gra_id?:number;
   labourRateAnalysis: LabourRateAnalysis[]=[];
   materialRateAnalysis: MaterialRateAnalysis[]=[];
 

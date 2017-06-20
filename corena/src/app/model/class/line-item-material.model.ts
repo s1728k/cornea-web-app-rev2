@@ -9,7 +9,7 @@
 export class MaterialRateAnalysis {
   public id: number;
   public lineItem_id: number;
-  public  material_id: number;
+  public  lineItem_material_id: number;
   length: number;
   breadth: number;
   thickness: number;

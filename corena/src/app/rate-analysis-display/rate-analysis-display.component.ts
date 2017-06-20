@@ -2,12 +2,29 @@ import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {FileUploader} from 'ng2-file-upload';
 import {RestApiService} from '../services/rest-api-service.service';
+import * as Constants from '../shared/constants.globals';
+
+// ------------Imports for Charts---------------------------
+import { ViewEncapsulation, ChangeDetectionStrategy, ContentChild, TemplateRef } from '@angular/core';
+import { calculateViewDimensions } from '../shared';
+import { ColorHelper } from '../shared';
+import {BaseChartComponent} from "../shared";
+import {single , multi} from '../shared';
+
+// ------------Models Imported------------------------------
 import {ProjectResponseBOQUpload} from '../model/class/project-response';
 import {BOQTable} from '../model/class/boq-table.model';
-import * as Constants from '../shared/constants.globals';
 import {BoqNameId} from '../model/class/name-id.model';
-import {LineItem} from '../model/class/line-item.model'
 import {GlobalRateAnalysis, LineItemLabour, LineItemMaterial} from '../model/class/global-rate-analysis.model'
+import {MainRateAnalysis} from '../model/class/main-rate-analysis.model'
+import {MaterialRateAnalysis} from '../model/class/line-item-material.model'
+import {LabourRateAnalysis} from '../model/class/labour-rate-analysis.model'
+import {LineItem} from '../model/class/line-item.model'
+import {Material} from '../model/class/material.model'
+import {Labour} from '../model/class/labour.model'
+import {MaterialReportUsageList} from '../model/class/material-report-usage-list.model';
+
+
 const URL = 'http://49.50.76.29:80/api/boq/file';
 
 @Component({
@@ -26,10 +43,38 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterVie
   urlProject: string;
   urlBoq: string;
   toggleCreateView:boolean=false;
-  boqSelected:{};
+
+
+  boqSelected:BoqNameId;
+  boqs:BoqNameId[];
 
   lineItems: LineItem[]
   globalRateAnalysis:GlobalRateAnalysis = new GlobalRateAnalysis();
+  globalRateAnalysisList:GlobalRateAnalysis[];
+
+  //  ---------------space for charts-------------------------
+
+  materialreportusagelist: MaterialReportUsageList[];
+
+  // view: any[] = [700, 400];
+  // colorScheme = {
+  //   domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+  // };
+  // setData(demo):any{
+  //   let arr2=[];
+  //   for (let key in demo){
+  //     let arr = {'name':'','value':0};
+  //     arr.name = key;
+  //     arr.value = Number(demo[key]);
+  //     arr2.push(arr);
+  //   }
+  //   console.log(arr2);
+  //   return arr2;
+  // }
+  // demoInd:{} = {"pending":2,"draft":12,"unapproved":20,"approved":20,"closed":0};
+  // singleInd:any[] = this.setData(this.demoInd);
+
+  //  ---------------End of space for charts------------------
 
   constructor(private restApiService: RestApiService, private router: Router) {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
@@ -39,17 +84,18 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterVie
   }
 
   ngOnInit() {
-    this.restApiService.getRequest(this.urlProject)
-      .map(res => /*this.projectList = <ProjectResponseBOQUpload[]>*/res.json().data)
-      .subscribe(
-        (value: ProjectResponseBOQUpload[]) => {
-          this.projectList = value;
-          console.log(value);
-        },
-        (err: any) => {
-          console.error(err);
-        }
-      );
+    // this.restApiService.getRequest(this.urlProject)
+    //   .map(res => /*this.projectList = <ProjectResponseBOQUpload[]>*/res.json().data)
+    //   .subscribe(
+    //     (value: ProjectResponseBOQUpload[]) => {
+    //       this.projectList = value;
+    //       console.log(value);
+    //     },
+    //     (err: any) => {
+    //       console.error(err);
+    //     }
+    //   );
+    this.getBoqList();
   };
 
   ngAfterViewInit() {
@@ -71,16 +117,14 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterVie
     this.hasAnotherDropZoneOver = e;
   }
 
-  getBoqList(project: ProjectResponseBOQUpload): void {
-    this.restApiService.getRequest(this.urlBoq + '&conditions[project_id]=' + project.id)
+  getBoqList(): void {
+    const url ="http://49.50.76.29:80/api/boq/all?appends[]=lineItems&hidden[]=created_at&hidden[]=updated_at"
+    this.restApiService.getRequest(url)
       .map(response => response.json().data)
       .subscribe(
         (value) => {
-          // project.boq = value;
-          console.log(value);
-          console.log('project id = %s \n condition = %s \n value= %s', project.id, (project.id === project.id), value);
-          this.projectList[this.projectList.indexOf(project)].boq = value;
-          console.log(this.projectList[this.projectList.indexOf(project)].boq);
+          this.boqs = value;
+          console.log(this.boqs);
         },
         (error: any) => {
           console.log(error);
@@ -99,18 +143,50 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterVie
     this.lineItems=object.lineItems
   }
 
-  getRateAnalysis(): void {
-    const url="http://49.50.76.29/api/gra/all?appends[]=mainRateAnalysis&appends[]=materialRateAnalysis&appends[]=labourRateAnalysis"
+  getRateAnalysis(boq): void {
+    console.log(boq);
+    this.boqSelected=boq
+    this.lineItems=boq.lineItems
+    console.log(this.boqSelected)
+    const url="http://49.50.76.29/api/gra/all?appends[]=mainRateAnalysis&appends[]=materialRateAnalysis&appends[]=labourRateAnalysis&condetions[boq_id]="+ String(boq.id)
     this.restApiService.getRequest(url)
-      .map(response => response.json().data[0])
+      .map(response => response.json().data)
       .subscribe(
         (value) => {
-          this.globalRateAnalysis = value;
-          console.log(this.globalRateAnalysis)
+          this.globalRateAnalysisList = value;
+          console.log(this.globalRateAnalysisList)
         },
         (error: any) => {
           console.log(error);
         },
+      );
+  }
+
+  openGlobalRateAnalysis(globalRateAnalysis){
+    console.log(globalRateAnalysis)
+    this.getMaterialReportUsageList(globalRateAnalysis.id, this.boqSelected.id);
+    this.globalRateAnalysis=globalRateAnalysis;
+    console.log(this.globalRateAnalysis);
+  }
+
+  getMaterialReportUsageList(gra_id, boq_id) {
+    console.log(gra_id);
+    console.log(boq_id);
+    // gra_id=1;
+    // boq_id=1;
+    const url = 'http://49.50.76.29/api/report/getMaterialUsageForRa?gra_id='+String(gra_id)+'&boq_id='+String(boq_id);
+    console.log(url)
+    this.restApiService.getRequest(url)
+      .map(res => res.json().data)
+      .subscribe(
+        (value: MaterialReportUsageList[]) => {
+          console.log(value)
+          this.materialreportusagelist = value;
+          console.log(this.materialreportusagelist);
+        },
+        (err: any) => {
+          console.error(err);
+        }
       );
   }
 
