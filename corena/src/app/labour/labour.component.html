@@ -64,7 +64,8 @@
 
     <div class="row">
         <div class="col-md-9">
-            <app-pagination *ngIf="pageCount" [pageCount]="pageCount" (pageSelected)=selectPage($event) (perPageCount)="perPageCountChange($event)">
+            <app-pagination *ngIf="pageCount" [pageCount]="pageCount" [activePage]="activePage"
+            (pageSelected)=selectPage($event) (perPageCount)="perPageCountChange($event)">
             </app-pagination>
         </div>
         <div class="col-md-3">
@@ -88,7 +89,7 @@
                         <th width="10%">Category</th>
                         <th width="15%">Rate</th>
                         <th width="5%">UOM</th>
-                        <th width="4%"></th>
+                        <th width="4%" colspan="2"></th>
                     </tr>
                     <tr>
                         <td width="5%">
@@ -140,12 +141,13 @@
                                    <md-option *ngFor="let uom of uomList" [value]="uom">{{ uom }}</md-option>
                                 </md-select>
                             </td>
-                            <td width="4%" class="index">
+                            <td width="2%" class="index">
                                 <div class="flex-box">
                                     <app-icon [iconName]="'ic_done_white_24px'" (click)="ed[i]=!ed[i]; putLabour(labour)"></app-icon>
                                     <!-- <app-icon [iconName]="'ic_delete_white_24px'" (click)="delRow(labour)"></app-icon> -->
                                 </div>
                             </td>
+                            <td width="2%" class="index"></td>
                         </ng-container>
                         <ng-container *ngIf="!ed[i]">
                             <td width="5%">{{labour['sr']}}</td>
@@ -155,9 +157,13 @@
                             <td width="10%">{{labour['category']}}</td>
                             <td width="15%">{{labour['rate']}}</td>
                             <td width="5%">{{labour['uom']}}</td>
-                            <td width="4%" class="index">
+                            <td width="2%" class="index">
                                 <div class="flex-box">
                                     <app-icon [iconName]="'ic_create_white_24px'" (click)="ed[i]=!ed[i]"></app-icon>
+                                </div>
+                            </td>
+                            <td width="2%" class="index">
+                                <div class="flex-box">
                                     <app-icon [iconName]="'ic_delete_white_24px'" (click)="deleteLabour(labour)"></app-icon>
                                 </div>
                             </td>

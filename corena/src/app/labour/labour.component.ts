@@ -31,6 +31,7 @@ export class LabourComponent implements OnInit, AfterViewInit {
   searchOpt: {}= {brand: '', modal: '', job: ''}; // empty object used to pass the individual column searched for
   ed: {}= {}; // boolean for editing mode
   lastSearchObj: {}= {}; // used as a token to identify request is comming from normal get request or general search or individual search
+  trig:string=""; // manual trigger the searchLoad and searchTotal
   pageCount= 4;
   perPageCount= 2;
   activePage=0;
@@ -55,7 +56,7 @@ export class LabourComponent implements OnInit, AfterViewInit {
       .debounceTime(300)        // wait 300ms after each keystroke before considering the term
       .distinctUntilChanged()   // ignore if next search term is same as previous
       .switchMap((term)=> this.restApiService.getLength(term))
-      .subscribe((value)=>{this.pageCount = value})
+      .subscribe((value)=>{this.pageCount = value; console.log(this.pageCount)})
 
   }
 
@@ -73,7 +74,8 @@ export class LabourComponent implements OnInit, AfterViewInit {
 
   selectPage(p){
     // console.log("Entered select page")
-    // console.log(p)
+    this.trig=(this.trig==='sel')?this.trig+"1":'sel'
+    console.log(p)
     // console.log(this.lastSearchObj['from'])
     this.activePage=p;
     switch (this.lastSearchObj['from']) {
@@ -95,20 +97,36 @@ export class LabourComponent implements OnInit, AfterViewInit {
     }
   }
 
+  // getPageCount(url) {
+  //   // console.log("Entered getPageCount")
+  //   this.restApiService.getRequest(url)
+  //     .map(res => res.json().total)
+  //     .subscribe(
+  //       (value) => {
+  //         this.pageCount = value;
+  //         console.log(this.pageCount)
+  //       },
+  //       (err: any) => {
+  //         console.error(err);
+  //       }
+  //     );
+  // }
+
   getLabours(n) {
-    // console.log("Entered get labours")
+    console.log("Entered get labours")
     // console.log(n)
     this.lastSearchObj = {'from':'start','1':n};
 
     let url = 'http://49.50.76.29/api/labour/search?search=&filter[]=name&filter[]=srno&filter[]=uom&filter[]=category&filter[]=age&filter[]=type&filter[]=rate&perPage=' +
-                String(this.perPageCount) + '&page=' + String(n);
+                String(this.perPageCount) + '&page=' + String(n)+"&"+this.trig;
 
     this.searchLoad.next(url);
 
     url = 'http://49.50.76.29/api/labour/search?search=&filter[]=name&filter[]=srno&filter[]=uom&filter[]=category&filter[]=age&filter[]=type&filter[]=rate&perPage=' +
-                String(1) + '&page=' + String(0);
+                String(1) + '&page=' + String(0)+"&"+this.trig;
 
     this.searchTotal.next(url);
+    // this.getPageCount(url);
   }
 
   postLabour() {
@@ -121,9 +139,9 @@ export class LabourComponent implements OnInit, AfterViewInit {
       .subscribe(
         (value: Labour) => {
           this.newLabour = value;
-          // console.log(this.newLabour);
+          console.log(this.newLabour);
           this.newLabour= new Labour;
-          this.selectPage(this.activePage);
+          this.selectPage(this.activePage)
         },
         (err: any) => {
           console.error(err);
@@ -142,7 +160,7 @@ export class LabourComponent implements OnInit, AfterViewInit {
         (value: Labour) => {
           this.newLabour = value;
           // console.log(this.newLabour)
-          this.selectPage(this.activePage);
+          this.selectPage(this.activePage)
         },
         (err: any) => {
           console.error(err);
@@ -161,7 +179,7 @@ export class LabourComponent implements OnInit, AfterViewInit {
         (value: Labour) => {
           this.newLabour = value;
           // console.log(this.newLabour)
-          this.selectPage(this.activePage);
+          this.selectPage(this.activePage)
         },
         (err: any) => {
           console.error(err);
@@ -179,6 +197,7 @@ export class LabourComponent implements OnInit, AfterViewInit {
     }
     // console.log(val)
     // console.log(n)
+    this.trig="";
 
     this.lastSearchObj = {'from':'full','1':val, '2':n};
 
@@ -201,6 +220,7 @@ export class LabourComponent implements OnInit, AfterViewInit {
     // console.log(sParam)
     // console.log(k)
     // console.log(n)
+    this.trig="";
 
     this.lastSearchObj = {'from':'ind','1':sParam, '2':k, '3':n};
 

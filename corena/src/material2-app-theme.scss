@@ -65,10 +65,15 @@ td, th {
     border: 1px solid mat-color($candy-app-primary);
     text-align: left;
     padding-left: 2px;
+    font-size: 12px;
 }
 
 .index {
     background-color: mat-color($candy-app-primary);
+}
+
+.index:active{
+  background-color: mat-color($candy-app-warn);
 }
 
 md-card{
@@ -133,7 +138,6 @@ table.total {
 .b-margin{
     margin-bottom:10px;
 }
-
 
 /* this section is panels used in project heirarchy */
 .panel-danger .panel-heading{

@@ -39,6 +39,7 @@ import { BoqTableComponent } from './boq-table/boq-table.component';
 import { MaterialComponent } from './material/material.component';
 import { LabourComponent } from './labour/labour.component';
 import { CfComponent } from './cf/cf.component';
+import { RateAnalysisDisplayComponent } from './rate-analysis-display/rate-analysis-display.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { CfComponent } from './cf/cf.component';
     MaterialComponent,
     LabourComponent,
     CfComponent,
+    RateAnalysisDisplayComponent,
   ],
   // provide modules throughout
   imports: [

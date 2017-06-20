@@ -62,7 +62,8 @@
 
     <div class="row">
         <div class="col-md-9">
-            <app-pagination *ngIf="pageCount" [pageCount]="pageCount" (pageSelected)=selectPage($event) (perPageCount)="perPageCountChange($event)">
+            <app-pagination *ngIf="pageCount" [pageCount]="pageCount" [activePage]="activePage"
+            (pageSelected)=selectPage($event) (perPageCount)="perPageCountChange($event)">
             </app-pagination>
         </div>
         <div class="col-md-3">
@@ -85,14 +86,14 @@
                         <th width="5%">UOM</th>
                         <th width="15%">Rate</th>
                         <th width="10%">Has CF</th>
-                        <th width="10%"></th>
+                        <th width="4%" colspan="2"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td width="5%">
                             <input type='text' class="inp"
-                            placeholder='Sr.No...' (keyup)='individualFilter(searchOpt, "sr", 0)' [(ngModel)]="searchOpt['sr']" name="sr" />
+                            placeholder='Sr.No...' [(ngModel)]="searchOpt['sr']" name="sr" />
                         </td>
                         <td width="30%">
                             <input type='text' class="inp"
@@ -114,7 +115,7 @@
                             <input type='text' class="inp"
                             placeholder='Has_CF' (keyup)='individualFilter(searchOpt, "job", 0)' [(ngModel)]="searchOpt['job']" name="Has_CF" />
                         </td>
-                        <td width="10%"></td>
+                        <td width="4%" colspan="2"></td>
                     </tr>
                     <tr *ngFor="let material of materials | async; let i=index">
                         <ng-container *ngIf="ed[i]">
@@ -131,11 +132,11 @@
                                     <option *ngFor="let has_cf of hasCfList" [value]="has_cf.id">{{ has_cf.name }}</option>
                                 </select> -->
                             </td>
-                            <td width="10%" class="index">
-                                <div class="flex-box">
+                            <td width="2%" class="index">
                                     <app-icon [iconName]="'ic_done_white_24px'" (click)="ed[i]=!ed[i]; putMaterial(material)"></app-icon>
+                            </td>
+                            <td width="2%" class="index">
                                     <!-- <button (click)="delRow(material)"><app-icon [iconName]="'ic_delete_white_24px'"></app-icon></button> -->
-                                </div>
                             </td>
                         </ng-container>
                         <ng-container *ngIf="!ed[i]">
@@ -145,11 +146,11 @@
                             <td width="5%">{{material['uom']}}</td>
                             <td width="15%">{{material['rate']}}</td>
                             <td width="10%">{{hasCfDisp[material['has_cf']]}}</td>
-                            <td width="10%" class="index">
-                                <div class="flex-box">
+                            <td width="2%" class="index">
                                     <app-icon [iconName]="'ic_create_white_24px'" (click)="ed[i]=!ed[i]"></app-icon>
+                            </td>
+                            <td width="2%" class="index">
                                     <app-icon [iconName]="'ic_delete_white_24px'" (click)="deleteMaterial(material)"></app-icon>
-                                </div>
                             </td>
                         </ng-container>
                     </tr>

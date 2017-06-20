@@ -6,15 +6,17 @@ import {ProjectResponseBOQUpload} from '../model/class/project-response';
 import {BOQTable} from '../model/class/boq-table.model';
 import * as Constants from '../shared/constants.globals';
 import {BoqNameId} from '../model/class/name-id.model';
+import {LineItem} from '../model/class/line-item.model'
+import {GlobalRateAnalysis, LineItemLabour, LineItemMaterial} from '../model/class/global-rate-analysis.model'
 const URL = 'http://49.50.76.29:80/api/boq/file';
 
 @Component({
-  selector: 'app-boq-table',
-  templateUrl: './boq-table.component.html',
-  styleUrls: ['./boq-table.component.css']
+  selector: 'app-rate-analysis-display',
+  templateUrl: './rate-analysis-display.component.html',
+  styleUrls: ['./rate-analysis-display.component.css']
 })
 
-export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
+export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
   public uploader: FileUploader = new FileUploader({url: URL});
   public hasBaseDropZoneOver = false;
   public hasAnotherDropZoneOver = false;
@@ -25,6 +27,9 @@ export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
   urlBoq: string;
   toggleCreateView:boolean=false;
   boqSelected:{};
+
+  lineItems: LineItem[]
+  globalRateAnalysis:GlobalRateAnalysis = new GlobalRateAnalysis();
 
   constructor(private restApiService: RestApiService, private router: Router) {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
@@ -91,17 +96,22 @@ export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
       this.toggleCreateView=true;
     }
     this.boqSelected=object
-    /*this.restApiService.getRequest(Constants.BASE_URL_BOQ
-     + Constants.SERVICE_NAME_BOQ + '/' + id)
-     .map(res => /!*this.boqList = <BOQTable[]>*!/res.json().data)
-     .subscribe(
-     (value: BOQTable[]) => {
-     this.boqList = value;
-     },
-     (err: any) => {
-     console.error(err);
-     }
-     );*/
+    this.lineItems=object.lineItems
+  }
+
+  getRateAnalysis(): void {
+    const url="http://49.50.76.29/api/gra/all?appends[]=mainRateAnalysis&appends[]=materialRateAnalysis&appends[]=labourRateAnalysis"
+    this.restApiService.getRequest(url)
+      .map(response => response.json().data)
+      .subscribe(
+        (value) => {
+          this.globalRateAnalysis = value;
+          console.log(this.globalRateAnalysis)
+        },
+        (error: any) => {
+          console.log(error);
+        },
+      );
   }
 
   redirecToRateAnalysis(){
@@ -109,10 +119,12 @@ export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
     this.restApiService.comm_obj['from']="boq_table";
     this.router.navigate(['/pages/rate-analysis']);
   }
+
   redirectToUploadScreen(object) {
     this.restApiService.comm_obj = object;
     this.restApiService.setUploadServiceName(Constants.SERVICE_NAME_BOQ);
     this.restApiService.setAdditionalParameter('project_id', object.id);
     this.router.navigate(['/pages/files-upload']);
   }
+
 }

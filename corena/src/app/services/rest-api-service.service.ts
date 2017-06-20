@@ -18,7 +18,7 @@ import 'rxjs/add/operator/map';
 export class RestApiService {
 
   headers: Headers;
-  public comm_obj: {} = {}; // empty temporary object used to pass objects from one component to other.
+  public comm_obj: {} = {'from':''}; // empty temporary object used to pass objects from one component to other.
   public additionParameter: number;
   public additionParameterKey: string;
   public uploadServiceName: string;

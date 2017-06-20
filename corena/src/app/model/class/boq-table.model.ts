@@ -2,15 +2,17 @@
  * Created by DELL on 6/5/2017.
  */
 export class BOQTable {
-  public id: number;
-  public sr_no: number;
-  public description: string;
-  public unit: string;
-  public quantity: number;
-  public rate: number;
-  public amount: number;
-  public drawing_reference: string;
-  public length: number;
-  public breadth: number;
-  public thickness: number;
+  id: number;
+  boq_id: number ; // taken from line-item model
+  title: string; // taken from line-item model
+  sr_no: number;
+  description: string;
+  unit: string;
+  quantity: number;
+  rate: number;
+  amount: number;
+  drawing_reference: string;
+  length: number;
+  breadth: number;
+  thickness: number;
 }

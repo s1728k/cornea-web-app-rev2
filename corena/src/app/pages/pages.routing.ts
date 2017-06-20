@@ -4,6 +4,7 @@ import {PagesComponent} from './pages.component';
 import {FileUploadComponent} from '../file-upload/file-upload.component';
 import {ProjectHierarchyComponent} from '../project-hierarchy/project-hierarchy.component';
 import {RateAnalysisComponent} from '../rate-analysis/rate-analysis.component';
+import {RateAnalysisDisplayComponent} from '../rate-analysis-display/rate-analysis-display.component';
 import {NextCompComponent} from '../next-comp/next-comp.component';
 import {GanttchartComponent} from '../shared/components/ganttchart/ganttchart.component';
 import {BoqTableComponent} from '../boq-table/boq-table.component';
@@ -21,6 +22,7 @@ export const routes: Routes = [
       {path: 'boq-tables', component: BoqTableComponent},
       {path: 'project-hierarchy', component: ProjectHierarchyComponent},
       {path: 'rate-analysis', component: RateAnalysisComponent},
+      {path: 'rate-analysis-display', component: RateAnalysisDisplayComponent},
       {path: 'ganttchart', component: GanttchartComponent},
       {path: 'files-upload', component: FileUploadComponent},
       {path: 'materials', component: MaterialComponent},

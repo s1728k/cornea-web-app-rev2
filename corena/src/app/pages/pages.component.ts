@@ -52,7 +52,7 @@ export class PagesComponent implements OnInit {
   ];
 
   redirects: any[] = ['under-construnction',
-    ['', 'boq-tables', 'rate-analysis', 'project-hierarchy', 'ganttchart', 'files-upload', 'materials', 'labour', 'cf-factor'],
+    ['', 'boq-tables', 'rate-analysis-display', 'project-hierarchy', 'ganttchart', 'files-upload', 'materials', 'labour', 'cf-factor'],
     ['Purchase Order', 'under-construnction', 'under-construnction'],
     ['Site', 'under-construnction'],
     'under-construnction',

@@ -2,55 +2,7 @@
   <md-tab label="Rate Analysis">
     <div class="container-fluid unselectable">
         <div class="row">
-            <div class="col-md-7">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Project Name</th>
-                            <th>Boq Name</th>
-                            <th>Rate Analysis</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        <td>
-                            <input mdInput placeholder="Project Name" class="inp" type="text" [mdAutocomplete]="projectss" #projectTerm
-                                    (keyup)="searchProjects(projectTerm.value)">
-                            <md-autocomplete #projectss="mdAutocomplete">
-                              <md-option *ngFor="let project of projects | async" [value]="project.id">
-                                {{ project.name }}
-                              </md-option>
-                            </md-autocomplete>
-                        </td>
-                        <td>
-                            <input mdInput placeholder="Boq Name" class="inp" type="text" [mdAutocomplete]="boqss" #boqTerm
-                                    (keyup)="searchBoqs(boqTerm.value)">
-                            <md-autocomplete #boqss="mdAutocomplete">
-                              <md-option *ngFor="let boq of boqs | async" [value]="boq.name">
-                                {{ boq.name }}
-                              </md-option>
-                            </md-autocomplete>
-                        </td>
-                        <td>
-                            <input mdInput placeholder="Boq Name" class="inp" type="text" [mdAutocomplete]="boqss" #boqTerm
-                                    (keyup)="searchBoqs(boqTerm.value)">
-                            <md-autocomplete #boqss="mdAutocomplete">
-                              <md-option *ngFor="let boq of boqs | async" [value]="boq.name">
-                                {{ boq.name }}
-                              </md-option>
-                            </md-autocomplete>
-                        </td>
-                        <td class="index">
-                            <app-icon [iconName]="'ic_library_add_white_24px'"></app-icon>
-                            <app-icon [iconName]="'ic_delete_white_24px'"></app-icon>
-                        </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-1"></div>
-            <div class="col-md-4 align-right">
+            <div class="col-md-4">
                 <table>
                     <thead>
                         <tr>
@@ -69,6 +21,54 @@
                 </table>
 
             </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-7">
+<!--                 <table>
+                    <thead>
+                        <tr>
+                            <th>Project Name</th>
+                            <th>Boq Name</th>
+                            <th>Rate Analysis</th>
+                            <th colspan="3">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <td>
+                            <md-select placeholder="Project Name" class="inp" [(ngModel)]="selectedProject" name="project">
+                                <md-option *ngFor="let project of projects" [value]="project.name" (click)="getBoqList(project)">
+                                  {{project.name}}
+                                </md-option>
+                              </md-select>
+                        </td>
+                        <td>
+                            <md-select placeholder="Boq Name" class="inp" [(ngModel)]="selectedBoq" name="boq">
+                                <md-option *ngFor="let boq of boqs" [value]="boq.name" (click)="getRateAnalysisList(boq)">
+                                  {{boq.name}}
+                                </md-option>
+                              </md-select>
+                        </td>
+                        <td>
+                            <input mdInput placeholder="Rate Analysis Name" class="inp" type="text" [mdAutocomplete]="ramenu" [(ngModel)]="newRateAnalysis.title">
+                            <md-autocomplete #ramenu="mdAutocomplete">
+                              <md-option *ngFor="let ra of rateAnalysisList" [value]="ra.id">
+                                {{ ra.id }}
+                              </md-option>
+                            </md-autocomplete>
+                        </td>
+                        <td class="index">
+                            <app-icon [iconName]="'ic_library_add_white_24px'" (click)="createNewRateAnalysis()"></app-icon>
+                        </td>
+                        <td class="index">
+                            <app-icon [iconName]="'ic_delete_white_24px'" (click)="deleteRateAnalysis()"></app-icon>
+                        </td>
+                        <td class="index">
+                            <app-icon [iconName]="'ic_open_in_new_white_24px'" (click)="openRateAnalysis()"></app-icon>
+                        </td>
+                        </tr>
+                    </tbody>
+                </table> -->
+            </div>
         </div>
 
         <div class="row">
@@ -77,13 +77,14 @@
 <ng-container *ngFor="let lineItem of lineItems; let i=index">
         <div class="row">
             <div class="col-md-12">
-                <h4 class="heading" (click)="dl[i]=!dl[i]">{{lineItem['title']}} Rate analysis</h4>
+                <h4 class="heading" (click)="dl[i]=!dl[i]">{{lineItems[i]['title']}} Rate analysis</h4>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12">
                     <table>
+                        <caption>Material Rate Analysis</caption>
                         <thead>
                             <tr>
                                 <th width="2%" class="index">
@@ -115,11 +116,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let mat of itemRateAnalysis[i].material_rate_analysis; let j=index">
+                            <tr *ngFor="let mat of itemRateAnalysis[i].materialRateAnalysis; let j=index">
                                 <td class="index">
                                   <app-icon [iconName]="'ic_delete_white_24px'" (click)="deleteMaterialRateAnalysis(i,j)"></app-icon>
                                 </td>
-                                <td>{{itemRateAnalysis[i].material_rate_analysis[j]['srno']}}</td>
+                                <td>{{itemRateAnalysis[i].materialRateAnalysis[j]['srno']}}</td>
                                 <td>
                                     <input mdInput placeholder="Material" class="inp" type="text" [mdAutocomplete]="auto" #searchBox
                                     (keyup)="searchMaterials(searchBox.value)">
@@ -129,31 +130,77 @@
                                       </md-option>
                                     </md-autocomplete>
                                 </td>
-                                <td><input mdInput type="number" class="inp" name="Size1" [(ngModel)]="itemRateAnalysis[i].material_rate_analysis[j]['length']" (change)="grandTotal(i)"></td>
-                                <td><input mdInput type="number" class="inp" name="Size2" [(ngModel)]="itemRateAnalysis[i].material_rate_analysis[j]['breadth']" (change)="grandTotal(i)"></td>
-                                <td><input mdInput type="number" class="inp" name="Size3" [(ngModel)]="itemRateAnalysis[i].material_rate_analysis[j]['thickness']" (change)="grandTotal(i)"></td>
-                                <td><input mdInput type="number" class="inp" name="qty" [(ngModel)]="itemRateAnalysis[i].material_rate_analysis[j]['quantity']" (change)="grandTotal(i)"></td>
-                                <td><input mdInput type="text" class="inp" name="uom" [(ngModel)]="itemRateAnalysis[i].material_rate_analysis[j]['uom']" (change)="grandTotal(i)"></td>
-                                <td><input mdInput type="number" class="inp" name="wastage" [(ngModel)]="itemRateAnalysis[i].material_rate_analysis[j]['wastage']" [attr.Value]="wastage" (change)="grandTotal(i)"></td>
-                                <td><input mdInput type="number" class="inp" name="rate" [(ngModel)]="itemRateAnalysis[i].material_rate_analysis[j]['rate']" (change)="grandTotal(i)"></td>
+                                <td><input mdInput type="number" class="inp" name="Size1" [(ngModel)]="itemRateAnalysis[i].materialRateAnalysis[j]['length']" (change)="materialTotal(i)"></td>
+                                <td><input mdInput type="number" class="inp" name="Size2" [(ngModel)]="itemRateAnalysis[i].materialRateAnalysis[j]['breadth']" (change)="materialTotal(i)"></td>
+                                <td><input mdInput type="number" class="inp" name="Size3" [(ngModel)]="itemRateAnalysis[i].materialRateAnalysis[j]['thickness']" (change)="materialTotal(i)"></td>
+                                <td><input mdInput type="number" class="inp" name="qty" [(ngModel)]="itemRateAnalysis[i].materialRateAnalysis[j]['quantity']" (change)="materialTotal(i)"></td>
+                                <td><input mdInput type="text" class="inp" name="uom" [(ngModel)]="itemRateAnalysis[i].materialRateAnalysis[j]['uom']" (change)="materialTotal(i)"></td>
+                                <td><input mdInput type="number" class="inp" name="wastage" [(ngModel)]="itemRateAnalysis[i].materialRateAnalysis[j]['wastage']" [attr.Value]="wastage" (change)="materialTotal(i)"></td>
+                                <td><input mdInput type="number" class="inp" name="rate" [(ngModel)]="itemRateAnalysis[i].materialRateAnalysis[j]['rate']" (change)="materialTotal(i)"></td>
                                 <td>
-                                    <select class="inp" [(ngModel)]="cf_price" (change)="grandTotal(i)" style="padding: 0px">
+                                    <select class="inp" [(ngModel)]="cf_price" (change)="materialTotal(i)" style="padding: 0px">
 <!--                                       <md-option [value]="this.cfList">{{ this.cfList }}</md-option> -->
                                       <option [value]="0">0</option>
                                     </select>
                                 </td>
-                                <td>{{itemRateAnalysis[i].material_rate_analysis[j]['amount']  | number : '2.2-3'| nan}}</td>
+                                <td>{{itemRateAnalysis[i].materialRateAnalysis[j]['amount'] | nan | number : '2.2-3'}}</td>
                             </tr>
+                        </tbody>
+                    </table>
+                    <table>
+                        <caption>Labour Rate Analysis</caption>
+                        <thead>
+                          <tr>
+                            <th width="40px;" class="index">
+                              <app-icon [iconName]="'ic_add_box_white_24px'" (click)="addLabourRateAnalysis(i)"></app-icon>
+                            </th>
+                    <!--         <th>Length</th> -->
+                            <th>Name</th>
+                            <th>Breadth</th>
+                            <th>Thickness</th>
+                            <th>UOM</th>
+                            <th>Running_Metre</th>
+                            <th>Rate</th>
+                            <th>Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let item of itemRateAnalysis[i].labourRateAnalysis; let j=index">
+                            <td class="index">
+                              <app-icon [iconName]="'ic_delete_white_24px'" (click)="deleteLabourRateAnalysis(i,j)"></app-icon>
+                            </td>
+                    <!--         <td><input type="number" class="inp" placeholder="Length" name="Length" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['length']"></td> -->
+                            <td>
+                              <input mdInput placeholder="Labour" class="inp" type="text" [mdAutocomplete]="auto" #searchBox
+                              (keyup)="searchLabours(searchBox.value)">
+                              <md-autocomplete #auto="mdAutocomplete">
+                                <md-option *ngFor="let labour of labours | async" [value]="labour.name" (click)="updateLabourRow(labour,i,j)">
+                                  {{ labour.name }}
+                                </md-option>
+                              </md-autocomplete>
+                            </td>
+                            <td><input type="number" class="inp" placeholder="Breadth" name="Breadth" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['breadth']"></td>
+                            <td><input type="number" class="inp" placeholder="Thickness" name="Thickness" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['thickness']"></td>
+                            <td><input type="text" class="inp" placeholder="UOM" name="UOM" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['uom']"></td>
+                            <td><input type="number" class="inp" placeholder="Running_Metre" name="Running_Metre" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['running_metre']"></td>
+                            <td><input type="number" class="inp" placeholder="Rate" name="Rate" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['rate']"></td>
+                            <td>{{itemRateAnalysis[i].labourRateAnalysis[j]['amount']}}</td>
+                          </tr>
+                        </tbody>
+                    </table>
+                    <table>
+                        <caption>Break Up</caption>
+                        <tbody>
                             <tr>
                                 <td colspan=12>
-                                <button md-raised-button color="primary" (click)="openDialogSup(i)">Labour Calculation</button>
+<!--                                 <button md-raised-button color="primary" (click)="openDialogSup(i)">Labour Calculation</button> -->
                                 <button md-raised-button color="primary" (click)="postItemRateAnalysis(i)">Save</button>
                                 <span class="example-spacer"></span>
                                 <md-chip-list class="float-right">
-                                <md-chip color="primary" selected="true">Overhead Margin: <b>{{itemRateAnalysis[i].overhead_margin | number : '2.1-2'| nan}}</b></md-chip>
-                                <md-chip color="primary" selected="true">Profit Margin: <b>{{itemRateAnalysis[i].profit_margin | number : '2.1-2'| nan}}</b></md-chip>
-                                <md-chip color="primary" selected="true">Labour Total: <b>{{itemRateAnalysis[i].labour_total | number : '2.1-2'| nan}}</b></md-chip>
-                                <md-chip color="primary" selected="true">Grand Total: <b>{{itemRateAnalysis[i].grand_total | number : '2.1-2'| nan}}</b></md-chip>
+                                <md-chip color="primary" selected="true">Overhead Margin: <b>{{itemRateAnalysis[i].overhead_margin | nan | number : '2.1-2'}}</b></md-chip>
+                                <md-chip color="primary" selected="true">Profit Margin: <b>{{itemRateAnalysis[i].profit_margin | nan | number : '2.1-2'}}</b></md-chip>
+                                <md-chip color="primary" selected="true">Labour Total: <b>{{itemRateAnalysis[i].labour_total | nan | number : '2.1-2'}}</b></md-chip>
+                                <md-chip color="primary" selected="true">Grand Total: <b>{{itemRateAnalysis[i].grand_total | nan | number : '2.1-2'}}</b></md-chip>
                                 </md-chip-list>
                                 </td>
                             </tr>

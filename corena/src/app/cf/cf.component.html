@@ -16,8 +16,8 @@
                     <table>
                         <thead>
                             <tr>
-                                <th width="40px;">
-                                  <app-icon [iconName]="'ic_add_box_black_24px'" (click)="addSubMaterial()"></app-icon>
+                                <th width="40px;" class="index">
+                                  <app-icon [iconName]="'ic_add_box_white_24px'" (click)="addSubMaterial()"></app-icon>
                                 </th>
                                 <th width="40px;">Sr.No</th>
                                 <th width="200px;">Description</th>
@@ -54,8 +54,8 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let submaterial of newCFFactor.submaterials; let i=index">
-                                <td>
-                                  <app-icon [iconName]="'ic_delete_black_24px'" (click)="deleteSubMaterial(i)"></app-icon>
+                                <td  class="index">
+                                  <app-icon [iconName]="'ic_delete_white_24px'" (click)="deleteSubMaterial(i)"></app-icon>
                                 </td>
                                 <td>{{newCFFactor.submaterials[i].srno}}</td>
                                 <td></td>
@@ -102,16 +102,10 @@
         </div>
     </div>
 
-<!--     <div class="row">
-        <div class="col-md-12">
-            <input type='text' style='padding:8px;margin:15px auto;width:30%;'
-            placeholder='Search Whole Table...' (keyup)='updateFilter($event, 0)' />
-        </div>
-    </div> -->
-
     <div class="row flex-box b-margin">
         <div class="col-md-9" >
-            <app-pagination *ngIf="pageCount" [pageCount]="pageCount" (pageSelected)=selPage($event) (perPageCount)="perPageCountChange($event)">
+            <app-pagination *ngIf="pageCount" [pageCount]="pageCount" [activePage]="activePage"
+            (pageSelected)=selectPage($event) (perPageCount)="perPageCountChange($event)">
             </app-pagination>
         </div>
         <div class="col-md-3">
@@ -131,7 +125,7 @@
                         <th width="5%">UOM</th>
                         <th width="10%">Type</th>
                         <th width="10%">Cf_Price</th>
-                        <th width="10%"></th>
+                        <th width="10%" colspan="2"></th>
                     </tr>
                     <tr>
                         <td width="5%">
@@ -162,33 +156,33 @@
                             <input type='text' class="full-width"
                             placeholder='cf_price' (keyup)='individualFilter(searchOpt, "cf_price", 0)' [(ngModel)]="searchOpt['cf_price']" name="cf_price" />
                         </td>
-                        <td width="10%"></td>
+                        <td width="10%" colspan="2"></td>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let cfFactor of cfFactors; let i=index">
                         <td width="5%">{{cfFactor['srno']}}</td>
                         <td width="30%">{{cfFactor['description']}}</td>
-                        <td width="25%">{{cfFactor['material']['name']}}</td>
+                        <ng-container *ngIf="cfFactor['material']">
+                            <td width="25%">{{cfFactor['material']['name']}}</td>
+                        </ng-container>
+                        <ng-container *ngIf="!cfFactor['material']">
+                            <td width="25%">{{cfFactor['item_id']}}</td>
+                        </ng-container>
                         <td width="5%">{{cfFactor['price']}}</td>
                         <td width="15%">{{cfFactor['uom']}}</td>
                         <td width="10%">{{cfFactor['type']}}</td>
                         <td width="10%">{{cfFactor['cf_price']}}</td>
-                        <td width="10%">
-                            <div class="flex-box">
-                                <button (click)="loadCFFactorForEdit(cfFactor)"><app-icon [iconName]="'ic_create_black_24px'" ></app-icon></button>
-                                <button (click)="deleteCFFactor(cfFactor)"><app-icon [iconName]="'ic_delete_black_24px'"></app-icon></button>
-                            </div>
+                        <td width="2%" class="index">
+                            <app-icon [iconName]="'ic_create_white_24px'" (click)="loadCFFactorForEdit(cfFactor)"></app-icon>
+                        </td>
+                        <td width="2%" class="index">
+                            <app-icon [iconName]="'ic_delete_white_24px'" (click)="deleteCFFactor(cfFactor)"></app-icon>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-
-<!--     <div class="row">
-        <app-pagination *ngIf="pageCount" [pageCount]="pageCount" (pageSelected)=selPage($event) (perPageCount)="perPageCountChange($event)">
-        </app-pagination>
-    </div> -->
 
 </div>

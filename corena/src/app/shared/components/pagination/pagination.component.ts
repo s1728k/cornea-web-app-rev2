@@ -16,6 +16,7 @@ export class PaginationComponent implements OnInit, OnChanges {
   countPerPage: number=2;
   goToPage: number=1;
   @Input() pageCount: number;
+  @Input() activePage: number=0;
   @Output() pageSelected = new EventEmitter();
   @Output() perPageCount = new EventEmitter();
   loadPage(page: number){
@@ -34,7 +35,7 @@ export class PaginationComponent implements OnInit, OnChanges {
       for (const p of this.Pages){
           this.clActive.push(false);
       }
-      this.clActive[0]=true;
+      this.clActive[this.activePage]=true;
       this.pageSelOld = 0;
   }
   ngOnChanges() {
@@ -49,7 +50,7 @@ export class PaginationComponent implements OnInit, OnChanges {
       }
       this.Pages[i]
     }
-    this.clActive[0]=true;
+    this.clActive[this.activePage]=true;
     this.pageSelOld = 0;
   }
 

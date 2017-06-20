@@ -32,6 +32,7 @@ export class MaterialComponent implements OnInit, AfterViewInit {
   searchOpt: {}= {brand: '', modal: '', job: ''}; // empty object used to pass the individual column searched for
   ed: {}= {}; // boolean for editing mode
   lastSearchObj: {}= {}; // used as a token to identify request is comming from normal get request or general search or individual search
+  trig:string=""; // manual trigger the searchLoad and searchTotal
   pageCount= 4;
   perPageCount= 2;
   activePage=0;
@@ -75,6 +76,7 @@ export class MaterialComponent implements OnInit, AfterViewInit {
     // console.log("Entered select page")
     // console.log(p)
     // console.log(this.lastSearchObj['from'])
+    this.trig=(this.trig==='sel')?this.trig+"1":'sel'
     this.activePage=p;
     switch (this.lastSearchObj['from']) {
       case "full":
@@ -101,12 +103,12 @@ export class MaterialComponent implements OnInit, AfterViewInit {
     this.lastSearchObj = {'from':'start','1':n};
 
     let url = 'http://49.50.76.29/api/material/search?search=&filter[]=name&filter[]=srno&filter[]=brand&filter[]=uom&perPage=' +
-                String(this.perPageCount) + '&page=' + String(n);
+                String(this.perPageCount) + '&page=' + String(n)+"&"+this.trig;
 
     this.searchLoad.next(url);
 
     url = 'http://49.50.76.29/api/material/search?search=&filter[]=name&filter[]=srno&filter[]=brand&filter[]=uom&perPage=' +
-                String(1) + '&page=' + String(0);
+                String(1) + '&page=' + String(0)+"&"+this.trig;
 
     this.searchTotal.next(url);
   }
