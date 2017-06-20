@@ -44,7 +44,7 @@ export class RateAnalysisComponent implements OnInit {
   calcs2: {}[] = [];
 
   overhead: number=0;
-  profit: number=20;
+  profit: number=0;
   wastage: number=0;
   cfList:any;
   cf_price:number=0;

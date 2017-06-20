@@ -41,7 +41,7 @@
               <md-datepicker #picker2></md-datepicker>
           </td>
           <td class="index">
-            <!--                             <button md-raised-button color="primary" class="full-width" (click)="postMaterial()">Add</button> -->
+            <!-- <button md-raised-button color="primary" class="full-width" (click)="postMaterial()">Add</button> -->
             <app-icon [iconName]="'ic_add_box_white_24px'" (click)="postProject()"></app-icon>
           </td>
         </tr>
@@ -112,14 +112,14 @@
             <td><input type='text' class="full-width" [(ngModel)]="project['name']"></td>
             <td>
               <div class="flex-box">
-                <input mdInput [mdDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="newProject['start_date']" class="inp" name="start_date">
+                <input mdInput [mdDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="project['start_date']" class="inp" name="start_date">
                 <button mdSuffix [mdDatepickerToggle]="picker"></button>
                 <md-datepicker #picker ></md-datepicker>
               </div>
             </td>
             <td>
               <div class="flex-box">
-                <input mdInput [mdDatepicker]="picker2" placeholder="Choose a date" [(ngModel)]="newProject['end_date']" class="inp" name="end_date">
+                <input mdInput [mdDatepicker]="picker2" placeholder="Choose a date" [(ngModel)]="project['end_date']" class="inp" name="end_date">
                 <button mdSuffix [mdDatepickerToggle]="picker2"></button>
                 <md-datepicker #picker2></md-datepicker>
               </div>

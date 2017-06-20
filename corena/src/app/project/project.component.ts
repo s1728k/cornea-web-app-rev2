@@ -117,18 +117,17 @@ export class ProjectComponent implements OnInit, AfterViewInit {
 
 
   postProject() {
-    // console.log("Entered post material")
+    // console.log("Entered postProject")
     const url = 'http://49.50.76.29:8090/api/project/new';
-    // console.log(this.newMaterial);
+    // console.log(this.newProject);
     this.restApiService.postRequest(url, this.newProject)
       .map(res => res.json().data[0])
       .subscribe(
         (value: Project) => {
           this.newProject = value;
-          // console.log(this.newMaterial);
-          this.newProject = new Project;
+          // console.log(this.newProject);
+          this.newProject = new Project();
           this.selectPage(this.activePage);
-          console.log(this.newProject);
         },
         (err: any) => {
           console.error(err);
