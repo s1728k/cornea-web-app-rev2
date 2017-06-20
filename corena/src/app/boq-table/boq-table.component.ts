@@ -6,12 +6,14 @@ import {ProjectResponseBOQUpload} from '../model/class/project-response';
 import {BOQTable} from '../model/class/boq-table.model';
 import * as Constants from '../shared/constants.globals';
 import {BoqNameId} from '../model/class/name-id.model';
+import {DialogService} from '../shared/services/dialog/dialog.service';
 const URL = 'http://49.50.76.29:80/api/boq/file';
 
 @Component({
   selector: 'app-boq-table',
   templateUrl: './boq-table.component.html',
-  styleUrls: ['./boq-table.component.css']
+  styleUrls: ['./boq-table.component.css'],
+  providers: [DialogService]
 })
 
 export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -25,8 +27,9 @@ export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
   urlBoq: string;
   toggleCreateView:boolean=false;
   boqSelected:{};
+  public result: any;
 
-  constructor(private restApiService: RestApiService, private router: Router) {
+  constructor(private restApiService: RestApiService, private router: Router, private dialogsService: DialogService) {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
       + Constants.ACTION_ALL + '?visible[]=id&visible[]=name';
     this.urlBoq = Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_BOQ
@@ -79,6 +82,9 @@ export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
         },
         (error: any) => {
           console.log(error);
+          this.dialogsService
+            .confirm(Constants.NOT_FOUND_TITLE, error)
+            .subscribe(res => this.result = res);
         },
       );
   }

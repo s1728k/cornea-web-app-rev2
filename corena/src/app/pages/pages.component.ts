@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ViewChildren, QueryList, ElementRef} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewChildren, QueryList, ElementRef, NgZone} from '@angular/core';
 import {trigger, state, style, animate, transition, keyframes} from '@angular/animations';
 import {RouterModule, Router}  from '@angular/router';
 
@@ -35,7 +35,7 @@ import {RouterModule, Router}  from '@angular/router';
 export class PagesComponent implements OnInit {
 
   links: any[] = ['Dashboard',
-    ['Project', 'BOQ', 'Rate Analysis', 'Project Hierarchy', 'GanttChart', 'Upload Files', 'Materials', 'Labour', 'CF-Factor'],
+    ['Project', 'BOQ', 'Rate Analysis', 'Project Hierarchy', 'GanttChart', 'ProjectComponent', 'Upload Files', 'Materials', 'Labour', 'CF-Factor'],
     ['Purchase Order', 'Request For Quotation', 'Supplier Quotation'],
     ['Site', 'Indent'],
     'Accounts',
@@ -43,7 +43,7 @@ export class PagesComponent implements OnInit {
     ['HR', 'Register New Employee', 'Attendence Sheet', 'Performance Stats'],
   ];
   up: any[] = [false,
-    [false, false, false, false, false, false, false, false, false],
+    [false, false, false, false, false, false, false, false, false, false],
     [false, false, false],
     [false, false],
     false,
@@ -52,7 +52,7 @@ export class PagesComponent implements OnInit {
   ];
 
   redirects: any[] = ['under-construnction',
-    ['', 'boq-tables', 'rate-analysis', 'project-hierarchy', 'ganttchart', 'files-upload', 'materials', 'labour', 'cf-factor'],
+    ['', 'boq-tables', 'rate-analysis', 'project-hierarchy', 'ganttchart', 'project', 'files-upload', 'materials', 'labour', 'cf-factor'],
     ['Purchase Order', 'under-construnction', 'under-construnction'],
     ['Site', 'under-construnction'],
     'under-construnction',
@@ -60,7 +60,7 @@ export class PagesComponent implements OnInit {
     ['HR', 'under-construnction', 'under-construnction', 'under-construnction'],
   ];
 
-  constructor(private router: Router) {
+  constructor(private router: Router, zone: NgZone) {
   }
 
 

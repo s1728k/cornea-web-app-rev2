@@ -16,7 +16,7 @@
             </div>
               <md-list-item class="md-2-line" *ngFor="let boq of projectList[i].boq">
                 <button md-button (click)="updateBoqTable(boq)" class="full-width"> {{boq.name}}</button>
-<!--                 <button md-button (click)="redirectToUploadScreen(project)"><app-icon [iconName]="'ic_add_box_black_24px'"></app-icon></button> -->
+                 <button md-button (click)="redirectToUploadScreen(project)"><app-icon [iconName]="'ic_add_box_black_24px'"></app-icon></button>
               </md-list-item>
             </md-list>
           </md-card>

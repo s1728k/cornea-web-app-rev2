@@ -16,6 +16,7 @@ export class PaginationComponent implements OnInit, OnChanges {
   countPerPage: number=2;
   goToPage: number=1;
   @Input() pageCount: number;
+
   @Output() pageSelected = new EventEmitter();
   @Output() perPageCount = new EventEmitter();
   loadPage(page: number){

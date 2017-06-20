@@ -10,6 +10,7 @@ import {BoqTableComponent} from '../boq-table/boq-table.component';
 import {MaterialComponent} from '../material/material.component';
 import {LabourComponent} from '../labour/labour.component';
 import {CfComponent} from '../cf/cf.component';
+import {ProjectComponent} from '../project/project.component';
 
 export const routes: Routes = [
   {
@@ -22,6 +23,7 @@ export const routes: Routes = [
       {path: 'project-hierarchy', component: ProjectHierarchyComponent},
       {path: 'rate-analysis', component: RateAnalysisComponent},
       {path: 'ganttchart', component: GanttchartComponent},
+      {path: 'project', component: ProjectComponent},
       {path: 'files-upload', component: FileUploadComponent},
       {path: 'materials', component: MaterialComponent},
       {path: 'labour', component: LabourComponent},

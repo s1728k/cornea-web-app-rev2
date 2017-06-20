@@ -1,0 +1,40 @@
+<div>
+<!--  <div class="row">
+    <h4>Purchase Order List</h4>
+  </div>
+  <div class="row">
+    <ngx-charts-advanced-pie-chart
+      [view]="view"
+      [scheme]="colorScheme"
+      [results]="singlePo"
+      [gradient]="gradient"
+      (select)="updatePoList($event)">
+    </ngx-charts-advanced-pie-chart>
+  </div>
+  <div class="row" *ngIf="flagPo">
+    <app-icon [iconName]="'up-arrow'" (clicked)="flagPo=false"></app-icon>
+   &lt;!&ndash; <app-doc-list [attrDisp]="attrDispPo" [attrNames]="attrNamesPo" [listDoc]="poList" [pageCount]="pageCountPo"
+                  (selDoc)="redirectToTrackSheet($event, 'purchase-order-form')">
+    </app-doc-list>&ndash;&gt;
+  </div>
+  <hr>-->
+  <div class="row">
+    <h3 class="heading3">Chart</h3>
+  </div>
+  <div class="row">
+    <ngx-charts-advanced-pie-chart
+      [view]="view"
+      [scheme]="colorScheme"
+      [results]="singleInd"
+      [gradient]="gradient"
+      (select)="updateIndList($event)">
+    </ngx-charts-advanced-pie-chart>
+  </div>
+  <div class="row" *ngIf="flagInd">
+    <app-icon [iconName]="'up-arrow'" (clicked)="flagInd=false"></app-icon>
+<!--
+    <app-doc-list [attrDisp]="attrDispInd" [attrNames]="attrNamesInd" [listDoc]="indList" [pageCount]="pageCountInd" (selDoc)="redirectToTrackSheet($event, 'mr-form')"></app-doc-list>
+-->
+  </div>
+
+</div>
