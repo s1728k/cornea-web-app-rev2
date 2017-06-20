@@ -269,6 +269,52 @@
     </div>
   </md-tab>
   <md-tab label="Report">
-    Space For Report
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <h3 class="heading">Reports</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <table>
+            <thead>
+            <tr>
+              <th width="5%">Sr.No.</th>
+              <th width="30%">Material Name</th>
+              <th width="25%">Usage Count</th>
+              <th width="15%">Rate</th>
+              <th width="5%">Amount</th>
+            </tr>
+
+            </thead>
+            <tbody>
+            <tr *ngFor="let mList of materialreportusagelist; let i=index">
+              <td width="5%">{{mList['srno']}}</td>
+              <td width="30%">{{mList['name']}}</td>
+              <td width="25%">{{mList['material_count']}}</td>
+              <td width="5%">{{mList['rate']}}</td>
+              <td width="15%">{{mList['amount']}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+
+      <div class="row">
+<!--         <div class="col-md-12">
+            <ngx-charts-advanced-pie-chart
+              [view]="view"
+              [scheme]="colorScheme"
+              [results]="singlePo"
+              [gradient]="gradient"
+              (select)="updatePoList($event)">
+            </ngx-charts-advanced-pie-chart>
+        </div> -->
+
+      </div>
+    </div>
   </md-tab>
 </md-tab-group>

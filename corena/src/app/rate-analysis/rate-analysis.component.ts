@@ -5,6 +5,13 @@ import {NanPipe} from '../shared/pipes/nan.pipe';
 import {MdDialog, MdDialogRef} from '@angular/material';
 import {RaPopupDialog} from './rapopup.component';
 
+// ------------Imports for Charts---------------------------
+import { ViewEncapsulation, ChangeDetectionStrategy, ContentChild, TemplateRef } from '@angular/core';
+import { calculateViewDimensions } from '../shared';
+import { ColorHelper } from '../shared';
+import {BaseChartComponent} from "../shared";
+import {single , multi} from '../shared';
+
 // ------------Models Imported------------------------------
 import {ProjectResponseBOQUpload} from '../model/class/project-response';
 import {BoqNameId} from '../model/class/name-id.model';
@@ -15,6 +22,7 @@ import {LabourRateAnalysis} from '../model/class/labour-rate-analysis.model'
 import {LineItem} from '../model/class/line-item.model'
 import {Material} from '../model/class/material.model'
 import {Labour} from '../model/class/labour.model'
+import {MaterialReportUsageList} from '../model/class/material-report-usage-list.model';
 
 // ------------http imports-------------------------------
 import {Observable} from 'rxjs/Observable';
@@ -72,6 +80,31 @@ export class RateAnalysisComponent implements OnInit {
   mainRateAnalysis:MainRateAnalysis;
   itemRateAnalysis:MainRateAnalysis[]=[];
 
+
+  //  ---------------space for charts-------------------------
+
+  materialreportusagelist: MaterialReportUsageList[];
+
+  // view: any[] = [700, 400];
+  // colorScheme = {
+  //   domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+  // };
+  // setData(demo):any{
+  //   let arr2=[];
+  //   for (let key in demo){
+  //     let arr = {'name':'','value':0};
+  //     arr.name = key;
+  //     arr.value = Number(demo[key]);
+  //     arr2.push(arr);
+  //   }
+  //   console.log(arr2);
+  //   return arr2;
+  // }
+  // demoInd:{} = {"pending":2,"draft":12,"unapproved":20,"approved":20,"closed":0};
+  // singleInd:any[] = this.setData(this.demoInd);
+
+  //  ---------------End of space for charts------------------
+
   // variable for grand total one for item rate analysis and other for overhead.
   grandTotal2V: any;
 
@@ -117,6 +150,7 @@ export class RateAnalysisComponent implements OnInit {
       console.log(this.lineItems);
     }
     this.getProjectList();
+    this.getMaterialReportUsageList();
   }
 
   getProjectList(): void {
@@ -170,6 +204,23 @@ export class RateAnalysisComponent implements OnInit {
           console.log(error);
         },
       );
+  }
+
+  getMaterialReportUsageList() {
+    const url = 'http://49.50.76.29/api/report/getMaterialUsageForRa?gra_id=1&boq_id=1';
+    console.log(url)
+    this.restApiService.getRequest(url)
+      .map(res => res.json().data)
+      .subscribe(
+        (value: MaterialReportUsageList[]) => {
+          this.materialreportusagelist = value;
+          console.log(this.materialreportusagelist);
+        },
+        (err: any) => {
+          console.error(err);
+        }
+      );
+
   }
 
   createNewRateAnalysis(): void{
