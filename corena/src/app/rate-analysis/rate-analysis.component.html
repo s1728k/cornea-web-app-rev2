@@ -184,7 +184,7 @@
                             <td><input type="text" class="inp" placeholder="UOM" name="UOM" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['uom']"></td>
                             <td><input type="number" class="inp" placeholder="Running_Metre" name="Running_Metre" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['running_metre']"></td>
                             <td><input type="number" class="inp" placeholder="Rate" name="Rate" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['rate']"></td>
-                            <td>{{itemRateAnalysis[i].labourRateAnalysis[j]['amount']}}</td>
+                            <td>{{itemRateAnalysis[i].labourRateAnalysis[j]['amount'] | nan | number : '2.1-2'}}</td>
                           </tr>
                         </tbody>
                     </table>

@@ -63,6 +63,7 @@ export class LabourComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(){
     // console.log("ngAfterViewInit")
     this.getLabours(0);
+    this.activePage=0
   }
 
   perPageCountChange(perPageCount) {
@@ -70,6 +71,7 @@ export class LabourComponent implements OnInit, AfterViewInit {
     // console.log(perPageCount)
     this.perPageCount=perPageCount;
     this.getLabours(0);
+    this.activePage=0
   }
 
   selectPage(p){

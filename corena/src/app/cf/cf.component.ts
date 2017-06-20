@@ -41,6 +41,7 @@ export class CfComponent implements OnInit {
   pageCount= 4;
   perPageCount= 2;
   activePage=0;
+  trig:string="";
 
   materialsDropDown: Material[];
 
@@ -51,6 +52,7 @@ export class CfComponent implements OnInit {
 
   ngOnInit() {
     this.getCFFactors(0);
+    this.activePage=0
   }
 
   search(term1: string, cnd: string): void {
@@ -110,6 +112,7 @@ export class CfComponent implements OnInit {
     console.log(perPageCount)
     this.perPageCount=perPageCount;
     this.getCFFactors(0);
+    this.activePage=0
   }
 
   getPageCount(sTerm: string, fltr: string): void{
@@ -131,6 +134,7 @@ export class CfComponent implements OnInit {
 
   selPage(p){
     this.activePage=p;
+    this.trig=(this.trig==='sel')?this.trig+"1":'sel'
     switch (this.lastSearchObj['from']) {
       case "full":
         this.generalFilter(this.lastSearchObj['1'], p);

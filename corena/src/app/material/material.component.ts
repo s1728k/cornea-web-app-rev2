@@ -63,6 +63,7 @@ export class MaterialComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(){
     // console.log("ngAfterViewInit")
     this.getMaterials(0);
+    this.activePage=0
   }
 
   perPageCountChange(perPageCount) {
@@ -70,6 +71,7 @@ export class MaterialComponent implements OnInit, AfterViewInit {
     // console.log(perPageCount)
     this.perPageCount=perPageCount;
     this.getMaterials(0);
+    this.activePage=0
   }
 
   selectPage(p){
