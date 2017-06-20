@@ -1,6 +1,6 @@
 import {RestApiService} from '../services/rest-api-service.service';
 import {Component, OnInit} from '@angular/core';
-import {RateAnalysis, LineItemTableRow} from '../model/class';
+import {GlobalRateAnalysis, LineItemTableRow} from '../model/class';
 import {LineItem} from '../model/class/line-item.model';
 import {NanPipe} from '../shared/pipes/nan.pipe';
 import {MdDialog, MdDialogRef} from '@angular/material';

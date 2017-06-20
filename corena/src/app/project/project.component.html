@@ -1,0 +1,152 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <h3 class="heading">
+        Add To Projects
+      </h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <table style="margin-top: 20px">
+        <thead>
+        <tr>
+          <th width="34%">Name</th>
+          <th width="30%">Start Data</th>
+          <th width="2%"></th>
+          <th width="30%">End Date</th>
+          <th width="2%"></th>
+          <th width="2%"></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>
+            <input type="text" [(ngModel)]="newProject['name']" class="inp" name="name">
+          </td>
+          <td>
+              <input mdInput [mdDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="newProject['start_date']" class="inp" name="start_date">
+          </td>
+          <td class="index">
+              <button mdSuffix [mdDatepickerToggle]="picker"></button>
+              <md-datepicker #picker ></md-datepicker>
+          </td>
+          <td>
+              <input mdInput [mdDatepicker]="picker2" placeholder="Choose a date" [(ngModel)]="newProject['end_date']" class="inp" name="end_date">
+          </td>
+          <td class="index">
+              <button mdSuffix [mdDatepickerToggle]="picker2"></button>
+              <md-datepicker #picker2></md-datepicker>
+          </td>
+          <td class="index">
+            <!--                             <button md-raised-button color="primary" class="full-width" (click)="postMaterial()">Add</button> -->
+            <app-icon [iconName]="'ic_add_box_white_24px'" (click)="postProject()"></app-icon>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h3 class="heading">
+        Project List
+      </h3>
+    </div>
+  </div>
+
+  <div class="row">
+      <div class="col-md-9">
+          <app-pagination *ngIf="pageCount" [pageCount]="pageCount" [activePage]="activePage"
+          (pageSelected)=selectPage($event) (perPageCount)="perPageCountChange($event)">
+          </app-pagination>
+      </div>
+      <div class="col-md-3">
+          <input type='text' class="full-width search-box" placeholder='Search Whole Table...' (keyup)='generalFilter($event, 0)' />
+      </div>
+  </div>
+
+  <div class="row">
+  <br>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-12">
+      <table style="margin-top: 20px">
+        <thead>
+        <tr>
+          <th width="5%">Sr.No.</th>
+          <th width="31%">Name</th>
+          <th width="30%">Start Date</th>
+          <th width="30%">End Date</th>
+          <th width="4%" colspan="2"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td width="5%">
+                <input type='text' class="inp"
+                placeholder='Sr.No...' name="sr" />
+            </td>
+            <td width="31%">
+                <input type='text' class="inp"
+                placeholder='Name...' (keyup)='individualFilter(searchOpt, "name", 0)' [(ngModel)]="searchOpt['name']" name="Name" />
+            </td>
+            <td width="30%">
+                <input type='text' class="inp"
+                placeholder='Start Date...' (keyup)='individualFilter(searchOpt, "start_date", 0)' [(ngModel)]="searchOpt['start_date']" name="start_date" />
+            </td>
+            <td width="30%">
+                <input type='text' class="inp"
+                placeholder='End Date...' (keyup)='individualFilter(searchOpt, "end_date", 0)' [(ngModel)]="searchOpt['end_date']" name="end_date" />
+            </td>
+            <td width="4%" colspan="2"></td>
+        </tr>
+        <tr *ngFor="let project of projects | async; let i=index">
+          <ng-container *ngIf="ed[i]">
+            <td></td>
+            <td><input type='text' class="full-width" [(ngModel)]="project['name']"></td>
+            <td>
+              <div class="flex-box">
+                <input mdInput [mdDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="newProject['start_date']" class="inp" name="start_date">
+                <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                <md-datepicker #picker ></md-datepicker>
+              </div>
+            </td>
+            <td>
+              <div class="flex-box">
+                <input mdInput [mdDatepicker]="picker2" placeholder="Choose a date" [(ngModel)]="newProject['end_date']" class="inp" name="end_date">
+                <button mdSuffix [mdDatepickerToggle]="picker2"></button>
+                <md-datepicker #picker2></md-datepicker>
+              </div>
+            </td>
+
+            <td class="index">
+                <app-icon [iconName]="'ic_done_white_24px'" (click)="ed[i]=!ed[i]; putProject(project)"></app-icon>
+            </td>
+            <td class="index">
+                <!-- <button (click)="delRow(material)"><app-icon [iconName]="'ic_delete_white_24px'"></app-icon></button> -->
+            </td>
+          </ng-container>
+          <ng-container *ngIf="!ed[i]">
+            <td></td>
+            <td>{{project['name']}}</td>
+            <td>{{project['start_date']}}</td>
+            <td>{{project['end_date']}}</td>
+            <td width="2%" class="index">
+                <app-icon [iconName]="'ic_create_white_24px'" (click)="ed[i]=!ed[i]"></app-icon>
+            </td>
+            <td width="2%" class="index">
+                <app-icon [iconName]="'ic_delete_white_24px'" (click)="deleteProject(project)"></app-icon>
+            </td>
+          </ng-container>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

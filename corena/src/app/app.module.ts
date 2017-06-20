@@ -40,6 +40,7 @@ import { MaterialComponent } from './material/material.component';
 import { LabourComponent } from './labour/labour.component';
 import { CfComponent } from './cf/cf.component';
 import { RateAnalysisDisplayComponent } from './rate-analysis-display/rate-analysis-display.component';
+import { ProjectComponent } from './project/project.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { RateAnalysisDisplayComponent } from './rate-analysis-display/rate-analy
     LabourComponent,
     CfComponent,
     RateAnalysisDisplayComponent,
+    ProjectComponent,
   ],
   // provide modules throughout
   imports: [

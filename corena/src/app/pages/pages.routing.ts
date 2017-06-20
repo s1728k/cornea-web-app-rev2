@@ -11,6 +11,7 @@ import {BoqTableComponent} from '../boq-table/boq-table.component';
 import {MaterialComponent} from '../material/material.component';
 import {LabourComponent} from '../labour/labour.component';
 import {CfComponent} from '../cf/cf.component';
+import {ProjectComponent} from '../project/project.component';
 
 export const routes: Routes = [
   {
@@ -28,6 +29,7 @@ export const routes: Routes = [
       {path: 'materials', component: MaterialComponent},
       {path: 'labour', component: LabourComponent},
       {path: 'cf-factor', component: CfComponent},
+      {path: 'projects', component: ProjectComponent},
     ]
   }
 ];

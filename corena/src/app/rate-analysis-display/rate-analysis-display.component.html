@@ -112,6 +112,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <ng-container *ngIf="globalRateAnalysis.mainRateAnalysis[i]['materialRateAnalysis']">
                                     <tr *ngFor="let mat of globalRateAnalysis.mainRateAnalysis[i]['materialRateAnalysis']; let j=index">
                                         <td class="index">
                                           <app-icon [iconName]="'ic_delete_white_24px'" (click)="deleteMaterialRateAnalysis(i,j)"></app-icon>
@@ -141,6 +142,7 @@
                                         </td>
                                         <td>{{globalRateAnalysis.mainRateAnalysis[i]['materialRateAnalysis'][j]['amount'] | nan | number : '2.2-3'}}</td>
                                     </tr>
+                                </ng-container>
                                 </tbody>
                             </table>
                             <table>

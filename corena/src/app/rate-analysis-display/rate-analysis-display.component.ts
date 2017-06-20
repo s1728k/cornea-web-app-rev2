@@ -102,7 +102,7 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterVie
   getRateAnalysis(): void {
     const url="http://49.50.76.29/api/gra/all?appends[]=mainRateAnalysis&appends[]=materialRateAnalysis&appends[]=labourRateAnalysis"
     this.restApiService.getRequest(url)
-      .map(response => response.json().data)
+      .map(response => response.json().data[0])
       .subscribe(
         (value) => {
           this.globalRateAnalysis = value;

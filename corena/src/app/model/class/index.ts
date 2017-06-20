@@ -7,7 +7,7 @@ export * from './LoginCredentials';
 export * from './name-id.model';
 export * from './project-response';
 export * from './UserModel';
-export * from './rate.model';
+export * from './global-rate-analysis.model';
 export * from './overhead.model';
 export * from './line-item-material.model';
 export * from './boq.model';
