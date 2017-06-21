@@ -104,13 +104,11 @@ export class ProjectComponent implements OnInit, AfterViewInit {
     // console.log(n)
     this.lastSearchObj = {'from': 'start', '1': n};
 
-    let url = 'http://49.50.76.29:8090/api/project/search?search=&filter[]=name&filter[]=start_date&filter[]=end_date&perPage=' +
-      String(this.perPageCount) + '&page=' + String(n)+"&"+this.trig;
+    let url = 'http://49.50.76.29:8090/api/project/search?search=&filter[]=name&filter[]=start_date&filter[]=end_date';
 
     this.searchLoad.next(url);
 
-    url = 'http://49.50.76.29:8090/api/project/search?search=&filter[]=name&filter[]=start_date&filter[]=end_date&perPage=' +
-      String(1) + '&page=' + String(0)+"&"+this.trig;
+    url = 'http://49.50.76.29:8090/api/project/search?search=&filter[]=name&filter[]=start_date&filter[]=end_date';
 
     this.searchTotal.next(url);
   }
@@ -222,7 +220,7 @@ export class ProjectComponent implements OnInit, AfterViewInit {
       '&filter[]=' + k + '&perPage=' +
       String(1) + '&page=' + String(0);
 
-    this.searchTotal.next(url)
+    this.searchTotal.next(url);
 
   }
 

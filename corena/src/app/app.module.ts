@@ -21,7 +21,7 @@ import {MaterialModule, MdNativeDateModule, MdButtonModule} from '@angular/mater
 import 'hammerjs';
 
 // dependency for google charts used  in project for organization tree
-import {GoogleChart} from 'angular2-google-chart/directives/angular2-google-chart.directive';
+// import {GoogleChart} from 'angular2-google-chart/directives/angular2-google-chart.directive';
 import { NgxChartsModule  } from '@swimlane/ngx-charts';
 // Common module which holds shared components
 import {AppComponent} from './app.component';
@@ -49,7 +49,7 @@ import { ProjectComponent } from './project/project.component';
     // FileUploadComponent,
     // ProjectHierarchyComponent,
     GanttchartComponent,
-    GoogleChart,
+    // GoogleChart,
     LoginComponent,
     RateAnalysisComponent,
     BoqTableComponent,

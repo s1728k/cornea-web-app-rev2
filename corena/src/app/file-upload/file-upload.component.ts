@@ -6,6 +6,7 @@ import {ProjectResponseBOQUpload} from '../model/class/project-response';
 import {BOQTable} from '../model/class/boq-table.model';
 import * as Constants from '../shared/constants.globals';
 import {BoqNameId} from '../model/class';
+import {KeyValue} from "../model/class/key-value";
 // import {KeyValue} from '../model/class/key-value.model';
 const URL = 'http://49.50.76.29:80/api/';
 
@@ -29,10 +30,10 @@ export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   urlBoq: string;
   toggleCreateView = false;
   boqSelected: {};
-  // listTypesOfFileUploads: KeyValue[] = [{key: 'Boq', value: 'boq'}
-  // , {key: 'Overheads', value: 'overhead'}
-  // , {key: 'Material', value: 'material'}
-  // , {key: 'Labor', value: 'labor'}];
+  listTypesOfFileUploads: KeyValue[] = [{key: 'Boq', value: 'boq'}
+  , {key: 'Overheads', value: 'overhead'}
+  , {key: 'Material', value: 'material'}
+  , {key: 'Labour', value: 'labour'}];
   constructor(private restApiService: RestApiService, private router: Router) {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
       + Constants.ACTION_ALL + '?visible[]=id&visible[]=name';
@@ -42,27 +43,27 @@ export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.createUploader();
-     // console.log(this.restApiService.comm_obj);
+    // console.log(this.restApiService.comm_obj);
   };
 
-createUploader() {
+  createUploader() {
 
-  console.log(URL
-    + this.uploadType + '/file');
-  console.log(this.restApiService.additionParameter);
-  this.uploader = new FileUploader({
+    console.log(URL
+      + this.uploadType + '/file');
+    console.log(this.restApiService.additionParameter);
+    this.uploader = new FileUploader({
       url: URL
       + this.uploadType + '/file'});
-  // *additionalParameter: [{'project_id': this.restApiService.additionParameter, 'type': this.uploadType}]}*/
-  this.uploader.onBuildItemForm  = (fileItem: any, form: any) => {
-    form.append('project_id', this.restApiService.additionParameter);
-    form.append('type', this.uploadType);
-  };
-  this.uploader.onAfterAddingFile = (item => {
-    item.withCredentials = false;
-  });
-  console.log(this.uploader);
-}
+    // *additionalParameter: [{'project_id': this.restApiService.additionParameter, 'type': this.uploadType}]}*/
+    this.uploader.onBuildItemForm  = (fileItem: any, form: any) => {
+      form.append('project_id', this.restApiService.additionParameter);
+      form.append('type', this.uploadType);
+    };
+    this.uploader.onAfterAddingFile = (item => {
+      item.withCredentials = false;
+    });
+    console.log(this.uploader);
+  }
   ngAfterViewInit() {
     console.log(this.uploader);
   }

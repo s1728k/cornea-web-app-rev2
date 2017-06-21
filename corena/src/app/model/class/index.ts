@@ -12,3 +12,4 @@ export * from './overhead.model';
 export * from './line-item-material.model';
 export * from './boq.model';
 export * from './line-item.model';
+export * from './key-value';

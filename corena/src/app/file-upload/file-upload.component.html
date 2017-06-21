@@ -12,24 +12,26 @@
       </ng-container>
       <ng-container *ngIf="!uploadType">
         <div
-             class="well my-drop-zone">
-         Please Select Type for Upload
+          class="well my-drop-zone">
+          Please Select Type for Upload
         </div>
       </ng-container>
 
       <!--<div>
         <h2>File Upload with Material:</h2>
+
         <md-button>
           <label for="file-input">Select</label>
         </md-button>
         <input id="file-input" type="file">
+
       </div>-->
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-    <br>
+      <br>
     </div>
   </div>
 
@@ -47,25 +49,25 @@
       <ng-container *ngIf="!uploadType" >
         <input type="file" ng2FileSelect class="btn-primary" [uploader]="uploader" multiple disabled/>
       </ng-container>
-<!--                   <h3>Upload queue</h3>
-            <p>Queue length: {{ uploader?.queue?.length }}</p> -->
+      <!--                   <h3>Upload queue</h3>
+                  <p>Queue length: {{ uploader?.queue?.length }}</p> -->
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-    <br>
+      <br>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-        <div>
-          Total progress:
-          <div class="progress" style="">
-            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-          </div>
+      <div>
+        Total progress:
+        <div class="progress" style="">
+          <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
         </div>
+      </div>
     </div>
   </div>
 
@@ -90,7 +92,7 @@
 
   <div class="row">
     <div class="col-md-12">
-    <br>
+      <br>
     </div>
   </div>
 

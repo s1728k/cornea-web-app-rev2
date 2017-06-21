@@ -5,11 +5,11 @@ import {RestApiService} from '../services/rest-api-service.service';
 import * as Constants from '../shared/constants.globals';
 
 // ------------Imports for Charts---------------------------
-import { ViewEncapsulation, ChangeDetectionStrategy, ContentChild, TemplateRef } from '@angular/core';
-import { calculateViewDimensions } from '../shared';
-import { ColorHelper } from '../shared';
+import {ViewEncapsulation, ChangeDetectionStrategy, ContentChild, TemplateRef} from '@angular/core';
+import {calculateViewDimensions} from '../shared';
+import {ColorHelper} from '../shared';
 import {BaseChartComponent} from "../shared";
-import {single , multi} from '../shared';
+import {single, multi} from '../shared';
 
 // ------------Models Imported------------------------------
 import {ProjectResponseBOQUpload} from '../model/class/project-response';
@@ -42,15 +42,15 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterVie
   public boqList: BOQTable[];
   urlProject: string;
   urlBoq: string;
-  toggleCreateView:boolean=false;
+  toggleCreateView = false;
 
 
-  boqSelected:BoqNameId;
-  boqs:BoqNameId[];
+  boqSelected: BoqNameId;
+  boqs: BoqNameId[];
 
   lineItems: LineItem[]
-  globalRateAnalysis:GlobalRateAnalysis = new GlobalRateAnalysis();
-  globalRateAnalysisList:GlobalRateAnalysis[];
+  globalRateAnalysis: GlobalRateAnalysis = new GlobalRateAnalysis();
+  globalRateAnalysisList: GlobalRateAnalysis[];
 
   //  ---------------space for charts-------------------------
 
@@ -105,7 +105,7 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterVie
   }
 
   ngOnDestroy() {
-    //this.restApiService.comm_obj=this.boqSelected;
+    // this.restApiService.comm_obj=this.boqSelected;
   }
 
   // http://192.168.0.205:9000/api/projects/all/visible[]=id&visible[]=name&appends[]=boq
@@ -118,7 +118,7 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterVie
   }
 
   getBoqList(): void {
-    const url ="http://49.50.76.29:80/api/boq/all?appends[]=lineItems&hidden[]=created_at&hidden[]=updated_at"
+    const url = 'http://49.50.76.29:80/api/boq/all?appends[]=lineItems&hidden[]=created_at&hidden[]=updated_at';
     this.restApiService.getRequest(url)
       .map(response => response.json().data)
       .subscribe(
@@ -136,25 +136,25 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterVie
     this.toggleCreateView = false;
     console.log(object.lineItems);
     this.boqList = object.lineItems;
-    if(object.has_ra){
-      this.toggleCreateView=true;
+    if (object.has_ra) {
+      this.toggleCreateView = true;
     }
-    this.boqSelected=object
-    this.lineItems=object.lineItems
+    this.boqSelected = object;
+    this.lineItems = object.lineItems;
   }
 
   getRateAnalysis(boq): void {
     console.log(boq);
-    this.boqSelected=boq
-    this.lineItems=boq.lineItems
-    console.log(this.boqSelected)
-    const url="http://49.50.76.29/api/gra/all?appends[]=mainRateAnalysis&appends[]=materialRateAnalysis&appends[]=labourRateAnalysis&condetions[boq_id]="+ String(boq.id)
+    this.boqSelected = boq;
+    this.lineItems = boq.lineItems;
+    console.log(this.boqSelected);
+    const url = 'http://49.50.76.29/api/gra/all?appends[]=mainRateAnalysis&appends[]=materialRateAnalysis&appends[]=labourRateAnalysis&conditions[boq_id]=' + String(boq.id);
     this.restApiService.getRequest(url)
-      .map(response => response.json().data)
+      .map(response => response.json().data).filter(value => value.materialRateAnalysis !== null && value.labourRateAnalysis !== null)
       .subscribe(
         (value) => {
           this.globalRateAnalysisList = value;
-          console.log(this.globalRateAnalysisList)
+          console.log(this.globalRateAnalysisList);
         },
         (error: any) => {
           console.log(error);
@@ -162,10 +162,26 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterVie
       );
   }
 
-  openGlobalRateAnalysis(globalRateAnalysis){
+
+  addLabourRateAnalysis(i) {
+    this.globalRateAnalysisList[i].mainRateAnalysis[i].labourRateAnalysis.push(new LabourRateAnalysis());
+  }
+
+
+  addMaterialRateAnalysis(i) {
+    console.log('Entered addMaterialRateAnalysis');
+    // if (this.lineItems[i]['title']){
+    console.log('in add material' + i);
+    console.log(this.globalRateAnalysisList[i]);
+
+      this.globalRateAnalysisList[i].mainRateAnalysis[i].materialRateAnalysis.push(new MaterialRateAnalysis());
+  }
+
+  openGlobalRateAnalysis(globalRateAnalysis) {
     console.log(globalRateAnalysis)
     this.getMaterialReportUsageList(globalRateAnalysis.id, this.boqSelected.id);
-    this.globalRateAnalysis=globalRateAnalysis;
+    this.globalRateAnalysis = globalRateAnalysis;
+    console.log('GRA');
     console.log(this.globalRateAnalysis);
   }
 
@@ -174,8 +190,8 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterVie
     console.log(boq_id);
     // gra_id=1;
     // boq_id=1;
-    const url = 'http://49.50.76.29/api/report/getMaterialUsageForRa?gra_id='+String(gra_id)+'&boq_id='+String(boq_id);
-    console.log(url)
+    const url = 'http://49.50.76.29/api/report/getMaterialUsageForRa?gra_id=' + String(gra_id) + '&boq_id=' + String(boq_id);
+    console.log(url);
     this.restApiService.getRequest(url)
       .map(res => res.json().data)
       .subscribe(
@@ -190,9 +206,9 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterVie
       );
   }
 
-  redirecToRateAnalysis(){
-    this.restApiService.comm_obj=this.boqSelected;
-    this.restApiService.comm_obj['from']="boq_table";
+  redirecToRateAnalysis() {
+    this.restApiService.comm_obj = this.boqSelected;
+    this.restApiService.comm_obj['from'] = 'boq_table';
     this.router.navigate(['/pages/rate-analysis']);
   }
 

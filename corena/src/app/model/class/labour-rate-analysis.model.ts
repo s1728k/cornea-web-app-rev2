@@ -3,7 +3,7 @@ export class LabourRateAnalysis {
   breadth: number;
   thickness: number;
   uom: string;
-  running_metre: number;
+   // running_metre: number;
   rate: number;
   amount: number;
   lineItem_labour_id: number;

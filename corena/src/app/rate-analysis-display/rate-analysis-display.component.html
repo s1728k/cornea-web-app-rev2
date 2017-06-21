@@ -1,7 +1,7 @@
 <div class="container-fluid unselectable">
   <div class="row">
     <div class="col-md-12">
-      <h3 class="heading">BOQs</h3>
+      <h3 class="heading">Rate Analysis'</h3>
     </div>
   </div>
 
@@ -112,7 +112,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <ng-container *ngIf="globalRateAnalysis.mainRateAnalysis[i]['materialRateAnalysis']">
+                                    <ng-container *ngIf="globalRateAnalysis.mainRateAnalysis[i]['materialRateAnalysis']!==undefined">
                                     data available
                                         <tr *ngFor="let mat of globalRateAnalysis.mainRateAnalysis[i]['materialRateAnalysis']; let j=index">
                                             <td class="index">
@@ -136,7 +136,7 @@
                                             <td>{{globalRateAnalysis.mainRateAnalysis[i]['materialRateAnalysis'][j]['amount'] | nan | number : '2.2-3'}}</td>
                                         </tr>
                                     </ng-container>
-                                    <ng-container *ngIf="!globalRateAnalysis.mainRateAnalysis[i]['materialRateAnalysis']">
+                                    <ng-container *ngIf="!globalRateAnalysis.mainRateAnalysis[i]['materialRateAnalysis'] ">
                                     data not available
                                         <tr *ngFor="let mat of globalRateAnalysis.mainRateAnalysis[i].materialRateAnalysis; let j=index">
                                             <td class="index">
@@ -188,7 +188,7 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                    <ng-container *ngIf="globalRateAnalysis.mainRateAnalysis[i]['labourRateAnalysis']">
+                                    <ng-container *ngIf="globalRateAnalysis.mainRateAnalysis[i]['labourRateAnalysis']!==undefined">
                                     data Available
                                       <tr *ngFor="let item of globalRateAnalysis.mainRateAnalysis[i].labourRateAnalysis; let j=index">
                                         <td class="index">
