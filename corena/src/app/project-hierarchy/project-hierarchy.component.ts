@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {MdDialog, MdDialogRef} from '@angular/material';
 import {PopupDialog} from './popup.component';
 import {UserModel} from '../model/class/UserModel';
@@ -6,13 +6,14 @@ import * as Constants from '../shared/constants.globals';
 import {RestApiService} from '../services/rest-api-service.service';
 import {executive} from '../shared/constants.globals';
 import {User} from '../model/interface/User';
+import {LoaderService} from '../services/loader/loader.service';
 
 @Component({
   selector: 'app-project-hierarchy',
   templateUrl: './project-hierarchy.component.html',
   styleUrls: ['./project-hierarchy.component.css'],
 })
-export class ProjectHierarchyComponent implements OnInit {
+export class ProjectHierarchyComponent implements OnInit, AfterViewInit {
 
   private dialogRef;
   url: string;
@@ -112,7 +113,7 @@ export class ProjectHierarchyComponent implements OnInit {
   executives: UserModel[] = [];
 
   constructor(private restApiService: RestApiService,
-              private dialog: MdDialog) {
+              private dialog: MdDialog,  private loaderService: LoaderService) {
     this.user = new UserModel();
     this.url = Constants.USER_END_POINT + Constants.USER_SERVICE_NAME + Constants.ACTION_ALL
       + '?visible[]=id&visible[]=first_name&visible[]=last_name&visible[]=role&';
@@ -197,10 +198,15 @@ export class ProjectHierarchyComponent implements OnInit {
       .map(response => <UserModel[]>response.json().data)
       .subscribe(
         (value) => {
+          this.hideLoader();
         },
         (error2 => console.log(error2)),
         () => this.getSupList()
       );
+  }
+
+  ngAfterViewInit(): void {
+    this.hideLoader();
   }
 
   getSupList() {
@@ -228,6 +234,13 @@ export class ProjectHierarchyComponent implements OnInit {
       });
     }
 
+  }
+
+  /**
+   * This method is used to hide loader
+   */
+  private hideLoader(): void {
+    this.loaderService.hide();
   }
 
   openDialogExe() {

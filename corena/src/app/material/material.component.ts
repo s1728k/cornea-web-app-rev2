@@ -14,11 +14,13 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
+import {DialogService} from "../shared/services/dialog/dialog.service";
 
 @Component({
   selector: 'app-material',
   templateUrl: './material.component.html',
-  styleUrls: ['./material.component.css']
+  styleUrls: ['./material.component.css'],
+  providers: [DialogService]
 })
 
 export class MaterialComponent implements OnInit, AfterViewInit {
@@ -36,10 +38,11 @@ export class MaterialComponent implements OnInit, AfterViewInit {
   pageCount= 4;
   perPageCount= 2;
   activePage=0;
+  public result: any;
 
   newMaterial: Material= new Material;
 
-  constructor(private restApiService: RestApiService) { }
+  constructor(private restApiService: RestApiService, private dialogsService: DialogService) { }
 
   ngOnInit() {
     this.materials = this.searchLoad
@@ -131,6 +134,9 @@ export class MaterialComponent implements OnInit, AfterViewInit {
         },
         (err: any) => {
           console.error(err);
+          this.dialogsService
+            .errorNotification(err.status)
+            .subscribe(res => this.result = res);
         }
       );
   }
@@ -150,6 +156,9 @@ export class MaterialComponent implements OnInit, AfterViewInit {
         },
         (err: any) => {
           console.error(err);
+          this.dialogsService
+            .errorNotification(err.status)
+            .subscribe(res => this.result = res);
         }
       );
   }
@@ -169,6 +178,9 @@ export class MaterialComponent implements OnInit, AfterViewInit {
         },
         (err: any) => {
           console.error(err);
+          this.dialogsService
+            .errorNotification(err.status)
+            .subscribe(res => this.result = res);
         }
       );
   }

@@ -14,11 +14,13 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
+import {DialogService} from '../shared/services/dialog/dialog.service';
 
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
-  styleUrls: ['./project.component.css']
+  styleUrls: ['./project.component.css'],
+  providers: [DialogService]
 })
 export class ProjectComponent implements OnInit, AfterViewInit {
 
@@ -29,15 +31,16 @@ export class ProjectComponent implements OnInit, AfterViewInit {
   searchOpt: {}= {brand: '', modal: '', job: ''}; // empty object used to pass the individual column searched for
   ed: {}= {}; // boolean for editing mode
   lastSearchObj: {}= {}; // used as a token to identify request is comming from normal get request or general search or individual search
-  trig:string=""; // manual trigger the searchLoad and searchTotal
+  trig:string=''; // manual trigger the searchLoad and searchTotal
   pageCount= 4;
   perPageCount= 2;
   activePage=0;
+  public result: any;
 
   newProject: Project = new Project();
 
 
-  constructor(private restApiService: RestApiService) {  }
+  constructor(private restApiService: RestApiService, private dialogsService: DialogService) {  }
 
   ngOnInit() {
     // this.getProjectList();
@@ -61,7 +64,7 @@ export class ProjectComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(){
-    // console.log("ngAfterViewInit")
+    // console.log('ngAfterViewInit')
     this.getProjects(0);
     this.activePage=0
   }
@@ -78,7 +81,7 @@ export class ProjectComponent implements OnInit, AfterViewInit {
     // console.log('Entered select page')
     // console.log(p)
     // console.log(this.lastSearchObj['from'])
-    this.trig=(this.trig==='sel')?this.trig+"1":'sel'
+    this.trig=(this.trig==='sel')?this.trig+'1':'sel'
     this.activePage = p;
     switch (this.lastSearchObj['from']) {
       case 'full':
@@ -115,7 +118,7 @@ export class ProjectComponent implements OnInit, AfterViewInit {
 
 
   postProject() {
-    // console.log("Entered postProject")
+    // console.log('Entered postProject')
     const url = 'http://49.50.76.29:8090/api/project/new';
     // console.log(this.newProject);
     this.restApiService.postRequest(url, this.newProject)
@@ -129,12 +132,15 @@ export class ProjectComponent implements OnInit, AfterViewInit {
         },
         (err: any) => {
           console.error(err);
+          this.dialogsService
+            .errorNotification(err.status)
+            .subscribe(res => this.result = res);
         }
       );
   }
 
   putProject(project) {
-    // console.log("Entered put project")
+    // console.log('Entered put project')
     // console.log(project)
     const url = 'http://49.50.76.29:8090/api/project/' + String(project.id);
     // console.log(project)
@@ -148,12 +154,15 @@ export class ProjectComponent implements OnInit, AfterViewInit {
         },
         (err: any) => {
           console.error(err);
+          this.dialogsService
+            .errorNotification(err.status)
+            .subscribe(res => this.result = res);
         }
       );
   }
 
   deleteProject(project) {
-    // console.log("Entered delete project")
+    // console.log('Entered delete project')
     // console.log(project)
     const url = 'http://49.50.76.29:8090/api/project/' + String(project.id);
 
@@ -167,6 +176,9 @@ export class ProjectComponent implements OnInit, AfterViewInit {
         },
         (err: any) => {
           console.error(err);
+          this.dialogsService
+            .errorNotification(err.status)
+            .subscribe(res => this.result = res);
         }
       );
   }

@@ -10,23 +10,26 @@ import {subscribeOn} from 'rxjs/operator/subscribeOn';
 import {Subscription} from 'rxjs/Subscription';
 import {UserResponse} from '../model/interface/user-response';
 import {RouterModule, Router, Routes} from '@angular/router';
+import {DialogService} from '../shared/services/dialog/dialog.service';
 
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  providers: [DialogService]
 })
 export class LoginComponent implements OnInit {
   url: string;
   loggeddInUser: User;
   cred: LoginCredentials;
+  public result: any;
 
   constructor(private sharedService: SharedService,
               private http: Http,
               private restApiService: RestApiService,
               private storageService: StorageService,
-              private routes: Router) {
+              private routes: Router, private dialogsService: DialogService) {
     this.cred = new LoginCredentials();
   }
 
@@ -51,6 +54,9 @@ export class LoginComponent implements OnInit {
         },
         (err: any) => {
           console.error(err);
+          this.dialogsService
+            .errorNotification(err.status)
+            .subscribe(res => this.result = res);
         }
       );
 

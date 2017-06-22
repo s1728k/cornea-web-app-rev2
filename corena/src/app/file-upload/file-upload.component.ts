@@ -6,14 +6,17 @@ import {ProjectResponseBOQUpload} from '../model/class/project-response';
 import {BOQTable} from '../model/class/boq-table.model';
 import * as Constants from '../shared/constants.globals';
 import {BoqNameId} from '../model/class';
-import {KeyValue} from "../model/class/key-value";
+import {KeyValue} from '../model/class/key-value';
+import {DialogService} from '../shared/services/dialog/dialog.service';
+import {LoaderService} from "../services/loader/loader.service";
 // import {KeyValue} from '../model/class/key-value.model';
 const URL = 'http://49.50.76.29:80/api/';
 
 @Component({
   selector: 'app-file-upload',
   templateUrl: './file-upload.component.html',
-  styleUrls: ['./file-upload.component.css']
+  styleUrls: ['./file-upload.component.css'],
+  providers: [DialogService]
 })
 
 export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -30,11 +33,12 @@ export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   urlBoq: string;
   toggleCreateView = false;
   boqSelected: {};
+  public result: any;
   listTypesOfFileUploads: KeyValue[] = [{key: 'Boq', value: 'boq'}
   , {key: 'Overheads', value: 'overhead'}
   , {key: 'Material', value: 'material'}
   , {key: 'Labour', value: 'labour'}];
-  constructor(private restApiService: RestApiService, private router: Router) {
+  constructor(private restApiService: RestApiService, private router: Router, private dialogsService: DialogService, private loaderService: LoaderService) {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
       + Constants.ACTION_ALL + '?visible[]=id&visible[]=name';
     this.urlBoq = Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_BOQ
@@ -91,11 +95,20 @@ export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
           console.log('project id = %s \n condition = %s \n value= %s', project.id, (project.id === project.id), value);
           this.projectList[this.projectList.indexOf(project)].boq = value;
           console.log(this.projectList[this.projectList.indexOf(project)].boq);
+          this.hideLoader();
         },
         (error: any) => {
           console.log(error);
+          this.dialogsService
+            .errorNotification(error.status)
+            .subscribe(res => this.result = res);
         },
       );
+  }
+
+  // This method is used to hide the loader
+  private hideLoader(): void {
+    this.loaderService.hide();
   }
 
   updateBoqTable(object: BoqNameId): void {

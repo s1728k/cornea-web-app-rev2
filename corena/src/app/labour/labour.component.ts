@@ -14,11 +14,13 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
+import {DialogService} from "../shared/services/dialog/dialog.service";
 
 @Component({
   selector: 'app-labour',
   templateUrl: './labour.component.html',
-  styleUrls: ['./labour.component.css']
+  styleUrls: ['./labour.component.css'],
+  providers: [DialogService]
 })
 export class LabourComponent implements OnInit, AfterViewInit {
 
@@ -35,11 +37,12 @@ export class LabourComponent implements OnInit, AfterViewInit {
   pageCount= 4;
   perPageCount= 2;
   activePage=0;
+  public result: any;
 
   newLabour: Labour= new Labour();
   //labours: Labour[];
 
-  constructor(private restApiService: RestApiService) { }
+  constructor(private restApiService: RestApiService, private dialogsService: DialogService ) { }
 
   ngOnInit() {
     this.labours = this.searchLoad
@@ -147,6 +150,9 @@ export class LabourComponent implements OnInit, AfterViewInit {
         },
         (err: any) => {
           console.error(err);
+          this.dialogsService
+            .errorNotification(err.status)
+            .subscribe(res => this.result = res);
         }
       );
   }
@@ -166,6 +172,9 @@ export class LabourComponent implements OnInit, AfterViewInit {
         },
         (err: any) => {
           console.error(err);
+          this.dialogsService
+            .errorNotification(err.status)
+            .subscribe(res => this.result = res);
         }
       );
   }
@@ -185,6 +194,9 @@ export class LabourComponent implements OnInit, AfterViewInit {
         },
         (err: any) => {
           console.error(err);
+          this.dialogsService
+            .errorNotification(err.status)
+            .subscribe(res => this.result = res);
         }
       );
   }

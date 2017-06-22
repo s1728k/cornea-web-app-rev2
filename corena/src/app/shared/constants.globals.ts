@@ -32,3 +32,9 @@ export const SERVICE_NAME_PROJECT = '/project';
 export const SERVICE_NAME_BOQ = '/boq';
 export const BASE_URL_BOQ = 'http://49.50.76.29:80/api';
 export const APPENDS_LINE_ITEMS_BOQ = 'appends[]=lineitems';
+
+// Error Messages
+
+export const NOT_FOUND_TITLE = '404 Not Found';
+export const NOT_FOUND_DESCRIPTION = 'The requested page could not be found but may be available again in the future';
+

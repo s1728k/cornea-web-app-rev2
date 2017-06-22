@@ -22,26 +22,29 @@ import 'hammerjs';
 
 // dependency for google charts used  in project for organization tree
 // import {GoogleChart} from 'angular2-google-chart/directives/angular2-google-chart.directive';
-import { NgxChartsModule  } from '@swimlane/ngx-charts';
+import {NgxChartsModule} from '@swimlane/ngx-charts';
 // Common module which holds shared components
 import {AppComponent} from './app.component';
 // import {FileUploadComponent} from './file-upload/file-upload.component';
 // import {ProjectHierarchyComponent} from './project-hierarchy/project-hierarchy.component';
-import { LoginComponent } from './login/login.component';
-import { routing } from './app.routing';
-import { PagesModule } from './pages/pages.module';
-import { SharedService } from './shared.service';
-import { RateAnalysisComponent } from './rate-analysis/rate-analysis.component';
-import { GanttchartComponent } from './shared/components/ganttchart/ganttchart.component';
+import {LoginComponent} from './login/login.component';
+import {routing} from './app.routing';
+import {PagesModule} from './pages/pages.module';
+import {SharedService} from './shared.service';
+import {RateAnalysisComponent} from './rate-analysis/rate-analysis.component';
+import {GanttchartComponent} from './shared/components/ganttchart/ganttchart.component';
 // dependency for local storage
-import { LocalStorageModule } from 'angular-2-local-storage';
-import { StorageService } from './services/local-storage.service';
-import { BoqTableComponent } from './boq-table/boq-table.component';
-import { MaterialComponent } from './material/material.component';
-import { LabourComponent } from './labour/labour.component';
-import { CfComponent } from './cf/cf.component';
-import { RateAnalysisDisplayComponent } from './rate-analysis-display/rate-analysis-display.component';
-import { ProjectComponent } from './project/project.component';
+import {LocalStorageModule} from 'angular-2-local-storage';
+import {StorageService} from './services/local-storage.service';
+import {BoqTableComponent} from './boq-table/boq-table.component';
+import {MaterialComponent} from './material/material.component';
+import {LabourComponent} from './labour/labour.component';
+import {CfComponent} from './cf/cf.component';
+import {RateAnalysisDisplayComponent} from './rate-analysis-display/rate-analysis-display.component';
+import {ProjectComponent} from './project/project.component';
+import {LoaderService} from './services/loader/loader.service';
+import {LoaderComponent} from './services/loader/loader.component';
+
 
 @NgModule({
   declarations: [
@@ -53,6 +56,7 @@ import { ProjectComponent } from './project/project.component';
     LoginComponent,
     RateAnalysisComponent,
     BoqTableComponent,
+    LoaderComponent,
     MaterialComponent,
     LabourComponent,
     CfComponent,
@@ -81,7 +85,7 @@ import { ProjectComponent } from './project/project.component';
       storageType: 'sessionStorage'
     })
   ],
-  providers: [RestApiService, StorageService, SharedService],
+  providers: [RestApiService, StorageService, SharedService, LoaderService],
   bootstrap: [AppComponent]
 })
 /**

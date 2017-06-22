@@ -1,5 +1,5 @@
 import {RestApiService} from '../services/rest-api-service.service';
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {LineItemTableRow} from '../model/class';
 import {NanPipe} from '../shared/pipes/nan.pipe';
 import {MdDialog, MdDialogRef} from '@angular/material';
@@ -34,20 +34,25 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
+import {DialogService} from "../shared/services/dialog/dialog.service";
+import {LoaderService} from "../services/loader/loader.service";
 
 @Component({
   selector: 'app-rate-analysis',
   templateUrl: './rate-analysis.component.html',
-  styleUrls: ['./rate-analysis.component.css']
+  styleUrls: ['./rate-analysis.component.css'],
+  providers: [DialogService]
 })
 
-export class RateAnalysisComponent implements OnInit {
+export class RateAnalysisComponent implements OnInit, AfterViewInit {
 
   materials: Observable<Material[]>;
   materialSuggestion: Subject<string> = new Subject<string>();
 
   labours: Observable<Labour[]>;
   labourSuggestion: Subject<string> = new Subject<string>();
+
+  providers: [DialogService];
 
   calcs2: {}[] = [];
 
@@ -81,6 +86,7 @@ export class RateAnalysisComponent implements OnInit {
 
   mainRateAnalysis: MainRateAnalysis;
   itemRateAnalysis: MainRateAnalysis[] = [];
+  public result: any;
 
 
   //  ---------------space for charts-------------------------
@@ -110,7 +116,11 @@ export class RateAnalysisComponent implements OnInit {
   // variable for grand total one for item rate analysis and other for overhead.
   grandTotal2V: any;
 
-  constructor(private restApiService: RestApiService, private dialog: MdDialog) {
+  constructor(private restApiService: RestApiService, private dialog: MdDialog, private dialogsService: DialogService, private loaderService: LoaderService) {
+  }
+
+  ngAfterViewInit(): void {
+    this.hideLoader();
   }
 
   ngOnInit() {
@@ -126,8 +136,11 @@ export class RateAnalysisComponent implements OnInit {
       .catch(error => {
         // TODO: add real error handling
         console.log(error);
+        this.showLoader();
         return Observable.of<Material[]>([]);
+
       });
+
 
     this.labours = this.labourSuggestion
       .debounceTime(300)        // wait 300ms after each keystroke before considering the term
@@ -164,6 +177,7 @@ export class RateAnalysisComponent implements OnInit {
       .subscribe((value) => {
           console.log(value);
           this.projects = value;
+          this.hideLoader();
         },
         (error: any) => {
           console.log(error);
@@ -171,21 +185,32 @@ export class RateAnalysisComponent implements OnInit {
       );
   }
 
+  /**
+   * This method is used to hide loader
+   */
+  private hideLoader(): void {
+    this.loaderService.hide();
+  }
+
   getBoqList(project: ProjectResponseBOQUpload): void {
     console.log('Entered getBoqList');
     console.log(project);
     this.projectSelected = project;
     const url = 'http://49.50.76.29/api/boq/all?appends[]=lineItems&hidden[]=created_at&hidden[]=updated_at&conditions[project_id]=' + project.id;
-    this.restApiService.getRequest(url)
+    this.restApiService.getRequestWithoutLoader(url)
       .map(response => response.json().data)
       .subscribe(
         (value) => {
           console.log(value);
           this.boqs = value;
           console.log(this.boqs);
+          this.hideLoader();
         },
         (error: any) => {
           console.log(error);
+          this.dialogsService
+            .errorNotification(error.status)
+            .subscribe(res => this.result = res);
         },
       );
   }
@@ -202,9 +227,13 @@ export class RateAnalysisComponent implements OnInit {
         (value) => {
           this.rateAnalysisList = value;
           console.log(this.rateAnalysisList);
+          this.hideLoader();
         },
         (error: any) => {
           console.log(error);
+          this.dialogsService
+            .errorNotification(error.status)
+            .subscribe(res => this.result = res);
         },
       );
   }
@@ -218,9 +247,13 @@ export class RateAnalysisComponent implements OnInit {
         (value: MaterialReportUsageList[]) => {
           this.materialreportusagelist = value;
           console.log(this.materialreportusagelist);
+          this.hideLoader();
         },
         (err: any) => {
           console.error(err);
+          this.dialogsService
+            .errorNotification(err.status)
+            .subscribe(res => this.result = res);
         }
       );
 
@@ -400,6 +433,9 @@ export class RateAnalysisComponent implements OnInit {
         },
         (err: any) => {
           console.error(err);
+          this.dialogsService
+            .errorNotification(err.status)
+            .subscribe(res => this.result = res);
         }
       );
   }
@@ -442,6 +478,9 @@ export class RateAnalysisComponent implements OnInit {
         },
         (err: any) => {
           console.error(err);
+          this.dialogsService
+            .errorNotification(err.status)
+            .subscribe(res => this.result = res);
         }
       );
   }
@@ -627,6 +666,10 @@ export class RateAnalysisComponent implements OnInit {
       this.itemRateAnalysis[i].grand_total = +this.itemRateAnalysis[i].material_total + +this.itemRateAnalysis[i].labour_total;
       // console.log(result);
     });
+  }
+
+  private showLoader(): void {
+    this.loaderService.hide();
   }
 
 

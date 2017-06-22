@@ -6,12 +6,15 @@ import {ProjectResponseBOQUpload} from '../model/class/project-response';
 import {BOQTable} from '../model/class/boq-table.model';
 import * as Constants from '../shared/constants.globals';
 import {BoqNameId} from '../model/class/name-id.model';
+import {DialogService} from '../shared/services/dialog/dialog.service';
+import {LoaderService} from '../services/loader/loader.service';
 const URL = 'http://49.50.76.29:80/api/boq/file';
 
 @Component({
   selector: 'app-boq-table',
   templateUrl: './boq-table.component.html',
-  styleUrls: ['./boq-table.component.css']
+  styleUrls: ['./boq-table.component.css'],
+  providers: [DialogService]
 })
 
 export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -23,10 +26,11 @@ export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
   public boqList: BOQTable[];
   urlProject: string;
   urlBoq: string;
-  toggleCreateView:boolean=false;
-  boqSelected:{};
+  toggleCreateView: boolean = false;
+  boqSelected: {};
+  public result: any;
 
-  constructor(private restApiService: RestApiService, private router: Router) {
+  constructor(private restApiService: RestApiService, private router: Router, private dialogsService: DialogService, private loaderService: LoaderService) {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
       + Constants.ACTION_ALL + '?visible[]=id&visible[]=name';
     this.urlBoq = Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_BOQ
@@ -39,19 +43,31 @@ export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe(
         (value: ProjectResponseBOQUpload[]) => {
           this.projectList = value;
+          // calling hideloader method
+          this.hideLoader();
           console.log(value);
         },
         (err: any) => {
-          console.error(err);
+          console.error(err.status);
+          this.dialogsService
+            .errorNotification(err.status)
+            .subscribe(res => this.result = res);
+
         }
       );
   };
+
+  // This method is used to hide the loader
+  private hideLoader(): void {
+    this.loaderService.hide();
+  }
 
   ngAfterViewInit() {
     this.uploader.onAfterAddingFile = (item => {
       item.withCredentials = false;
     });
   }
+
 
   ngOnDestroy() {
     //this.restApiService.comm_obj=this.boqSelected;
@@ -79,6 +95,9 @@ export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
         },
         (error: any) => {
           console.log(error);
+          this.dialogsService
+            .errorNotification(error.status)
+            .subscribe(res => this.result = res);
         },
       );
   }
@@ -87,10 +106,10 @@ export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
     this.toggleCreateView = false;
     console.log(object.lineItems);
     this.boqList = object.lineItems;
-    if(object.has_ra){
-      this.toggleCreateView=true;
+    if (object.has_ra) {
+      this.toggleCreateView = true;
     }
-    this.boqSelected=object
+    this.boqSelected = object
     /*this.restApiService.getRequest(Constants.BASE_URL_BOQ
      + Constants.SERVICE_NAME_BOQ + '/' + id)
      .map(res => /!*this.boqList = <BOQTable[]>*!/res.json().data)
@@ -104,11 +123,12 @@ export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
      );*/
   }
 
-  redirecToRateAnalysis(){
-    this.restApiService.comm_obj=this.boqSelected;
-    this.restApiService.comm_obj['from']="boq_table";
+  redirecToRateAnalysis() {
+    this.restApiService.comm_obj = this.boqSelected;
+    this.restApiService.comm_obj['from'] = 'boq_table';
     this.router.navigate(['/pages/rate-analysis']);
   }
+
   redirectToUploadScreen(object) {
     this.restApiService.comm_obj = object;
     this.restApiService.setUploadServiceName(Constants.SERVICE_NAME_BOQ);
