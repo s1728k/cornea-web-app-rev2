@@ -8,6 +8,7 @@ import * as Constants from '../shared/constants.globals';
 import {BoqNameId} from '../model/class/name-id.model';
 import {DialogService} from '../shared/services/dialog/dialog.service';
 import {LoaderService} from '../services/loader/loader.service';
+import {SpinnerloaderService} from '../services/spinner/spinnerloader.service';
 const URL = 'http://49.50.76.29:80/api/boq/file';
 
 @Component({
@@ -30,7 +31,7 @@ export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
   boqSelected: {};
   public result: any;
 
-  constructor(private restApiService: RestApiService, private router: Router, private dialogsService: DialogService, private loaderService: LoaderService) {
+  constructor(private restApiService: RestApiService, private router: Router, private dialogsService: DialogService, private loaderService: LoaderService, private spinnerloader: SpinnerloaderService) {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
       + Constants.ACTION_ALL + '?visible[]=id&visible[]=name';
     this.urlBoq = Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_BOQ
@@ -83,11 +84,12 @@ export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getBoqList(project: ProjectResponseBOQUpload): void {
-    this.restApiService.getRequest(this.urlBoq + '&conditions[project_id]=' + project.id)
+    this.restApiService.getRequestWithSpinnerLoader(this.urlBoq + '&conditions[project_id]=' + project.id)
       .map(response => response.json().data)
       .subscribe(
         (value) => {
           // project.boq = value;
+          this.spinnerloader.display(false);
           console.log(value);
           console.log('project id = %s \n condition = %s \n value= %s', project.id, (project.id === project.id), value);
           this.projectList[this.projectList.indexOf(project)].boq = value;

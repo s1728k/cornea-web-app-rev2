@@ -15,6 +15,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import {DialogService} from '../shared/services/dialog/dialog.service';
+import {LoaderService} from "../services/loader/loader.service";
 
 @Component({
   selector: 'app-project',
@@ -28,23 +29,24 @@ export class ProjectComponent implements OnInit, AfterViewInit {
   searchLoad: Subject<string> = new Subject<string>(); // subject used to monitor materials observable
   searchTotal: Subject<string> = new Subject<string>(); // subject used to monitor total count of materials
 
-  searchOpt: {}= {brand: '', modal: '', job: ''}; // empty object used to pass the individual column searched for
-  ed: {}= {}; // boolean for editing mode
-  lastSearchObj: {}= {}; // used as a token to identify request is comming from normal get request or general search or individual search
-  trig:string=''; // manual trigger the searchLoad and searchTotal
-  pageCount= 4;
-  perPageCount= 2;
-  activePage=0;
+  searchOpt: {} = {brand: '', modal: '', job: ''}; // empty object used to pass the individual column searched for
+  ed: {} = {}; // boolean for editing mode
+  lastSearchObj: {} = {}; // used as a token to identify request is comming from normal get request or general search or individual search
+  trig: string = ''; // manual trigger the searchLoad and searchTotal
+  pageCount = 4;
+  perPageCount = 2;
+  activePage = 0;
   public result: any;
 
   newProject: Project = new Project();
 
 
-  constructor(private restApiService: RestApiService, private dialogsService: DialogService) {  }
+  constructor(private restApiService: RestApiService, private dialogsService: DialogService, private loaderService: LoaderService) {
+  }
 
   ngOnInit() {
     // this.getProjectList();
-
+    this.showLoader();
     this.projects = this.searchLoad
       .debounceTime(300)        // wait 300ms after each keystroke before considering the term
       .distinctUntilChanged()   // ignore if next search term is same as previous
@@ -58,30 +60,35 @@ export class ProjectComponent implements OnInit, AfterViewInit {
     this.searchTotal
       .debounceTime(300)        // wait 300ms after each keystroke before considering the term
       .distinctUntilChanged()   // ignore if next search term is same as previous
-      .switchMap((term)=> this.restApiService.getLength(term))
-      .subscribe((value)=>{this.pageCount = value; console.log(this.pageCount)})
+      .switchMap((term) => this.restApiService.getLength(term))
+      .subscribe((value) => {
+        this.pageCount = value;
+        this.hideLoader();
+        console.log(this.pageCount)
+      })
 
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     // console.log('ngAfterViewInit')
     this.getProjects(0);
-    this.activePage=0
+    this.activePage = 0
+    this.hideLoader();
   }
 
   perPageCountChange(perPageCount) {
     // console.log('Entered page count change')
     // console.log(perPageCount)
-    this.perPageCount=perPageCount;
+    this.perPageCount = perPageCount;
     this.getProjects(0);
-    this.activePage=0
+    this.activePage = 0
   }
 
   selectPage(p) {
     // console.log('Entered select page')
     // console.log(p)
     // console.log(this.lastSearchObj['from'])
-    this.trig=(this.trig==='sel')?this.trig+'1':'sel'
+    this.trig = (this.trig === 'sel') ? this.trig + '1' : 'sel'
     this.activePage = p;
     switch (this.lastSearchObj['from']) {
       case 'full':
@@ -236,4 +243,12 @@ export class ProjectComponent implements OnInit, AfterViewInit {
 
   }
 
+  private showLoader(): void {
+    this.loaderService.show();
+
+  }
+
+  private hideLoader(): void {
+    this.loaderService.hide();
+  }
 }

@@ -9,6 +9,7 @@ import 'rxjs/add/observable/of';
 // Observable operators
 import 'rxjs/add/operator/map';
 import {LoaderService} from './loader/loader.service';
+import {SpinnerloaderService} from './spinner/spinnerloader.service';
 
 
 /**
@@ -29,7 +30,7 @@ export class RestApiService {
    * dependencies needed at runtime
    * @param http
    */
-  constructor(private http: Http,  private loaderService: LoaderService /*private requestMethod: RequestMethod*/) {
+  constructor(private http: Http,  private loaderService: LoaderService, private spinnerloaderService: SpinnerloaderService /*private requestMethod: RequestMethod*/) {
     this.headers = new Headers({'Content-Type': 'application/json'});
   }
 
@@ -50,16 +51,21 @@ export class RestApiService {
    */
   getRequest(url: string): Observable<any> {
     console.log(url);
-    this.showLoader();
     return this.http.get(url, this.headers);
   }
   getRequestWithoutLoader(url: string): Observable<any> {
     console.log(url);
-    this.showLoader();
+    return this.http.get(url, this.headers);
+  }
+
+  getRequestWithSpinnerLoader(url: string): Observable<any> {
+    this.spinnerloaderService.display(true);
+    console.log(url);
     return this.http.get(url, this.headers);
   }
   getSearchRequest(url: string): Observable<any> {
     console.log(url);
+    this.showLoader();
     return this.http.get(url, this.headers);
   }
 
@@ -89,6 +95,7 @@ export class RestApiService {
     // this.url='http://49.50.76.29/api/material/search?search=' + term + '&filter[]=name&filter[]=srno&filter[]=brand'
     console.log('Api service for getting stream of observables')
     console.log(url)
+    this.showLoader();
     return this.http
       .get(url)
       .map(response => response.json().data as {}[]);

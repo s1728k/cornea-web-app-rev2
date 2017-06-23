@@ -44,6 +44,7 @@ import {RateAnalysisDisplayComponent} from './rate-analysis-display/rate-analysi
 import {ProjectComponent} from './project/project.component';
 import {LoaderService} from './services/loader/loader.service';
 import {LoaderComponent} from './services/loader/loader.component';
+import {SpinnerloaderService} from './services/spinner/spinnerloader.service';
 
 
 @NgModule({
@@ -85,7 +86,7 @@ import {LoaderComponent} from './services/loader/loader.component';
       storageType: 'sessionStorage'
     })
   ],
-  providers: [RestApiService, StorageService, SharedService, LoaderService],
+  providers: [RestApiService, StorageService, SharedService, LoaderService, SpinnerloaderService],
   bootstrap: [AppComponent]
 })
 /**

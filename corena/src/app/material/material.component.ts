@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import {Component, OnInit, AfterViewInit} from '@angular/core';
 import {RestApiService} from '../services/rest-api-service.service';
 
 // ------models used-----------------
@@ -14,7 +14,8 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
-import {DialogService} from "../shared/services/dialog/dialog.service";
+import {DialogService} from '../shared/services/dialog/dialog.service';
+import {LoaderService} from '../services/loader/loader.service';
 
 @Component({
   selector: 'app-material',
@@ -26,23 +27,24 @@ import {DialogService} from "../shared/services/dialog/dialog.service";
 export class MaterialComponent implements OnInit, AfterViewInit {
 
   materials: Observable<Material[]>;
-  searchLoad:Subject<string> = new Subject<string>(); // subject used to monitor materials observable
-  searchTotal:Subject<string> = new Subject<string>(); // subject used to monitor total count of materials
+  searchLoad: Subject<string> = new Subject<string>(); // subject used to monitor materials observable
+  searchTotal: Subject<string> = new Subject<string>(); // subject used to monitor total count of materials
 
-  hasCfList: {}[]= [{id: 1, name: 'Yes'}, {id: 0, name: 'No'}]; // used for dropdown CF
-  hasCfDisp:{}={0:'No',1:'Yes'}; // temporary object used to display yes or no in the sceen as input from server comes in the form of 1 or 0
-  searchOpt: {}= {brand: '', modal: '', job: ''}; // empty object used to pass the individual column searched for
-  ed: {}= {}; // boolean for editing mode
-  lastSearchObj: {}= {}; // used as a token to identify request is comming from normal get request or general search or individual search
-  trig:string=""; // manual trigger the searchLoad and searchTotal
-  pageCount= 4;
-  perPageCount= 2;
-  activePage=0;
+  hasCfList: {}[] = [{id: 1, name: 'Yes'}, {id: 0, name: 'No'}]; // used for dropdown CF
+  hasCfDisp: {} = {0: 'No', 1: 'Yes'}; // temporary object used to display yes or no in the sceen as input from server comes in the form of 1 or 0
+  searchOpt: {} = {brand: '', modal: '', job: ''}; // empty object used to pass the individual column searched for
+  ed: {} = {}; // boolean for editing mode
+  lastSearchObj: {} = {}; // used as a token to identify request is comming from normal get request or general search or individual search
+  trig: string = ''; // manual trigger the searchLoad and searchTotal
+  pageCount = 4;
+  perPageCount = 2;
+  activePage = 0;
   public result: any;
 
-  newMaterial: Material= new Material;
+  newMaterial: Material = new Material;
 
-  constructor(private restApiService: RestApiService, private dialogsService: DialogService) { }
+  constructor(private restApiService: RestApiService, private dialogsService: DialogService, private loaderService: LoaderService) {
+  }
 
   ngOnInit() {
     this.materials = this.searchLoad
@@ -58,41 +60,44 @@ export class MaterialComponent implements OnInit, AfterViewInit {
     this.searchTotal
       .debounceTime(300)        // wait 300ms after each keystroke before considering the term
       .distinctUntilChanged()   // ignore if next search term is same as previous
-      .switchMap((term)=> this.restApiService.getLength(term))
-      .subscribe((value)=>{this.pageCount = value})
+      .switchMap((term) => this.restApiService.getLength(term))
+      .subscribe((value) => {
+        this.pageCount = value;
+        this.hideLoader();
+      })
 
   }
 
-  ngAfterViewInit(){
-    // console.log("ngAfterViewInit")
+  ngAfterViewInit() {
+    // console.log('ngAfterViewInit')
     this.getMaterials(0);
-    this.activePage=0
+    this.activePage = 0
   }
 
   perPageCountChange(perPageCount) {
-    // console.log("Entered page count change")
+    // console.log('Entered page count change')
     // console.log(perPageCount)
-    this.perPageCount=perPageCount;
+    this.perPageCount = perPageCount;
     this.getMaterials(0);
-    this.activePage=0
+    this.activePage = 0
   }
 
-  selectPage(p){
-    // console.log("Entered select page")
+  selectPage(p) {
+    // console.log('Entered select page')
     // console.log(p)
     // console.log(this.lastSearchObj['from'])
-    this.trig=(this.trig==='sel')?this.trig+"1":'sel'
-    this.activePage=p;
+    this.trig = (this.trig === 'sel') ? this.trig + '1' : 'sel'
+    this.activePage = p;
     switch (this.lastSearchObj['from']) {
-      case "full":
+      case 'full':
         this.generalFilter(this.lastSearchObj['1'], p);
         break;
 
-    case "ind":
+      case 'ind':
         this.individualFilter(this.lastSearchObj['1'], this.lastSearchObj['2'], p)
         break;
 
-    case "start":
+      case 'start':
         this.getMaterials(p)
         break;
 
@@ -103,25 +108,25 @@ export class MaterialComponent implements OnInit, AfterViewInit {
   }
 
   getMaterials(n) {
-    // console.log("Entered get materials")
+    // console.log('Entered get materials')
     // console.log(n)
-    this.lastSearchObj = {'from':'start','1':n};
+    this.lastSearchObj = {'from': 'start', '1': n};
 
     let url = 'http://49.50.76.29/api/material/search?search=&filter[]=name&filter[]=srno&filter[]=brand&filter[]=uom&perPage=' +
-                String(this.perPageCount) + '&page=' + String(n)+"&"+this.trig;
+      String(this.perPageCount) + '&page=' + String(n) + '&' + this.trig;
 
     this.searchLoad.next(url);
 
     url = 'http://49.50.76.29/api/material/search?search=&filter[]=name&filter[]=srno&filter[]=brand&filter[]=uom&perPage=' +
-                String(1) + '&page=' + String(0)+"&"+this.trig;
+      String(1) + '&page=' + String(0) + '&' + this.trig;
 
     this.searchTotal.next(url);
   }
 
   postMaterial() {
-    // console.log("Entered post material")
+    // console.log('Entered post material')
     const url = 'http://49.50.76.29/api/material/new';
-    this.newMaterial['srno']="";
+    this.newMaterial['srno'] = '';
     // console.log(this.newMaterial);
     this.restApiService.postRequest(url, this.newMaterial)
       .map(res => res.json().data[0])
@@ -129,7 +134,7 @@ export class MaterialComponent implements OnInit, AfterViewInit {
         (value: Material) => {
           this.newMaterial = value;
           // console.log(this.newMaterial);
-          this.newMaterial= new Material;
+          this.newMaterial = new Material;
           this.selectPage(this.activePage);
         },
         (err: any) => {
@@ -142,7 +147,7 @@ export class MaterialComponent implements OnInit, AfterViewInit {
   }
 
   putMaterial(material) {
-    // console.log("Entered put material")
+    // console.log('Entered put material')
     // console.log(material)
     const url = 'http://49.50.76.29/api/material/' + String(material.id);
     // console.log(material)
@@ -164,7 +169,7 @@ export class MaterialComponent implements OnInit, AfterViewInit {
   }
 
   deleteMaterial(material) {
-    // console.log("Entered delete material")
+    // console.log('Entered delete material')
     // console.log(material)
     const url = 'http://49.50.76.29/api/material/' + String(material.id);
 
@@ -186,54 +191,57 @@ export class MaterialComponent implements OnInit, AfterViewInit {
   }
 
   generalFilter(event, n) {
-    // console.log("Entered general filter")
+    // console.log('Entered general filter')
     let val
-    if (event){
+    if (event) {
       val = event.target.value.toLowerCase();
-    }else{
-      val = ""
+    } else {
+      val = ''
     }
     // console.log(val)
     // console.log(n)
 
-    this.lastSearchObj = {'from':'full','1':val, '2':n};
+    this.lastSearchObj = {'from': 'full', '1': val, '2': n};
 
-    let url = 'http://49.50.76.29/api/material/search?search='+val+
-                '&filter[]=name&filter[]=srno&filter[]=brand&filter[]=uom&perPage=' +
-                String(this.perPageCount) + '&page=' + String(n);
+    let url = 'http://49.50.76.29/api/material/search?search=' + val +
+      '&filter[]=name&filter[]=srno&filter[]=brand&filter[]=uom&perPage=' +
+      String(this.perPageCount) + '&page=' + String(n);
 
     this.searchLoad.next(url)
 
-    url = 'http://49.50.76.29/api/material/search?search='+val+
-                '&filter[]=name&filter[]=srno&filter[]=brand&filter[]=uom&perPage=' +
-                String(1) + '&page=' + String(0);
+    url = 'http://49.50.76.29/api/material/search?search=' + val +
+      '&filter[]=name&filter[]=srno&filter[]=brand&filter[]=uom&perPage=' +
+      String(1) + '&page=' + String(0);
 
     this.searchTotal.next(url)
 
   }
 
-  individualFilter(sParam, k, n){
-    // console.log("Entered individual filter")
+  individualFilter(sParam, k, n) {
+    // console.log('Entered individual filter')
     // console.log(sParam)
     // console.log(k)
     // console.log(n)
 
-    this.lastSearchObj = {'from':'ind','1':sParam, '2':k, '3':n};
+    this.lastSearchObj = {'from': 'ind', '1': sParam, '2': k, '3': n};
 
-    let url = 'http://49.50.76.29/api/material/search?search='+ sParam[k] +
-                '&filter[]='+ k +'&perPage=' +
-                String(this.perPageCount) + '&page=' + String(n);
+    let url = 'http://49.50.76.29/api/material/search?search=' + sParam[k] +
+      '&filter[]=' + k + '&perPage=' +
+      String(this.perPageCount) + '&page=' + String(n);
 
 
     this.searchLoad.next(url)
 
 
-    url = 'http://49.50.76.29/api/material/search?search='+ sParam[k] +
-                '&filter[]='+ k +'&perPage=' +
-                String(1) + '&page=' + String(0);
+    url = 'http://49.50.76.29/api/material/search?search=' + sParam[k] +
+      '&filter[]=' + k + '&perPage=' +
+      String(1) + '&page=' + String(0);
 
     this.searchTotal.next(url)
 
   }
 
+  private hideLoader(): void {
+    this.loaderService.hide();
+  }
 }

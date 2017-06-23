@@ -8,7 +8,7 @@ import * as Constants from '../shared/constants.globals';
 import {ViewEncapsulation, ChangeDetectionStrategy, ContentChild, TemplateRef} from '@angular/core';
 import {calculateViewDimensions} from '../shared';
 import {ColorHelper} from '../shared';
-import {BaseChartComponent} from '../shared';
+import {BaseChartComponent} from "../shared";
 import {single, multi} from '../shared';
 
 // ------------Models Imported------------------------------
@@ -23,8 +23,6 @@ import {LineItem} from '../model/class/line-item.model'
 import {Material} from '../model/class/material.model'
 import {Labour} from '../model/class/labour.model'
 import {MaterialReportUsageList} from '../model/class/material-report-usage-list.model';
-import {DialogService} from '../shared/services/dialog/dialog.service';
-import {LoaderService} from '../services/loader/loader.service';
 
 
 const URL = 'http://49.50.76.29:80/api/boq/file';
@@ -32,8 +30,7 @@ const URL = 'http://49.50.76.29:80/api/boq/file';
 @Component({
   selector: 'app-rate-analysis-display',
   templateUrl: './rate-analysis-display.component.html',
-  styleUrls: ['./rate-analysis-display.component.css'],
-  providers: [DialogService]
+  styleUrls: ['./rate-analysis-display.component.css']
 })
 
 export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -46,7 +43,6 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterVie
   urlProject: string;
   urlBoq: string;
   toggleCreateView = false;
-  public result: any;
 
 
   boqSelected: BoqNameId;
@@ -75,12 +71,12 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterVie
   //   console.log(arr2);
   //   return arr2;
   // }
-  // demoInd:{} = {'pending':2,'draft':12,'unapproved':20,'approved':20,'closed':0};
+  // demoInd:{} = {"pending":2,"draft":12,"unapproved":20,"approved":20,"closed":0};
   // singleInd:any[] = this.setData(this.demoInd);
 
   //  ---------------End of space for charts------------------
 
-  constructor(private restApiService: RestApiService, private router: Router,  private dialogsService: DialogService, private loaderService: LoaderService) {
+  constructor(private restApiService: RestApiService, private router: Router) {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
       + Constants.ACTION_ALL + '?visible[]=id&visible[]=name';
     this.urlBoq = Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_BOQ
@@ -106,15 +102,6 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterVie
     this.uploader.onAfterAddingFile = (item => {
       item.withCredentials = false;
     });
-
-    this.hideLoader();
-  }
-
-  /**
-   * This method is used to hide loader
-   */
-  private hideLoader(): void {
-    this.loaderService.hide();
   }
 
   ngOnDestroy() {
@@ -141,9 +128,6 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterVie
         },
         (error: any) => {
           console.log(error);
-          this.dialogsService
-            .errorNotification(error.status)
-            .subscribe(res => this.result = res);
         },
       );
   }
@@ -174,9 +158,6 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterVie
         },
         (error: any) => {
           console.log(error);
-          this.dialogsService
-            .errorNotification(error.status)
-            .subscribe(res => this.result = res);
         },
       );
   }
@@ -193,7 +174,7 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy, AfterVie
     console.log('in add material' + i);
     console.log(this.globalRateAnalysisList[i]);
 
-      this.globalRateAnalysisList[i].mainRateAnalysis[i].materialRateAnalysis.push(new MaterialRateAnalysis());
+    this.globalRateAnalysisList[i].mainRateAnalysis[i].materialRateAnalysis.push(new MaterialRateAnalysis());
   }
 
   openGlobalRateAnalysis(globalRateAnalysis) {

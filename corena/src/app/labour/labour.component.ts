@@ -15,6 +15,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import {DialogService} from "../shared/services/dialog/dialog.service";
+import {LoaderService} from "../services/loader/loader.service";
 
 @Component({
   selector: 'app-labour',
@@ -42,7 +43,7 @@ export class LabourComponent implements OnInit, AfterViewInit {
   newLabour: Labour= new Labour();
   //labours: Labour[];
 
-  constructor(private restApiService: RestApiService, private dialogsService: DialogService ) { }
+  constructor(private restApiService: RestApiService, private dialogsService: DialogService ,  private loaderService: LoaderService) { }
 
   ngOnInit() {
     this.labours = this.searchLoad
@@ -59,7 +60,10 @@ export class LabourComponent implements OnInit, AfterViewInit {
       .debounceTime(300)        // wait 300ms after each keystroke before considering the term
       .distinctUntilChanged()   // ignore if next search term is same as previous
       .switchMap((term)=> this.restApiService.getLength(term))
-      .subscribe((value)=>{this.pageCount = value; console.log(this.pageCount)})
+      .subscribe((value)=>{
+      this.pageCount = value;
+        this.hideLoader();
+      console.log(this.pageCount)})
 
   }
 
@@ -252,6 +256,10 @@ export class LabourComponent implements OnInit, AfterViewInit {
 
     this.searchTotal.next(url)
 
+  }
+
+  private hideLoader(): void {
+    this.loaderService.hide();
   }
 
 }

@@ -2,5 +2,6 @@
   <!--<label>I am from app component</label>-->
 <app-angular-loader></app-angular-loader>
   <router-outlet>
+    <span *ngIf="showLoader" class="loading"></span>
   </router-outlet>
 <!--</div>-->
