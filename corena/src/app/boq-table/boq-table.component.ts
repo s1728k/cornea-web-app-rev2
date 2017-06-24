@@ -23,8 +23,8 @@ export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
   public boqList: BOQTable[];
   urlProject: string;
   urlBoq: string;
-  toggleCreateView:boolean=false;
-  boqSelected:{};
+  toggleCreateView: boolean = false;
+  boqSelected: {};
 
   constructor(private restApiService: RestApiService, private router: Router) {
     this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
@@ -54,7 +54,7 @@ export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    //this.restApiService.comm_obj=this.boqSelected;
+    // this.restApiService.comm_obj=this.boqSelected;
   }
 
   // http://192.168.0.205:9000/api/projects/all/visible[]=id&visible[]=name&appends[]=boq
@@ -87,10 +87,10 @@ export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
     this.toggleCreateView = false;
     console.log(object.lineItems);
     this.boqList = object.lineItems;
-    if(object.has_ra){
-      this.toggleCreateView=true;
+    if (object.has_ra) {
+      this.toggleCreateView = true;
     }
-    this.boqSelected=object
+    this.boqSelected = object;
     /*this.restApiService.getRequest(Constants.BASE_URL_BOQ
      + Constants.SERVICE_NAME_BOQ + '/' + id)
      .map(res => /!*this.boqList = <BOQTable[]>*!/res.json().data)
@@ -104,11 +104,12 @@ export class BoqTableComponent implements OnInit, OnDestroy, AfterViewInit {
      );*/
   }
 
-  redirecToRateAnalysis(){
-    this.restApiService.comm_obj=this.boqSelected;
-    this.restApiService.comm_obj['from']="boq_table";
+  redirecToRateAnalysis() {
+    this.restApiService.comm_obj = this.boqSelected;
+    this.restApiService.comm_obj['from'] = "boq_table";
     this.router.navigate(['/pages/rate-analysis']);
   }
+
   redirectToUploadScreen(object) {
     this.restApiService.comm_obj = object;
     this.restApiService.setUploadServiceName(Constants.SERVICE_NAME_BOQ);

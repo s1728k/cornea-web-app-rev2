@@ -15,8 +15,8 @@
             <div class="flex-box">
               <button md-button (click)="getRateAnalysis(boq)" class="full-width"><h4>{{boq.name}}</h4></button><button md-button (click)="redirectToUploadScreen(boq)"><app-icon [iconName]="'ic_add_box_black_24px'"></app-icon></button>
             </div>
-              <md-list-item class="md-2-line" *ngFor="let globalRateAnalysis of globalRateAnalysisList">
-                <button md-button (click)="openGlobalRateAnalysis(globalRateAnalysis)" class="full-width"> {{globalRateAnalysis.title}}</button>
+              <md-list-item class="md-2-line" *ngFor="let globalRateAnalysis of boq.ra">
+                <button md-button (click)="openGlobalRateAnalysis(globalRateAnalysis, boq)" class="full-width"> {{globalRateAnalysis.title}}</button>
 <!--                 <button md-button (click)="redirectToUploadScreen(project)"><app-icon [iconName]="'ic_add_box_black_24px'"></app-icon></button> -->
               </md-list-item>
             </md-list>
@@ -73,7 +73,7 @@
         <ng-container *ngFor="let lineItem of lineItems; let i=index">
                 <div class="row">
                     <div class="col-md-12">
-                        <h4 class="heading" (click)="dl[i]=!dl[i]">{{lineItems[i]['title']}} Rate analysis</h4>
+                        <h4 class="heading" >{{lineItem.title}} Rate analysis</h4> <!--(click)="dl[i]=!dl[i]"-->
                     </div>
                 </div>
 
@@ -98,22 +98,22 @@
                                     </tr>
                                     <tr>
                                         <th></th>
-                                        <th>{{lineItems[i]['srno']}}</th>
-                                        <th>{{lineItems[i]['title']}}</th>
-                                        <th width="5%">{{lineItems[i]['length']}}</th>
-                                        <th width="5%">{{lineItems[i]['breadth']}}</th>
-                                        <th width="5%">{{lineItems[i]['thickness']}}</th>
-                                        <th>{{lineItems[i]['quantity']}}</th>
-                                        <th>{{lineItems[i]['unit']}}</th>
-                                        <th>{{lineItems[i]['wastage']}}</th>
-                                        <th>{{lineItems[i]['rate']}}</th>
-                                        <th>{{lineItems[i]['cf']}}</th>
-                                        <th>{{lineItems[i]['amount']}}</th>
+                                        <th>{{lineItem['srno']}}</th>
+                                        <th>{{lineItem.description}}</th>
+                                        <th width="5%">{{lineItem.length}}</th>
+                                        <th width="5%">{{lineItem.breadth}}</th>
+                                        <th width="5%">{{lineItem.thickness}}</th>
+                                        <th>{{lineItem.quantity}}</th>
+                                        <th>{{lineItem.unit}}</th>
+                                        <th>{{lineItem.wastage}}</th>
+                                        <th>{{lineItem.rate}}</th>
+                                        <th>{{lineItem['cf']}}</th>
+                                        <th>{{lineItem.amount}}</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <!--<tbody>
                                     <ng-container *ngIf="globalRateAnalysis.mainRateAnalysis[i]['materialRateAnalysis']!==undefined">
-                                    data available
+                                    Material Rate Analysis
                                         <tr *ngFor="let mat of globalRateAnalysis.mainRateAnalysis[i]['materialRateAnalysis']; let j=index">
                                             <td class="index">
                                               <app-icon [iconName]="'ic_delete_white_24px'" (click)="deleteMaterialRateAnalysis(i,j)"></app-icon>
@@ -129,7 +129,7 @@
                                             <td>{{globalRateAnalysis.mainRateAnalysis[i]['materialRateAnalysis'][j]['rate']}}</td>
                                             <td>
                                                 <select class="inp" [(ngModel)]="cf_price" (change)="materialTotal(i)" style="padding: 0px">
-            <!--                                       <md-option [value]="this.cfList">{{ this.cfList }}</md-option> -->
+            &lt;!&ndash;                                       <md-option [value]="this.cfList">{{ this.cfList }}</md-option> &ndash;&gt;
                                                   <option [value]="0">0</option>
                                                 </select>
                                             </td>
@@ -161,23 +161,23 @@
                                             <td><input mdInput type="number" class="inp" name="rate" [(ngModel)]="itemRateAnalysis[i].materialRateAnalysis[j]['rate']" (change)="materialTotal(i)"></td>
                                             <td>
                                                 <select class="inp" [(ngModel)]="cf_price" (change)="materialTotal(i)" style="padding: 0px">
-            <!--                                       <md-option [value]="this.cfList">{{ this.cfList }}</md-option> -->
+            &lt;!&ndash;                                       <md-option [value]="this.cfList">{{ this.cfList }}</md-option> &ndash;&gt;
                                                   <option [value]="0">0</option>
                                                 </select>
                                             </td>
                                             <td>{{itemRateAnalysis[i].materialRateAnalysis[j]['amount'] | nan | number : '2.2-3'}}</td>
                                         </tr>
                                     </ng-container>
-                                </tbody>
+                                </tbody>-->
                             </table>
                             <table>
-                                <caption>Labour Rate Analysis</caption>
+                                <!--<caption>Labour Rate Analysis</caption>
                                 <thead>
                                   <tr>
                                     <th width="40px;" class="index">
                                       <app-icon [iconName]="'ic_add_box_white_24px'" (click)="addLabourRateAnalysis(i)"></app-icon>
                                     </th>
-                            <!--         <th>Length</th> -->
+                            &lt;!&ndash;         <th>Length</th> &ndash;&gt;
                                     <th>Name</th>
                                     <th>Breadth</th>
                                     <th>Thickness</th>
@@ -194,7 +194,7 @@
                                         <td class="index">
                                           <app-icon [iconName]="'ic_delete_white_24px'" (click)="deleteLabourRateAnalysis(i,j)"></app-icon>
                                         </td>
-                                <!--         <td><input type="number" class="inp" placeholder="Length" name="Length" (keyup)="labourTotal(i)" [(ngModel)]="globalRateAnalysis.mainRateAnalysis[i].labourRateAnalysis[j]['length']"></td> -->
+                                &lt;!&ndash;         <td><input type="number" class="inp" placeholder="Length" name="Length" (keyup)="labourTotal(i)" [(ngModel)]="globalRateAnalysis.mainRateAnalysis[i].labourRateAnalysis[j]['length']"></td> &ndash;&gt;
                                         <td>{{globalRateAnalysis.mainRateAnalysis[i].labourRateAnalysis[j]['lineItem_labour_id']}}</td>
                                         <td>{{globalRateAnalysis.mainRateAnalysis[i].labourRateAnalysis[j]['breadth']}}</td>
                                         <td>{{globalRateAnalysis.mainRateAnalysis[i].labourRateAnalysis[j]['thickness']}}</td>
@@ -210,7 +210,7 @@
                                         <td class="index">
                                           <app-icon [iconName]="'ic_delete_white_24px'" (click)="deleteLabourRateAnalysis(i,j)"></app-icon>
                                         </td>
-                                <!--         <td><input type="number" class="inp" placeholder="Length" name="Length" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['length']"></td> -->
+                                &lt;!&ndash;         <td><input type="number" class="inp" placeholder="Length" name="Length" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['length']"></td> &ndash;&gt;
                                         <td>
                                           <input mdInput placeholder="Labour" class="inp" type="text" [mdAutocomplete]="auto" #searchBox
                                           (keyup)="searchLabours(searchBox.value)">
@@ -228,15 +228,15 @@
                                         <td>{{itemRateAnalysis[i].labourRateAnalysis[j]['amount'] | nan | number : '2.1-2'}}</td>
                                       </tr>
                                     </ng-container>
-                                </tbody>
+                                </tbody>-->
                             </table>
                             <table>
                                 <caption>Break Up</caption>
                                 <tbody>
                                     <tr>
-                                        <td colspan=12>
-        <!--                                 <button md-raised-button color="primary" (click)="openDialogSup(i)">Labour Calculation</button> -->
-                                        <!-- <button md-raised-button color="primary" (click)="postItemRateAnalysis(i)">Save</button> -->
+                                        <!--<td colspan=12>
+        &lt;!&ndash;                                 <button md-raised-button color="primary" (click)="openDialogSup(i)">Labour Calculation</button> &ndash;&gt;
+                                        &lt;!&ndash; <button md-raised-button color="primary" (click)="postItemRateAnalysis(i)">Save</button> &ndash;&gt;
                                         <span class="example-spacer"></span>
                                         <md-chip-list class="float-right">
                                         <md-chip color="primary" selected="true">Overhead Margin: <b>{{globalRateAnalysis.mainRateAnalysis[i].overhead_margin | nan | number : '2.1-2'}}</b></md-chip>
@@ -244,7 +244,7 @@
                                         <md-chip color="primary" selected="true">Labour Total: <b>{{globalRateAnalysis.mainRateAnalysis[i].labour_total | nan | number : '2.1-2'}}</b></md-chip>
                                         <md-chip color="primary" selected="true">Grand Total: <b>{{globalRateAnalysis.mainRateAnalysis[i].grand_total | nan | number : '2.1-2'}}</b></md-chip>
                                         </md-chip-list>
-                                        </td>
+                                        </td>-->
                                     </tr>
                                 </tbody>
                             </table>

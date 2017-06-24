@@ -10,8 +10,10 @@ export class LineItem {
   quantity: number;
   rate: number;
   amount: number;
+  wastage?: number;
   drawing_reference: string;
   length: number;
   breadth: number;
   thickness: number;
+
 }

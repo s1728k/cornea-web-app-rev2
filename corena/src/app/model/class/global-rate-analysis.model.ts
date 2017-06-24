@@ -1,4 +1,4 @@
-import {MainRateAnalysis} from './main-rate-analysis.model'
+import {MainRateAnalysis} from './main-rate-analysis.model';
 
 export class LineItemLabour{
     line_item_id:number;

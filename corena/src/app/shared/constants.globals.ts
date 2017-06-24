@@ -32,3 +32,16 @@ export const SERVICE_NAME_PROJECT = '/project';
 export const SERVICE_NAME_BOQ = '/boq';
 export const BASE_URL_BOQ = 'http://49.50.76.29:80/api';
 export const APPENDS_LINE_ITEMS_BOQ = 'appends[]=lineitems';
+/*** for Rate Analysis Screens (Display and Create) ***/
+export const BASE_URL_GLOBAL_RATE_ANALYSIS = 'http://49.50.76.29/api';
+export const SERVICE_NAME_GLOBAL_RATE_ANALYSIS = '/gra';
+export const APPENDS_QUERY_GRA_WITH_BOQ_ID = 'appends[]=mainRateAnalysis&appends[]' +
+  '=materialRateAnalysis&appends[]=labourRateAnalysis';
+export const CONDITION_BOQ_ID = '&conditions[boq_id]=';
+export const QUERY_SYMBOL = '?';
+export const APPENDS_LINE_ITEM  = 'appends[]=lineItems';
+export const HIDDEN_CREATED_AT_UPDATED_AT = 'hidden[]=created_at&hidden[]=updated_at';
+export const URL_QUERY_ADDITION = '&';
+export const VISIBLE_NAME_ID = 'visible[]=name&visible[]=id';
+export const VISIBLE_TITLE_ID = 'visible[]=title&visible[]=id';
+export const SERVICE_NAME_REPORT = '/report';
