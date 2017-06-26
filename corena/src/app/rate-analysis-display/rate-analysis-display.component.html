@@ -74,12 +74,12 @@
                 <div class="row">
                     <div class="col-md-12">
                             <table>
-                                <caption (click)="ddm[i]=!ddm[i]">
+                                <caption (click)="ddm[i]=!ddm[i]" class="test-border" style="padding-top:3px;">
                                     Material Rate Analysis
-                                    <app-icon [iconName]="'ic_keyboard_arrow_up_black_24px'" *ngIf="ddm[i]"></app-icon>
-                                    <app-icon [iconName]="'ic_keyboard_arrow_down_black_24px'" *ngIf="!ddm[i]"></app-icon>
+                                    <app-icon [suffix]='true' [iconName]="'ic_keyboard_arrow_up_black_24px'" *ngIf="ddm[i]"></app-icon>
+                                    <app-icon [suffix]='true' [iconName]="'ic_keyboard_arrow_down_black_24px'" *ngIf="!ddm[i]"></app-icon>
                                 </caption>
-                                <thead *ngIf="ddm[i]">
+                                <thead >
                                     <tr>
                                         <th width="2%" class="index">
                                           <app-icon [iconName]="'ic_add_box_white_24px'" *ngIf="wastage>0 && overhead > 0 && profit > 0"
@@ -159,12 +159,12 @@
                                 </tbody>
                             </table>
                             <table>
-                                <caption (click)="ddl[i]=!ddl[i]">
+                                <caption (click)="ddl[i]=!ddl[i]" class="test-border" style="padding-top:3px;">
                                     Labour Rate Analysis
-                                    <app-icon [iconName]="'ic_keyboard_arrow_up_black_24px'" *ngIf="ddl[i]"></app-icon>
-                                    <app-icon [iconName]="'ic_keyboard_arrow_down_black_24px'" *ngIf="!ddl[i]"></app-icon>
+                                    <app-icon [suffix]='true' [iconName]="'ic_keyboard_arrow_up_black_24px'" *ngIf="ddl[i]"></app-icon>
+                                    <app-icon [suffix]='true' [iconName]="'ic_keyboard_arrow_down_black_24px'" *ngIf="!ddl[i]"></app-icon>
                                 </caption>
-                                <thead *ngIf="ddl[i]">
+                                <thead >
                                   <tr>
                                     <th width="40px;" class="index">
                                       <app-icon [iconName]="'ic_add_box_white_24px'" (click)="addLabourRateAnalysis(i)"></app-icon>
@@ -208,7 +208,7 @@
                                 </tbody>
                             </table>
                             <table>
-                                <caption>Break Up</caption>
+                                <caption class="test-border" style="padding-top:3px;">Break Up</caption>
                                 <tbody>
                                     <tr>
                                         <td colspan=12>

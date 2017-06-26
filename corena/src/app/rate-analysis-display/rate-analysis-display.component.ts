@@ -224,12 +224,16 @@ export class RateAnalysisDisplayComponent implements OnInit {
       for (let j = 0; j < this.lineItems[i]['materials'].length; j++) {
         this.addMaterialRateAnalysis(i);
         this.itemRateAnalysis[i].materialRateAnalysis[j].lineItem_material_id = this.lineItems[i]['materials'][j]['id'];
+        this.itemRateAnalysis[i].materialRateAnalysis[j].uom = this.lineItems[i]['materials'][j]['uom'];
+        this.itemRateAnalysis[i].materialRateAnalysis[j].rate = this.lineItems[i]['materials'][j]['rate'];
       }
 
       this.itemRateAnalysis[i].labourRateAnalysis=[];
       for (let j = 0; j < this.lineItems[i]['labours'].length; j++) {
         this.addLabourRateAnalysis(i);
-        this.itemRateAnalysis[i].labourRateAnalysis[j].lineItem_labour_id = this.lineItems[i]['labours'][j]['id'];;
+        this.itemRateAnalysis[i].labourRateAnalysis[j].lineItem_labour_id = this.lineItems[i]['labours'][j]['id'];
+        this.itemRateAnalysis[i].labourRateAnalysis[j].uom = this.lineItems[i]['labours'][j]['uom'];
+        this.itemRateAnalysis[i].labourRateAnalysis[j].rate = this.lineItems[i]['labours'][j]['rate'];
       }
     }
 
