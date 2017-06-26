@@ -16,21 +16,26 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
+import {DialogService} from "../shared/services/dialog/dialog.service";
 
 @Component({
   selector: 'app-rapopup',
   templateUrl: './rapopup.component.html',
   styleUrls: ['./rapopup.component.css'],
+  providers: [DialogService]
 })
 export class RaPopupDialog implements OnInit {
 
   labours: Observable<Labour[]>;
-  labourSuggestion:Subject<string> = new Subject<string>();
+  labourSuggestion: Subject<string> = new Subject<string>();
 
-  labour_total:number=0;
+  labour_total: number = 0;
   labrRateAnalysis: LabourRateAnalysis;
-  labourRateAnalysis: LabourRateAnalysis[]= [];
-  constructor(private restApiService:RestApiService, public dialogRef: MdDialogRef<RaPopupDialog>) {}
+  labourRateAnalysis: LabourRateAnalysis[] = [];
+
+  constructor(private restApiService: RestApiService, public dialogRef: MdDialogRef<RaPopupDialog>, private dialogsService: DialogService) {
+  }
+
   ngOnInit() {
     this.labours = this.labourSuggestion
       .debounceTime(300)        // wait 300ms after each keystroke before considering the term
@@ -47,35 +52,35 @@ export class RaPopupDialog implements OnInit {
       });
   }
 
-  searchLabours(term: string){
+  searchLabours(term: string) {
     console.log("Entered searchMaterials")
-    const url ="http://49.50.76.29/api/labour/search?search="+term+"&filter[]=name&filter[]=srno&filter[]=uom&filter[]=category&filter[]=age&filter[]=type&filter[]=rate"
+    const url = "http://49.50.76.29/api/labour/search?search=" + term + "&filter[]=name&filter[]=srno&filter[]=uom&filter[]=category&filter[]=age&filter[]=type&filter[]=rate"
     this.labourSuggestion.next(url);
   }
 
-  addRow({}={}){
-      this.labrRateAnalysis= new LabourRateAnalysis();
-      this.labourRateAnalysis.push(this.labrRateAnalysis)
+  addRow({} = {}) {
+    this.labrRateAnalysis = new LabourRateAnalysis();
+    this.labourRateAnalysis.push(this.labrRateAnalysis)
   }
 
-  deleteRow(i){
-      this.labourRateAnalysis.splice(i, 1);
+  deleteRow(i) {
+    this.labourRateAnalysis.splice(i, 1);
   }
 
-  updateRow(labour,j){
+  updateRow(labour, j) {
     console.log("Entered updateRow")
     console.log(labour);
-      this.labourRateAnalysis[j]['uom']=labour['uom'];
-      this.labourRateAnalysis[j]['rate']=labour['rate'];
-      this.labourRateAnalysis[j]['lineItem_labour_id']=labour['id'];
+    this.labourRateAnalysis[j]['uom'] = labour['uom'];
+    this.labourRateAnalysis[j]['rate'] = labour['rate'];
+    this.labourRateAnalysis[j]['lineItem_labour_id'] = labour['id'];
   }
 
-  calc(i){
-    this.labour_total=0
-      this.labourRateAnalysis[i]['amount'] = this.labourRateAnalysis[i]['breadth'] *
-                                             this.labourRateAnalysis[i]['thickness'] *
-                                             this.labourRateAnalysis[i]['rate'];
-      this.labour_total = this.labour_total + this.labourRateAnalysis[i]['amount'];
+  calc(i) {
+    this.labour_total = 0
+    this.labourRateAnalysis[i]['amount'] = this.labourRateAnalysis[i]['breadth'] *
+      this.labourRateAnalysis[i]['thickness'] *
+      this.labourRateAnalysis[i]['rate'];
+    this.labour_total = this.labour_total + this.labourRateAnalysis[i]['amount'];
   }
 }
 

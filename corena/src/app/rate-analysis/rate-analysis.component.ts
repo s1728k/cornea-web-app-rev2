@@ -34,11 +34,14 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
+import {DialogService} from 'app/shared/services/dialog/dialog.service';
+import {SpinnerloaderService} from 'app/services/spinner/spinnerloader.service';
 
 @Component({
   selector: 'app-rate-analysis',
   templateUrl: './rate-analysis.component.html',
-  styleUrls: ['./rate-analysis.component.css']
+  styleUrls: ['./rate-analysis.component.css'],
+  providers: [DialogService]
 })
 
 export class RateAnalysisComponent implements OnInit {
@@ -82,6 +85,7 @@ export class RateAnalysisComponent implements OnInit {
 
   mainRateAnalysis: MainRateAnalysis;
   itemRateAnalysis: MainRateAnalysis[] = [];
+  public result: any;
 
 
   //  ---------------space for charts-------------------------
@@ -103,7 +107,7 @@ export class RateAnalysisComponent implements OnInit {
   //   console.log(arr2);
   //   return arr2;
   // }
-  // demoInd:{} = {"pending":2,"draft":12,"unapproved":20,"approved":20,"closed":0};
+  // demoInd:{} = {'pending':2,'draft':12,'unapproved':20,'approved':20,'closed':0};
   // singleInd:any[] = this.setData(this.demoInd);
 
   //  ---------------End of space for charts------------------
@@ -111,7 +115,7 @@ export class RateAnalysisComponent implements OnInit {
   // variable for grand total one for item rate analysis and other for overhead.
   grandTotal2V: any;
 
-  constructor(private restApiService: RestApiService, private dialog: MdDialog) {
+  constructor(private restApiService: RestApiService, private dialog: MdDialog,  private dialogsService: DialogService,  private spinnerloader: SpinnerloaderService) {
   }
 
   ngOnInit() {
@@ -178,16 +182,20 @@ export class RateAnalysisComponent implements OnInit {
     this.projectSelected = project;
     const url = 'http://49.50.76.29/api/boq/all?appends[]=lineItems&hidden[]=created_at' +
       '&hidden[]=updated_at&conditions[project_id]=' + project.id;
-    this.restApiService.getRequest(url)
+    this.restApiService.getRequestWithSpinnerLoader(url)
       .map(response => response.json().data)
       .subscribe(
         (value) => {
           console.log(value);
+          this.spinnerloader.display(false);
           this.boqs = value;
           console.log(this.boqs);
         },
         (error: any) => {
           console.log(error);
+          this.dialogsService
+            .errorNotification(error.status)
+            .subscribe(res => this.result = res);
         },
       );
   }
@@ -285,7 +293,7 @@ export class RateAnalysisComponent implements OnInit {
     this.itemRateAnalysis[index].materialRateAnalysis
       [this.itemRateAnalysis[index].materialRateAnalysis.length - 1].wastage = this.wastage;
     // }else{
-    //   alert("Please Select The Line Item")
+    //   alert('Please Select The Line Item')
     // }
   }
 
@@ -449,10 +457,14 @@ export class RateAnalysisComponent implements OnInit {
         (value) => {
           this.gra_id = value[0].id;
           console.log(value);
+          this.spinnerloader.display(false);
           this.firstPost = false;
         },
         (err: any) => {
           console.error(err);
+          this.dialogsService
+            .errorNotification(err.status)
+            .subscribe(res => this.result = res);
         }
       );
   }

@@ -60,7 +60,7 @@
 
   <div class="row">
       <div class="col-md-9">
-          <app-pagination *ngIf="pageCount" [pageCount]="pageCount" [activePage]="activePage"
+          <app-pagination *ngIf="pageCount" [pageCount]="pageCount"
           (pageSelected)=selectPage($event) (perPageCount)="perPageCountChange($event)">
           </app-pagination>
       </div>

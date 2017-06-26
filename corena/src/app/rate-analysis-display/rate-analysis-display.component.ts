@@ -38,11 +38,14 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
+import {DialogService} from "../shared/services/dialog/dialog.service";
+import {SpinnerloaderService} from "../services/spinner/spinnerloader.service";
 
 @Component({
   selector: 'app-rate-analysis-display',
   templateUrl: './rate-analysis-display.component.html',
-  styleUrls: ['./rate-analysis-display.component.css']
+  styleUrls: ['./rate-analysis-display.component.css'],
+  providers: [DialogService]
 })
 
 export class RateAnalysisDisplayComponent implements OnInit {
@@ -82,6 +85,8 @@ export class RateAnalysisDisplayComponent implements OnInit {
   mainRateAnalysis: MainRateAnalysis;
   itemRateAnalysis: MainRateAnalysis[] = [];
 
+  public result: any;
+
   //  ---------------space for charts-------------------------
 
   materialreportusagelist: MaterialReportUsageList[];
@@ -106,7 +111,7 @@ export class RateAnalysisDisplayComponent implements OnInit {
 
   //  ---------------End of space for charts------------------
 
-  constructor(private restApiService: RestApiService, private router: Router) { }
+  constructor(private restApiService: RestApiService, private router: Router, private dialogsService: DialogService,  private spinnerloader: SpinnerloaderService) { }
 
   ngOnInit() {
 
@@ -168,15 +173,19 @@ export class RateAnalysisDisplayComponent implements OnInit {
     // const url = Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_BOQ + Constants.ACTION_ALL + Constants.QUERY_SYMBOL
     //   + Constants.APPENDS_LINE_ITEM + Constants.URL_QUERY_ADDITION + Constants.HIDDEN_CREATED_AT_UPDATED_AT;
 
-    this.restApiService.getRequest(url)
+    this.restApiService.getRequestWithSpinnerLoader(url)
       .map(response => response.json().data)
       .subscribe(
         (value) => {
           this.boqs = value;
+          this.spinnerloader.display(false);
           console.log(this.boqs);
         },
         (error: any) => {
           console.log(error);
+          this.dialogsService
+            .errorNotification(error.status)
+            .subscribe(res => this.result = res);
         },
       );
   }
@@ -194,10 +203,11 @@ export class RateAnalysisDisplayComponent implements OnInit {
     // const url = Constants.BASE_URL_GLOBAL_RATE_ANALYSIS + Constants.SERVICE_NAME_GLOBAL_RATE_ANALYSIS
     //   + Constants.ACTION_ALL + Constants.QUERY_SYMBOL + Constants.CONDITION_BOQ_ID + String(boq.id)
     //   + Constants.URL_QUERY_ADDITION + Constants.VISIBLE_TITLE_ID;
-    this.restApiService.getRequest(url)
+    this.restApiService.getRequestWithSpinnerLoader(url)
       .map(response => response.json().data)
       .subscribe(
         (value) => {
+          this.spinnerloader.display(false);
           console.log(value);
           if (value !== null) {
             this.boqs[this.boqs.indexOf(boq)].ra = value;
@@ -205,6 +215,9 @@ export class RateAnalysisDisplayComponent implements OnInit {
         },
         (error: any) => {
           console.log(error);
+          this.dialogsService
+            .errorNotification(error.status)
+            .subscribe(res => this.result = res);
         },
       );
   }
@@ -387,7 +400,7 @@ export class RateAnalysisDisplayComponent implements OnInit {
 
     this.itemRateAnalysis[i].gra_id = this.gra_id;
 
-    this.restApiService.postRequest(url, this.itemRateAnalysis[i])
+    this.restApiService.postRequestWithSpinnerLoader(url, this.itemRateAnalysis[i])
       .map(res => res.json())
       .subscribe(
         (value) => {
@@ -395,6 +408,9 @@ export class RateAnalysisDisplayComponent implements OnInit {
         },
         (err: any) => {
           console.error(err);
+          this.dialogsService
+            .errorNotification(err.status)
+            .subscribe(res => this.result = res);
         }
       );
   }
@@ -572,6 +588,9 @@ export class RateAnalysisDisplayComponent implements OnInit {
         },
         (err: any) => {
           console.error(err);
+          this.dialogsService
+            .errorNotification(err.status)
+            .subscribe(res => this.result = res);
         }
       );
   }

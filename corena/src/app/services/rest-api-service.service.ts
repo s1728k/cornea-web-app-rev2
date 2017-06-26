@@ -8,6 +8,8 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 // Observable operators
 import 'rxjs/add/operator/map';
+import {LoaderService} from './loader/loader.service';
+import {SpinnerloaderService} from './spinner/spinnerloader.service';
 
 
 /**
@@ -28,7 +30,7 @@ export class RestApiService {
    * dependencies needed at runtime
    * @param http
    */
-  constructor(private http: Http /*private requestMethod: RequestMethod*/) {
+  constructor(private http: Http,  private loaderService: LoaderService, private spinnerloaderService: SpinnerloaderService /*private requestMethod: RequestMethod*/) {
     this.headers = new Headers({'Content-Type': 'application/json'});
   }
 
@@ -36,6 +38,15 @@ export class RestApiService {
   postRequest(url, body): Observable<any> {
     console.log(body);
     console.log(url);
+    // console.log(this.http.post(url, body, this.headers));
+    return this.http.post(url, body, this.headers);
+    // .catch((err:any)=> console.log(err));
+  }
+
+  postRequestWithSpinnerLoader(url, body): Observable<any> {
+    console.log(body);
+    console.log(url);
+    this.spinnerloaderService.display(true);
     // console.log(this.http.post(url, body, this.headers));
     return this.http.post(url, body, this.headers);
     // .catch((err:any)=> console.log(err));
@@ -49,6 +60,21 @@ export class RestApiService {
    */
   getRequest(url: string): Observable<any> {
     console.log(url);
+    return this.http.get(url, this.headers);
+  }
+  getRequestWithoutLoader(url: string): Observable<any> {
+    console.log(url);
+    return this.http.get(url, this.headers);
+  }
+
+  getRequestWithSpinnerLoader(url: string): Observable<any> {
+    this.spinnerloaderService.display(true);
+    console.log(url);
+    return this.http.get(url, this.headers);
+  }
+  getSearchRequest(url: string): Observable<any> {
+    console.log(url);
+    this.showLoader();
     return this.http.get(url, this.headers);
   }
 
@@ -76,7 +102,7 @@ export class RestApiService {
 
   search(url: string): Observable<{}[]> {
     // this.url='http://49.50.76.29/api/material/search?search=' + term + '&filter[]=name&filter[]=srno&filter[]=brand'
-    console.log("Api service for getting stream of observables")
+    console.log('Api service for getting stream of observables')
     console.log(url)
     return this.http
       .get(url)
@@ -85,7 +111,7 @@ export class RestApiService {
 
   getLength(url: string): Observable<number> {
     // this.url='http://49.50.76.29/api/material/search?search=' + term + '&filter[]=name&filter[]=srno&filter[]=brand'
-    console.log("Api service for getting total of observables")
+    console.log('Api service for getting total of observables')
     console.log(url)
     return this.http
       .get(url)
@@ -127,7 +153,7 @@ export class RestApiService {
    .catch((error: any) => Observable.throw(error.json().error || 'error returned '));
    }
    */
-    /**
+  /**
    * to set the value
    * @param key
    * @param id
@@ -136,7 +162,7 @@ export class RestApiService {
     this.additionParameter = id;
     this.additionParameterKey = key;
   }
-   /** *
+  /** *
    * @param service_name upload file to
    */
   setUploadServiceName(service_name) {
@@ -155,5 +181,10 @@ export class RestApiService {
     return this.uploadServiceName;
   }
 
-
+  /**
+   * This method is used to start the loader
+   */
+  private showLoader(): void {
+    this.loaderService.show();
+  }
 }

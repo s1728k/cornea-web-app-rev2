@@ -14,30 +14,37 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
+import {LoaderService} from '../services/loader/loader.service';
+import {SpinnerloaderService} from '../services/spinner/spinnerloader.service';
+import {DialogService} from '../shared/services/dialog/dialog.service';
 
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
-  styleUrls: ['./project.component.css']
+  styleUrls: ['./project.component.css'],
+  providers: [DialogService]
 })
 export class ProjectComponent implements OnInit, AfterViewInit {
 
   projects: Observable<Project[]>;
+  new_projects: Project[];
   searchLoad: Subject<string> = new Subject<string>(); // subject used to monitor materials observable
   searchTotal: Subject<string> = new Subject<string>(); // subject used to monitor total count of materials
 
-  searchOpt: {}= {brand: '', modal: '', job: ''}; // empty object used to pass the individual column searched for
-  ed: {}= {}; // boolean for editing mode
-  lastSearchObj: {}= {}; // used as a token to identify request is comming from normal get request or general search or individual search
-  trig:string=""; // manual trigger the searchLoad and searchTotal
-  pageCount= 4;
-  perPageCount= 2;
-  activePage=0;
+  searchOpt: {} = {brand: '', modal: '', job: ''}; // empty object used to pass the individual column searched for
+  ed: {} = {}; // boolean for editing mode
+  lastSearchObj: {} = {}; // used as a token to identify request is comming from normal get request or general search or individual search
+  trig: string = ''; // manual trigger the searchLoad and searchTotal
+  pageCount = 4;
+  perPageCount = 2;
+  activePage = 0;
+  public result: any;
 
   newProject: Project = new Project();
 
 
-  constructor(private restApiService: RestApiService) {  }
+  constructor(private restApiService: RestApiService, private loaderService: LoaderService, private spinnerloaderService: SpinnerloaderService, private dialogsService: DialogService) {
+  }
 
   ngOnInit() {
     // this.getProjectList();
@@ -55,30 +62,33 @@ export class ProjectComponent implements OnInit, AfterViewInit {
     this.searchTotal
       .debounceTime(300)        // wait 300ms after each keystroke before considering the term
       .distinctUntilChanged()   // ignore if next search term is same as previous
-      .switchMap((term)=> this.restApiService.getLength(term))
-      .subscribe((value)=>{this.pageCount = value; console.log(this.pageCount)})
+      .switchMap((term) => this.restApiService.getLength(term))
+      .subscribe((value) => {
+        this.pageCount = value;
+        console.log(this.pageCount);
+      });
 
   }
 
-  ngAfterViewInit(){
-    // console.log("ngAfterViewInit")
+  ngAfterViewInit() {
+    // console.log('ngAfterViewInit')
     this.getProjects(0);
-    this.activePage=0
+    this.activePage = 0;
   }
 
   perPageCountChange(perPageCount) {
     // console.log('Entered page count change')
     // console.log(perPageCount)
-    this.perPageCount=perPageCount;
+    this.perPageCount = perPageCount;
     this.getProjects(0);
-    this.activePage=0
+    this.activePage = 0;
   }
 
   selectPage(p) {
     // console.log('Entered select page')
     // console.log(p)
     // console.log(this.lastSearchObj['from'])
-    this.trig=(this.trig==='sel')?this.trig+"1":'sel'
+    this.trig = (this.trig === 'sel') ? this.trig + '1' : 'sel'
     this.activePage = p;
     switch (this.lastSearchObj['from']) {
       case 'full':
@@ -115,16 +125,17 @@ export class ProjectComponent implements OnInit, AfterViewInit {
 
 
   postProject() {
-    // console.log("Entered postProject")
+    // console.log('Entered postProject')
     const url = 'http://49.50.76.29:8090/api/project/new';
     // console.log(this.newProject);
-    this.restApiService.postRequest(url, this.newProject)
+    this.restApiService.postRequestWithSpinnerLoader(url, this.newProject)
       .map(res => res.json().data[0])
       .subscribe(
         (value: Project) => {
           this.newProject = value;
           // console.log(this.newProject);
           this.newProject = new Project();
+          this.spinnerloaderService.display(false);
           this.selectPage(this.activePage);
         },
         (err: any) => {
@@ -134,7 +145,7 @@ export class ProjectComponent implements OnInit, AfterViewInit {
   }
 
   putProject(project) {
-    // console.log("Entered put project")
+    // console.log('Entered put project')
     // console.log(project)
     const url = 'http://49.50.76.29:8090/api/project/' + String(project.id);
     // console.log(project)
@@ -153,7 +164,7 @@ export class ProjectComponent implements OnInit, AfterViewInit {
   }
 
   deleteProject(project) {
-    // console.log("Entered delete project")
+    // console.log('Entered delete project')
     // console.log(project)
     const url = 'http://49.50.76.29:8090/api/project/' + String(project.id);
 
@@ -195,6 +206,22 @@ export class ProjectComponent implements OnInit, AfterViewInit {
       '&filter[]=name&filter[]=start_date&filter[]=end_date&perPage=' +
       String(1) + '&page=' + String(0);
 
+        this.restApiService.getSearchRequest(url)
+     .map(res => res.json().data)
+     .subscribe(
+     (value: Project[]) => {
+     this.new_projects = value;
+     console.log(this.new_projects);
+     this.hideLoader();
+     },
+     (err: any) => {
+     console.error(err);
+     this.dialogsService
+     .errorNotification(err.status)
+     .subscribe(res => this.result = res);
+     }
+     );
+
     this.searchTotal.next(url);
 
   }
@@ -222,6 +249,15 @@ export class ProjectComponent implements OnInit, AfterViewInit {
 
     this.searchTotal.next(url);
 
+  }
+
+  private showLoader(): void {
+    this.loaderService.show();
+  }
+
+  // This method is used to hide the loader
+  private hideLoader(): void {
+    this.loaderService.hide();
   }
 
 }

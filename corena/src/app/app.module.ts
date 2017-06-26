@@ -42,6 +42,9 @@ import { LabourComponent } from './labour/labour.component';
 import { CfComponent } from './cf/cf.component';
 import { RateAnalysisDisplayComponent } from './rate-analysis-display/rate-analysis-display.component';
 import { ProjectComponent } from './project/project.component';
+import {LoaderService} from './services/loader/loader.service';
+import {LoaderComponent} from './services/loader/loader.component';
+import {SpinnerloaderService} from './services/spinner/spinnerloader.service';
 
 @NgModule({
   declarations: [
@@ -58,6 +61,7 @@ import { ProjectComponent } from './project/project.component';
     CfComponent,
     RateAnalysisDisplayComponent,
     ProjectComponent,
+    LoaderComponent
   ],
   // provide modules throughout
   imports: [
@@ -81,7 +85,7 @@ import { ProjectComponent } from './project/project.component';
       storageType: 'sessionStorage'
     })
   ],
-  providers: [RestApiService, StorageService, SharedService],
+  providers: [RestApiService, StorageService, SharedService, LoaderService, SpinnerloaderService],
   bootstrap: [AppComponent]
 })
 /**
