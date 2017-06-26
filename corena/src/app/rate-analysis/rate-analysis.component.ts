@@ -673,6 +673,35 @@ export class RateAnalysisComponent implements OnInit {
     }
   }
 
+  calculateQuantity(i, j): number {
+    let dimenVar = 1;
+    if (isNaN(this.itemRateAnalysis[i].materialRateAnalysis[j].length)){
+      dimenVar = this.itemRateAnalysis[i].materialRateAnalysis[j].length * dimenVar;
+    }
+    if (isNaN(this.itemRateAnalysis[i].materialRateAnalysis[j].breadth)) {
+      dimenVar = this.itemRateAnalysis[i].materialRateAnalysis[j].breadth * dimenVar;
+    }
+    if (isNaN(this.itemRateAnalysis[i].materialRateAnalysis[j].thickness)) {
+      dimenVar = this.itemRateAnalysis[i].materialRateAnalysis[j].thickness * dimenVar;
+    }
+    console.log(dimenVar * this.itemRateAnalysis[i].materialRateAnalysis[j]['quantity']);
+    return dimenVar * this.itemRateAnalysis[i].materialRateAnalysis[j]['quantity'];
+  }
+
+  calculateLabourAmountCreate(i, j): void {
+    let dimenVar = 1;
+    if (isNaN(this.itemRateAnalysis[i].labourRateAnalysis[j].length)){
+      dimenVar = this.itemRateAnalysis[i].labourRateAnalysis[j].length * dimenVar;
+    }
+    if (isNaN(this.itemRateAnalysis[i].labourRateAnalysis[j].breadth)) {
+      dimenVar = this.itemRateAnalysis[i].labourRateAnalysis[j].breadth * dimenVar;
+    }
+    if (isNaN(this.itemRateAnalysis[i].labourRateAnalysis[j].thickness)) {
+      dimenVar = this.itemRateAnalysis[i].labourRateAnalysis[j].thickness * dimenVar;
+    }
+    this.itemRateAnalysis[i].labourRateAnalysis[j].amount = this.itemRateAnalysis[i].labourRateAnalysis[j].rate;
+  }
+
   /*labourCalc: LabourRateAnalysis[] = [];
    lCalc: LabourRateAnalysis = new LabourRateAnalysis;
 

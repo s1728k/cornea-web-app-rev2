@@ -169,10 +169,7 @@
                                     </select>
                                 </td>
                                 <td>{{itemRateAnalysis[i].materialRateAnalysis[j]['amount'] | nan | number : '2.2-3'}}</td>
-                                <td>{{itemRateAnalysis[i].materialRateAnalysis[j]['length']
-                                * itemRateAnalysis[i].materialRateAnalysis[j]['breadth']
-                                * itemRateAnalysis[i].materialRateAnalysis[j]['thickness']
-                                * itemRateAnalysis[i].materialRateAnalysis[j]['quantity']}}</td>
+                                <td>{{calculateQuantity(i, j)}}</td>
                                 <td>{{itemRateAnalysis[i].materialRateAnalysis[j]['wastage']/100
                                 * itemRateAnalysis[i].materialRateAnalysis[j]['amount'] | nan | number: '2.2-3'}}</td>
                             </tr>
@@ -208,12 +205,16 @@
                                 </md-option>
                               </md-autocomplete>
                             </td>
-                            <td><input type="number" class="inp" placeholder="Length" name="Lenght" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['length']"></td>
-                            <td><input type="number" class="inp" placeholder="Breadth" name="Breadth" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['breadth']"></td>
-                            <td><input type="number" class="inp" placeholder="Thickness" name="Thickness" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['thickness']"></td>
+                            <td><input type="number" class="inp" placeholder="Length" name="Lenght" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['length']"
+                                       (change)="calculateLabourAmountCreate(i, j)"></td>
+                            <td><input type="number" class="inp" placeholder="Breadth" name="Breadth" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['breadth']"
+                                       (change)="calculateLabourAmountCreate(i, j)"></td>
+                            <td><input type="number" class="inp" placeholder="Thickness" name="Thickness" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['thickness']"
+                                       (change)="calculateLabourAmountCreate(i, j)"></td>
                             <td><input type="text" class="inp" placeholder="UOM" name="UOM" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['uom']"></td>
-                            <td><input type="number" class="inp" placeholder="Rate" name="Rate" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['rate']"></td>
-                            <td>{{itemRateAnalysis[i].labourRateAnalysis[j]['amount'] | nan | number : '2.1-2'}}</td>
+                            <td><input type="number" class="inp" placeholder="Rate" name="Rate" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['rate']"
+                                       (change)="calculateLabourAmountCreate(i, j)"></td>
+                            <td>{{itemRateAnalysis[i].labourRateAnalysis[j].amount | nan | number : '2.1-2'}}</td>
                           </tr>
                         </tbody>
                     </table>

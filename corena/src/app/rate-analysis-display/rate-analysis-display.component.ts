@@ -28,6 +28,17 @@ import {MaterialReportUsageList} from '../model/class/material-report-usage-list
 import {BoqNameIdRANameId} from '../model/class/boq-name-id-ra-name-id';
 import {GenericNameId} from '../model/class/generic-name-id';
 
+// ------------http imports-------------------------------
+import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
+// Observable class extensions
+import 'rxjs/add/observable/of';
+// Observable operators
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
+
 @Component({
   selector: 'app-rate-analysis-display',
   templateUrl: './rate-analysis-display.component.html',
@@ -35,6 +46,12 @@ import {GenericNameId} from '../model/class/generic-name-id';
 })
 
 export class RateAnalysisDisplayComponent implements OnInit {
+
+  materials: Observable<Material[]>;
+  materialSuggestion: Subject<string> = new Subject<string>();
+
+  labours: Observable<Labour[]>;
+  labourSuggestion: Subject<string> = new Subject<string>();
 
   overhead = 0;
   profit = 0;
@@ -89,8 +106,52 @@ export class RateAnalysisDisplayComponent implements OnInit {
   constructor(private restApiService: RestApiService, private router: Router) { }
 
   ngOnInit() {
+
+    this.materials = this.materialSuggestion
+      .debounceTime(300)        // wait 300ms after each keystroke before considering the term
+      .distinctUntilChanged()   // ignore if next search term is same as previous
+      .switchMap(term => term   // switch to new observable each time the term changes
+        // return the http search observable
+        ? this.restApiService.search(term)
+        // or the observable of empty heroes if there was no search term
+        : Observable.of<Material[]>([]))
+      .catch(error => {
+        // TODO: add real error handling
+        console.log(error);
+        return Observable.of<Material[]>([]);
+      });
+
+    this.labours = this.labourSuggestion
+      .debounceTime(300)        // wait 300ms after each keystroke before considering the term
+      .distinctUntilChanged()   // ignore if next search term is same as previous
+      .switchMap(term => term   // switch to new observable each time the term changes
+        // return the http search observable
+        ? this.restApiService.search(term)
+        // or the observable of empty heroes if there was no search term
+        : Observable.of<Labour[]>([]))
+      .catch(error => {
+        // TODO: add real error handling
+        console.log(error);
+        return Observable.of<Labour[]>([]);
+      });
+
     this.getBoqList();
   };
+
+  searchMaterials(term: string) {
+    console.log('Entered searchMaterials');
+    const url = 'http://49.50.76.29/api/material/search?search='
+      + term + '&filter[]=name&filter[]=srno&filter[]=brand';
+    this.materialSuggestion.next(url);
+  }
+
+  searchLabours(term: string) {
+    console.log('Entered searchLabour');
+    const url = 'http://49.50.76.29/api/labour/search?search='
+      + term + '&filter[]=name&filter[]=srno&filter[]=uom&filter[]=category&filter[]=age&filter[]=type&filter[]=rate';
+    console.log(url);
+    this.labourSuggestion.next(url);
+  }
 
 
   /**
@@ -99,7 +160,7 @@ export class RateAnalysisDisplayComponent implements OnInit {
    */
   getBoqList(): void {
     console.log('Entered getBoqList');
-    const url = 'http://49.50.76.29/api/boq/all?appends[]=materials&appends[]=labours&appends[]=lineItems&hidden[]=created_at&hidden[]=updated_at';
+    const url = 'http://49.50.76.29/api/boq/all?appends[]=materials&appends[]=labours&appends[]=lineItems&hidden[]=created_at&hidden[]=updated_at&hidden[]=pivot';
 
     // const url = Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_BOQ + Constants.ACTION_ALL + Constants.QUERY_SYMBOL
     //   + Constants.APPENDS_LINE_ITEM + Constants.URL_QUERY_ADDITION + Constants.HIDDEN_CREATED_AT_UPDATED_AT;
@@ -155,7 +216,23 @@ export class RateAnalysisDisplayComponent implements OnInit {
     for (let i = 0; i < this.lineItems.length; i++) {
       this.addMainRateAnalysis();
       this.itemRateAnalysis[i].lineItem_id = this.lineItems[i]['id'];
+
+      this.itemRateAnalysis[i].materialRateAnalysis=[];
+      for (let j = 0; j < this.lineItems[i]['materials'].length; j++) {
+        this.addMaterialRateAnalysis(i);
+        this.itemRateAnalysis[i].materialRateAnalysis[j].lineItem_material_id = this.lineItems[i]['materials'][j]['id'];
+      }
+      console.log(this.itemRateAnalysis[i].materialRateAnalysis);
+      console.log(i);
+
+
+      this.itemRateAnalysis[i].labourRateAnalysis=[];
+      for (let j = 0; j < this.lineItems[i]['labours'].length; j++) {
+        this.addLabourRateAnalysis(i);
+        this.itemRateAnalysis[i].labourRateAnalysis[j].lineItem_labour_id = this.lineItems[i]['labours'][j]['id'];;
+      }
     }
+
     console.log(this.itemRateAnalysis);
     const url = 'HTTP://49.50.76.29:80/api/gra/' + String(gra.id) + '?appends[]=mainRateAnalysis&appends[]=materialRateAnalysis&appends[]=labourRateAnalysis'
     // const url=Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_GLOBAL_RATE_ANALYSIS + '/' + gra.id + Constants.QUERY_SYMBOL + Constants.APPENDS_QUERY_GRA_WITH_BOQ_ID
@@ -165,9 +242,19 @@ export class RateAnalysisDisplayComponent implements OnInit {
         (value) => {value;
           this.gra_id=value.id;
           let temp;
-          for (var i = 0; i < value.mainRateAnalysis.length; i++) {
+          for (let i = 0; i < value.mainRateAnalysis.length; i++) {
             temp=this.itemRateAnalysis.find(x => x.lineItem_id === value.mainRateAnalysis[i].lineItem_id);
             this.itemRateAnalysis[this.itemRateAnalysis.indexOf(temp)]=value.mainRateAnalysis[i];
+
+            for (let j = 0; j < value.mainRateAnalysis[i].materialRateAnalysis.length; j++) {
+              temp=this.itemRateAnalysis[i].materialRateAnalysis.find(x => x.lineItem_material_id === value.mainRateAnalysis[i].materialRateAnalysis[j].lineItem_material_id);
+              this.itemRateAnalysis[i].materialRateAnalysis[this.itemRateAnalysis[i].materialRateAnalysis.indexOf(temp)]= value.mainRateAnalysis[i].materialRateAnalysis[j];
+            }
+
+            for (let j = 0; j < value.mainRateAnalysis[i].labourRateAnalysis.length; j++) {
+              temp=this.itemRateAnalysis[i].labourRateAnalysis.find(x => x.lineItem_labour_id === value.mainRateAnalysis[i].labourRateAnalysis[j].lineItem_labour_id);
+              this.itemRateAnalysis[i].labourRateAnalysis[this.itemRateAnalysis[i].labourRateAnalysis.indexOf(temp)]= value.mainRateAnalysis[i].labourRateAnalysis[j];;
+            }
           }
         },
         (error) => console.log(error)
@@ -175,15 +262,17 @@ export class RateAnalysisDisplayComponent implements OnInit {
   }
 
   addMainRateAnalysis() {
-    console.log('Entered addMainRateAnalysis');
+    // console.log('Entered addMainRateAnalysis');
     this.itemRateAnalysis.push(new MainRateAnalysis());
   }
 
   addMaterialRateAnalysis(index) {
-    console.log('Entered addMaterialRateAnalysis');
+    // console.log('Entered addMaterialRateAnalysis');
     // if (this.lineItems[i]['title']){
-    console.log(this.newRateAnalysis);
+    // console.log(this.itemRateAnalysis[index].materialRateAnalysis);
     this.itemRateAnalysis[index].materialRateAnalysis.push(new MaterialRateAnalysis());
+    // console.log(this.itemRateAnalysis[index].materialRateAnalysis);
+    // console.log(this.lineItems[index])
     this.itemRateAnalysis[index].materialRateAnalysis
       [this.itemRateAnalysis[index].materialRateAnalysis.length - 1].wastage = this.wastage;
     // }else{
@@ -192,7 +281,7 @@ export class RateAnalysisDisplayComponent implements OnInit {
   }
 
   deleteMaterialRateAnalysis(i, j) {
-    console.log('Entered deleteMaterialRateAnalysis');
+    // console.log('Entered deleteMaterialRateAnalysis');
     this.itemRateAnalysis[i].materialRateAnalysis.splice(j, 1);
   }
 
@@ -475,6 +564,35 @@ export class RateAnalysisDisplayComponent implements OnInit {
     this.restApiService.setUploadServiceName(Constants.SERVICE_NAME_BOQ);
     this.restApiService.setAdditionalParameter('project_id', object.id);
     this.router.navigate(['/pages/files-upload']);
+  }
+
+  calculateQuantityDisplay(i, j): number{
+    let dimenVar = 1;
+    if (isNaN(this.itemRateAnalysis[i].materialRateAnalysis[j].length)){
+      dimenVar = this.itemRateAnalysis[i].materialRateAnalysis[j].length * dimenVar;
+    }
+    if (isNaN(this.itemRateAnalysis[i].materialRateAnalysis[j].breadth)) {
+      dimenVar = this.itemRateAnalysis[i].materialRateAnalysis[j].breadth * dimenVar;
+    }
+    if (isNaN(this.itemRateAnalysis[i].materialRateAnalysis[j].thickness)) {
+      dimenVar = this.itemRateAnalysis[i].materialRateAnalysis[j].thickness * dimenVar;
+    }
+    console.log(dimenVar * this.itemRateAnalysis[i].materialRateAnalysis[j]['quantity']);
+    return dimenVar * this.itemRateAnalysis[i].materialRateAnalysis[j]['quantity'];
+  }
+  // itemRateAnalysis[i].labourRateAnalysis[j]['amount']
+  calculateLabourAmount(i, j){
+    let dimenVar = 1;
+    if (isNaN(this.itemRateAnalysis[i].labourRateAnalysis[j].length)){
+      dimenVar = this.itemRateAnalysis[i].labourRateAnalysis[j].length * dimenVar;
+    }
+    if (isNaN(this.itemRateAnalysis[i].labourRateAnalysis[j].breadth)) {
+      dimenVar = this.itemRateAnalysis[i].labourRateAnalysis[j].breadth * dimenVar;
+    }
+    if (isNaN(this.itemRateAnalysis[i].labourRateAnalysis[j].thickness)) {
+      dimenVar = this.itemRateAnalysis[i].labourRateAnalysis[j].thickness * dimenVar;
+    }
+    this.itemRateAnalysis[i].labourRateAnalysis[j].amount = this.itemRateAnalysis[i].labourRateAnalysis[j].rate;
   }
 
 }
