@@ -26,7 +26,6 @@ import {MaterialReportUsageList} from '../model/class/material-report-usage-list
 import {BoqNameIdRANameId} from '../model/class/boq-name-id-ra-name-id';
 import {GenericNameId} from '../model/class/generic-name-id';
 
-
 const URL = 'http://49.50.76.29:80/api/boq/file';
 
 @Component({
@@ -97,7 +96,6 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy {
     this.getBoqList();
   };
 
-
   ngOnDestroy() {
     // this.restApiService.comm_obj=this.boqSelected;
   }
@@ -139,6 +137,7 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy {
    * each boq passed in the parameters
    * @param boq current boq for gra reference
    */
+
   getRateAnalysis(boq): void {
     console.log(boq.id);
     const url = Constants.BASE_URL_GLOBAL_RATE_ANALYSIS + Constants.SERVICE_NAME_GLOBAL_RATE_ANALYSIS
@@ -159,17 +158,16 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy {
       );
   }
 
-
   addLabourRateAnalysis(i) {
     this.globalRateAnalysisList[i].mainRateAnalysis[i].labourRateAnalysis.push(new LabourRateAnalysis());
   }
-
 
   /**
    * function to add new row to material rate analysis
    * and push to existing list
    * @param index
    */
+
   addMaterialRateAnalysis(index) {
     console.log('Entered addMaterialRateAnalysis');
     // if (this.lineItems[i]['title']){
@@ -184,6 +182,7 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy {
    * @param gra
    * @param boq
    */
+
   openGlobalRateAnalysis(gra: GenericNameId, boq: Object): void {
     console.log('ids for gra = %s of boq = %s', gra, boq['id']);
     console.log(boq['lineItems']);
@@ -220,7 +219,6 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy {
     // this.globalRateAnalysis = globalRateAnalysis;
   }
 
-  
   getMaterialReportUsageList(gra_id, boq_id) {
     const url = Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_REPORT +
       '/getMaterialUsageForRa?gra_id=' + String(gra_id) + '&boq_id=' + String(boq_id);
