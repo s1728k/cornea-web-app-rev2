@@ -1,19 +1,21 @@
-import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {FileUploader} from 'ng2-file-upload';
 import {RestApiService} from '../services/rest-api-service.service';
+import {Component, OnInit} from '@angular/core';
+import {LineItemTableRow} from '../model/class';
+import {NanPipe} from '../shared/pipes/nan.pipe';
+
+import {Router} from '@angular/router';
+
 import * as Constants from '../shared/constants.globals';
 
 // ------------Imports for Charts---------------------------
 import {ViewEncapsulation, ChangeDetectionStrategy, ContentChild, TemplateRef} from '@angular/core';
 import {calculateViewDimensions} from '../shared';
 import {ColorHelper} from '../shared';
-import {BaseChartComponent} from "../shared";
+import {BaseChartComponent} from '../shared';
 import {single, multi} from '../shared';
 
 // ------------Models Imported------------------------------
 import {ProjectResponseBOQUpload} from '../model/class/project-response';
-import {BOQTable} from '../model/class/boq-table.model';
 import {BoqNameId} from '../model/class/name-id.model';
 import {GlobalRateAnalysis, LineItemLabour, LineItemMaterial} from '../model/class/global-rate-analysis.model';
 import {MainRateAnalysis} from '../model/class/main-rate-analysis.model';
@@ -26,29 +28,39 @@ import {MaterialReportUsageList} from '../model/class/material-report-usage-list
 import {BoqNameIdRANameId} from '../model/class/boq-name-id-ra-name-id';
 import {GenericNameId} from '../model/class/generic-name-id';
 
-const URL = 'http://49.50.76.29:80/api/boq/file';
-
 @Component({
   selector: 'app-rate-analysis-display',
   templateUrl: './rate-analysis-display.component.html',
   styleUrls: ['./rate-analysis-display.component.css']
 })
 
-export class RateAnalysisDisplayComponent implements OnInit, OnDestroy {
-  public boqList: BOQTable[];
-  urlProject: string;
-  urlBoq: string;
-  toggleCreateView = false;
+export class RateAnalysisDisplayComponent implements OnInit {
 
+  overhead = 0;
+  profit = 0;
+  wastage = 0;
+  cfList: any;
+  cf_price = 0;
 
-  boqSelected: BoqNameId;
-  // list of objects with name and id of boq's
-  // and related gra objects with title and id
+  gra_id:number=0;
+
+  boqSelected: BoqNameIdRANameId;
   boqs: BoqNameIdRANameId[];
 
+  lineItemLabour: LineItemLabour;
+  lineItemMaterial: LineItemMaterial;
+  newRateAnalysis: GlobalRateAnalysis = new GlobalRateAnalysis();
+  rateAnalysisList: GlobalRateAnalysis[] = [];
+
   lineItems: LineItem[];
-  globalRateAnalysis: GlobalRateAnalysis = new GlobalRateAnalysis();
-  globalRateAnalysisList: GlobalRateAnalysis[];
+
+  materialRateAnalysis: MaterialRateAnalysis;
+
+  labrRateAnalysis: LabourRateAnalysis;
+  labourRateAnalysis: LabourRateAnalysis;
+
+  mainRateAnalysis: MainRateAnalysis;
+  itemRateAnalysis: MainRateAnalysis[] = [];
 
   //  ---------------space for charts-------------------------
 
@@ -74,44 +86,28 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy {
 
   //  ---------------End of space for charts------------------
 
-  constructor(private restApiService: RestApiService, private router: Router) {
-    this.urlProject = Constants.BASE_URL_PROJECT + Constants.SERVICE_NAME_PROJECT
-      + Constants.ACTION_ALL + '?visible[]=id&visible[]=name';
-    this.urlBoq = Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_BOQ
-      + Constants.ACTION_ALL + '?appends[]=lineItems&hidden[]=created_at&hidden[]=updated_at';
-  }
+  constructor(private restApiService: RestApiService, private router: Router) { }
 
   ngOnInit() {
-    // this.restApiService.getRequest(this.urlProject)
-    //   .map(res => /*this.projectList = <ProjectResponseBOQUpload[]>*/res.json().data)
-    //   .subscribe(
-    //     (value: ProjectResponseBOQUpload[]) => {
-    //       this.projectList = value;
-    //       console.log(value);
-    //     },
-    //     (err: any) => {
-    //       console.error(err);
-    //     }
-    //   );
     this.getBoqList();
   };
 
-  ngOnDestroy() {
-    // this.restApiService.comm_obj=this.boqSelected;
-  }
 
   /**
    * function to call list of boq's related to all projects
    * will add the get value to boqs reference  variable
    */
   getBoqList(): void {
-    const url = Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_BOQ + Constants.ACTION_ALL + Constants.QUERY_SYMBOL
-      + Constants.APPENDS_LINE_ITEM + Constants.URL_QUERY_ADDITION + Constants.HIDDEN_CREATED_AT_UPDATED_AT;
+    console.log('Entered getBoqList');
+    const url = 'http://49.50.76.29/api/boq/all?appends[]=materials&appends[]=labours&appends[]=lineItems&hidden[]=created_at&hidden[]=updated_at';
+
+    // const url = Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_BOQ + Constants.ACTION_ALL + Constants.QUERY_SYMBOL
+    //   + Constants.APPENDS_LINE_ITEM + Constants.URL_QUERY_ADDITION + Constants.HIDDEN_CREATED_AT_UPDATED_AT;
+
     this.restApiService.getRequest(url)
       .map(response => response.json().data)
       .subscribe(
         (value) => {
-          console.log(value);
           this.boqs = value;
           console.log(this.boqs);
         },
@@ -121,17 +117,6 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy {
       );
   }
 
-  updateBoqTable(object: BoqNameId): void {
-    this.toggleCreateView = false;
-    console.log(object.lineItems);
-    this.boqList = object.lineItems;
-    if (object.has_ra) {
-      this.toggleCreateView = true;
-    }
-    this.boqSelected = object;
-    this.lineItems = object.lineItems;
-  }
-
   /**
    * function to call all gra objects for
    * each boq passed in the parameters
@@ -139,12 +124,14 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy {
    */
 
   getRateAnalysis(boq): void {
+    console.log('Entered getRateAnalysis');
     console.log(boq.id);
-    const url = Constants.BASE_URL_GLOBAL_RATE_ANALYSIS + Constants.SERVICE_NAME_GLOBAL_RATE_ANALYSIS
-      + Constants.ACTION_ALL + Constants.QUERY_SYMBOL + Constants.CONDITION_BOQ_ID + String(boq.id)
-      + Constants.URL_QUERY_ADDITION + Constants.VISIBLE_TITLE_ID;
+    const url= 'http://49.50.76.29/api/gra/all?conditions[boq_id]=' + String(boq.id) + '&visible[]=title&visible[]=id'
+    // const url = Constants.BASE_URL_GLOBAL_RATE_ANALYSIS + Constants.SERVICE_NAME_GLOBAL_RATE_ANALYSIS
+    //   + Constants.ACTION_ALL + Constants.QUERY_SYMBOL + Constants.CONDITION_BOQ_ID + String(boq.id)
+    //   + Constants.URL_QUERY_ADDITION + Constants.VISIBLE_TITLE_ID;
     this.restApiService.getRequest(url)
-      .map(response => response.json().data).filter(value => value.materialRateAnalysis !== null && value.labourRateAnalysis !== null)
+      .map(response => response.json().data)
       .subscribe(
         (value) => {
           console.log(value);
@@ -158,24 +145,304 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy {
       );
   }
 
-  addLabourRateAnalysis(i) {
-    this.globalRateAnalysisList[i].mainRateAnalysis[i].labourRateAnalysis.push(new LabourRateAnalysis());
+  openGlobalRateAnalysis(gra: GenericNameId, boq: BoqNameIdRANameId): void {
+    console.log('ids for gra = %s of boq = %s', gra, boq['id']);
+    console.log(boq['lineItems']);
+    this.getMaterialReportUsageList(gra.id, boq['id']);
+    this.lineItems = boq['lineItems'];
+    console.log(this.lineItems.length)
+    this.itemRateAnalysis=[];
+    for (let i = 0; i < this.lineItems.length; i++) {
+      this.addMainRateAnalysis();
+      this.itemRateAnalysis[i].lineItem_id = this.lineItems[i]['id'];
+    }
+    console.log(this.itemRateAnalysis);
+    const url = 'HTTP://49.50.76.29:80/api/gra/' + String(gra.id) + '?appends[]=mainRateAnalysis&appends[]=materialRateAnalysis&appends[]=labourRateAnalysis'
+    // const url=Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_GLOBAL_RATE_ANALYSIS + '/' + gra.id + Constants.QUERY_SYMBOL + Constants.APPENDS_QUERY_GRA_WITH_BOQ_ID
+    this.restApiService.getRequest(url)
+      .map(response => response.json().data[0])
+      .subscribe(
+        (value) => {value;
+          this.gra_id=value.id;
+          let temp;
+          for (var i = 0; i < value.mainRateAnalysis.length; i++) {
+            temp=this.itemRateAnalysis.find(x => x.lineItem_id === value.mainRateAnalysis[i].lineItem_id);
+            this.itemRateAnalysis[this.itemRateAnalysis.indexOf(temp)]=value.mainRateAnalysis[i];
+          }
+        },
+        (error) => console.log(error)
+      );
   }
 
-  /**
-   * function to add new row to material rate analysis
-   * and push to existing list
-   * @param index
-   */
+  addMainRateAnalysis() {
+    console.log('Entered addMainRateAnalysis');
+    this.itemRateAnalysis.push(new MainRateAnalysis());
+  }
 
   addMaterialRateAnalysis(index) {
     console.log('Entered addMaterialRateAnalysis');
     // if (this.lineItems[i]['title']){
-    console.log('in add material' + index);
-    console.log(this.globalRateAnalysisList[index]);
-
-    this.globalRateAnalysisList[index].mainRateAnalysis[index].materialRateAnalysis.push(new MaterialRateAnalysis());
+    console.log(this.newRateAnalysis);
+    this.itemRateAnalysis[index].materialRateAnalysis.push(new MaterialRateAnalysis());
+    this.itemRateAnalysis[index].materialRateAnalysis
+      [this.itemRateAnalysis[index].materialRateAnalysis.length - 1].wastage = this.wastage;
+    // }else{
+    //   alert("Please Select The Line Item")
+    // }
   }
+
+  deleteMaterialRateAnalysis(i, j) {
+    console.log('Entered deleteMaterialRateAnalysis');
+    this.itemRateAnalysis[i].materialRateAnalysis.splice(j, 1);
+  }
+
+  materialTotal(index) {
+
+    this.itemRateAnalysis[index].material_total = 0;
+    let amount;
+
+    for (let j = this.itemRateAnalysis[index].materialRateAnalysis.length - 1; j >= 0; j--) {
+
+      if (this.itemRateAnalysis[index].materialRateAnalysis[j]['thickness']){
+        this.itemRateAnalysis[index].materialRateAnalysis[j]['amount']=this.itemRateAnalysis[index].materialRateAnalysis[j]['length']*
+                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['breadth']*
+                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['thickness']*
+                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['quantity']*
+                                                                       (this.itemRateAnalysis[index].materialRateAnalysis[j]['wastage']*1/100+1)*
+                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['rate']+
+                                                                       this.cf_price
+      }else{
+        this.itemRateAnalysis[index].materialRateAnalysis[j]['amount']=this.itemRateAnalysis[index].materialRateAnalysis[j]['length']*
+                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['breadth']*
+                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['quantity']*
+                                                                       (this.itemRateAnalysis[index].materialRateAnalysis[j]['wastage']*1/100+1)*
+                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['rate']+
+                                                                       this.cf_price
+      }
+      this.itemRateAnalysis[index].material_total=this.itemRateAnalysis[index].material_total+this.itemRateAnalysis[index].materialRateAnalysis[j]['amount'];
+    }
+
+    this.grandTotal(index);
+  }
+
+  updateRow(material, i, j) {
+    console.log('Entered updateRow');
+    this.itemRateAnalysis[i].materialRateAnalysis[j]['lineItem_id'] = this.lineItems[i]['id'];
+    this.itemRateAnalysis[i].materialRateAnalysis[j]['uom'] = material['uom'];
+    this.itemRateAnalysis[i].materialRateAnalysis[j]['rate'] = material['rate'];
+    this.itemRateAnalysis[i].materialRateAnalysis[j]['srno'] = material['srno'];
+    this.itemRateAnalysis[i].materialRateAnalysis[j]['lineItem_material_id'] = material['id'];
+    this.cfList = material['coefficiency']['cf_price'];
+    // this.itemRateAnalysis[i].materialRateAnalysis[j]['CF']=material['coefficiency']['cf_price'];
+  }
+
+  addLabourRateAnalysis(i) {
+    this.itemRateAnalysis[i].labourRateAnalysis.push(new LabourRateAnalysis());
+  }
+
+  deleteLabourRateAnalysis(i, j) {
+    this.itemRateAnalysis[i].labourRateAnalysis.splice(j, 1);
+  }
+
+  updateLabourRow(labour, i, j) {
+    console.log('Entered updateRow');
+    console.log(labour);
+    this.itemRateAnalysis[i].labourRateAnalysis[j]['uom'] = labour['uom'];
+    this.itemRateAnalysis[i].labourRateAnalysis[j]['rate'] = labour['rate'];
+    this.itemRateAnalysis[i].labourRateAnalysis[j]['lineItem_labour_id'] = labour['id'];
+  }
+
+  labourTotal(i) {
+    this.itemRateAnalysis[i].labour_total = 0;
+    for (let j = 0; j < this.itemRateAnalysis[i].labourRateAnalysis.length; j++) {
+        if (this.itemRateAnalysis[i].labourRateAnalysis[j].thickness){
+          this.itemRateAnalysis[i].labourRateAnalysis[j]['amount']=this.itemRateAnalysis[i].labourRateAnalysis[j]['length']*
+                                                                   this.itemRateAnalysis[i].labourRateAnalysis[j]['breadth']*
+                                                                   this.itemRateAnalysis[i].labourRateAnalysis[j]['thickness']*
+                                                                   this.itemRateAnalysis[i].labourRateAnalysis[j]['rate'];
+        }else{
+          this.itemRateAnalysis[i].labourRateAnalysis[j]['amount']=this.itemRateAnalysis[i].labourRateAnalysis[j]['length']*
+                                                                   this.itemRateAnalysis[i].labourRateAnalysis[j]['breadth']*
+                                                                   this.itemRateAnalysis[i].labourRateAnalysis[j]['rate'];
+        }
+        this.itemRateAnalysis[i].labour_total = this.itemRateAnalysis[i].labour_total + this.itemRateAnalysis[i].labourRateAnalysis[j]['amount']
+    }
+    this.grandTotal(i);
+  }
+
+  postItemRateAnalysis(i: number) {
+
+    console.log('Entered postItemRateAnalysis');
+    const url = 'http://49.50.76.29/api/gra/new?appends[]=labourRateAnalysis&aappends[]=materialRateAnlysis';
+    this.itemRateAnalysis[i].lineItem_id = this.lineItems[i]['id'];
+    this.itemRateAnalysis[i].boq_id = this.lineItems[i]['boq_id'];
+
+    this.newRateAnalysis.mainRateAnalysis = [this.itemRateAnalysis[i]];
+
+    this.itemRateAnalysis[i].gra_id = this.gra_id;
+
+    this.restApiService.postRequest(url, this.itemRateAnalysis[i])
+      .map(res => res.json())
+      .subscribe(
+        (value) => {
+          console.log(value);
+        },
+        (err: any) => {
+          console.error(err);
+        }
+      );
+  }
+
+  validatePostRequest(newRateAnalysis: GlobalRateAnalysis): void {
+    if (!newRateAnalysis['title']) {
+      alert('enter Title');
+      return;
+    }
+    if (!newRateAnalysis['boq_id']) {
+      alert('boq_id is not present');
+      return;
+    }
+    if (newRateAnalysis.lineItem_labour) {
+      for (let i = 0; i < newRateAnalysis.lineItem_labour.length; i++) {
+        if (!newRateAnalysis.lineItem_labour[i]['line_item_id']) {
+          alert('line_item_id @' + String(i) + 'is Not Present');
+          return;
+        }
+        if (!newRateAnalysis.lineItem_labour[i]['master_labour_id']) {
+          alert('master_labour_id @' + String(i) + 'is Not Present');
+          return;
+        }
+      }
+    } else {
+      alert('lineItem_labour is Not Present');
+      return;
+    }
+    if (newRateAnalysis.lineItem_material) {
+      for (let i = 0; i < newRateAnalysis.lineItem_material.length; i++) {
+        if (!newRateAnalysis.lineItem_material[i]['line_item_id']) {
+          alert('line_item_id @' + String(i) + 'is Not Present');
+          return;
+        }
+        if (!newRateAnalysis.lineItem_material[i]['master_material_id']) {
+          alert('master_material_id @' + String(i) + 'is Not Present');
+          return;
+        }
+      }
+    } else {
+      alert('lineItem_material is Not Present');
+      return;
+    }
+
+    if (newRateAnalysis.mainRateAnalysis) {
+      for (let i = 0; i < newRateAnalysis.mainRateAnalysis.length; i++) {
+        if (!newRateAnalysis.mainRateAnalysis[i]['boq_id']) {
+          alert('boq_id @' + String(i) + 'is Not Present');
+          return;
+        }
+        if (!newRateAnalysis.mainRateAnalysis[i]['grand_total']) {
+          alert('grand_total @' + String(i) + 'is Not Present');
+          return;
+        }
+        if (!newRateAnalysis.mainRateAnalysis[i]['labour_total']) {
+          alert('labour_total @' + String(i) + 'is Not Present');
+          return;
+        }
+        if (!newRateAnalysis.mainRateAnalysis[i]['lineItem_id']) {
+          alert('lineItem_id @' + String(i) + 'is Not Present');
+          return;
+        }
+        if (!newRateAnalysis.mainRateAnalysis[i]['material_total']) {
+          alert('material_total @' + String(i) + 'is Not Present');
+          return;
+        }
+        if (!newRateAnalysis.mainRateAnalysis[i]['overhead_margin']) {
+          alert('overhead_margin @' + String(i) + 'is Not Present');
+          return;
+        }
+        if (!newRateAnalysis.mainRateAnalysis[i]['profit_margin']) {
+          alert('profit_margin @' + String(i) + 'is Not Present');
+          return;
+        }
+        if (newRateAnalysis.mainRateAnalysis[i].materialRateAnalysis) {
+          for (let j = 0; j < newRateAnalysis.mainRateAnalysis[i].materialRateAnalysis.length; j++) {
+            if (!newRateAnalysis.mainRateAnalysis[i].materialRateAnalysis[j]['amount']) {
+              alert('amount @' + String(i) + 'is Not Present');
+              return;
+            }
+          }
+        } else {
+          alert('materialRateAnalysis @' + String(i) + 'is Not Present');
+          return;
+        }
+        if (newRateAnalysis.mainRateAnalysis[i].labourRateAnalysis) {
+          for (let j = 0; j < newRateAnalysis.mainRateAnalysis[i].labourRateAnalysis.length; j++) {
+            if (!newRateAnalysis.mainRateAnalysis[i].labourRateAnalysis[j]['amount']) {
+              alert('amount @' + String(i) + 'is Not Present');
+              return;
+            }
+          }
+        } else {
+          alert('labourRateAnalysis @' + String(i) + 'is Not Present');
+          return;
+        }
+
+      }
+    } else {
+      alert('mainRateAnalysis is Not Present');
+      return;
+    }
+
+  }
+
+  overheadCurrection() {
+    console.log('Entered overheadCurrection');
+    for (let i = 0; i < this.itemRateAnalysis.length; i++) {
+      this.grandTotal(i);
+    }
+  }
+
+  profitCurrection() {
+    console.log('Entered profitCurrection');
+    for (let i = 0; i < this.itemRateAnalysis.length; i++) {
+      this.grandTotal(i);
+    }
+  }
+
+  wastageCurrection() {
+    console.log('Entered wastageCurrection');
+    for (let i = 0; i < this.itemRateAnalysis.length; i++) {
+      this.grandTotal(i);
+    }
+  }
+
+  grandTotal(i): void {
+    console.log('Entered grandTotal');
+    if (!this.itemRateAnalysis[i].labour_total) {
+      this.itemRateAnalysis[i].labour_total = 0;
+    }
+
+    this.itemRateAnalysis[i].profit_margin = 0;
+    this.itemRateAnalysis[i].overhead_margin = 0;
+    this.itemRateAnalysis[i].grand_total = 0;
+
+
+    this.itemRateAnalysis[i].profit_margin =
+      (this.profit) / 100 * (this.itemRateAnalysis[i].labour_total + this.itemRateAnalysis[i].material_total);
+    this.itemRateAnalysis[i].overhead_margin =
+      (this.itemRateAnalysis[i].labour_total + this.itemRateAnalysis[i].material_total) * (this.overhead / 100);
+    this.itemRateAnalysis[i].grand_total =
+      (this.itemRateAnalysis[i].labour_total + this.itemRateAnalysis[i].material_total) * this.overhead / 100 +
+      +(this.itemRateAnalysis[i].labour_total + this.itemRateAnalysis[i].material_total) * this.profit / 100
+      + (this.itemRateAnalysis[i].labour_total + this.itemRateAnalysis[i].material_total);
+    console.log(this.itemRateAnalysis[i].labour_total);
+    console.log(this.itemRateAnalysis[i].material_total);
+    console.log(this.itemRateAnalysis[i].profit_margin);
+    console.log(this.itemRateAnalysis[i].overhead_margin);
+
+  }
+
+
+
 
   /**
    * function for handling data on material level
@@ -183,41 +450,7 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy {
    * @param boq
    */
 
-  openGlobalRateAnalysis(gra: GenericNameId, boq: Object): void {
-    console.log('ids for gra = %s of boq = %s', gra, boq['id']);
-    console.log(boq['lineItems']);
-    this.getMaterialReportUsageList(gra.id, boq['id']);
-    this.lineItems = boq['lineItems'];
-    this.restApiService.getRequest(Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_GLOBAL_RATE_ANALYSIS
-      + '/' + gra.id + Constants.QUERY_SYMBOL + Constants.APPENDS_QUERY_GRA_WITH_BOQ_ID)
-      .map(response => response.json().data)
-      .subscribe(
-        (value) => {
-          for (let index = 0; index <= (this.lineItems.length - 1); index++) {
-            if (value[index]['line_item_id'] === this.lineItems[index] && value[index]['mainRateAnalysis']) {
-              this.globalRateAnalysisList[index] = value[index];
-            }
-          }
-        },
-        (error) => console.log(error)
-      );
-    console.log('gra ');
-    console.log(this.lineItems);
-    console.log('GRA');
-    // if (this.boqSelected !== null) {
-    // this.boqSelected = null;
-    // this.boqSelected.id = boq['id'];
-    // this.boqSelected.lineItems = boq['lineItems'];
-    // this.boqSelected.name = boq['name'];
-    // this.lineItems = boq['lineItems'];
-    // console.log(this.lineItems);
-    // } else {
-    // this.boqSelected.id = boq['id'];
-    // this.boqSelected.lineItems = boq['lineItems'];
-    // this.boqSelected.name = boq['name'];
-    // }
-    // this.globalRateAnalysis = globalRateAnalysis;
-  }
+
 
   getMaterialReportUsageList(gra_id, boq_id) {
     const url = Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_REPORT +
@@ -244,19 +477,4 @@ export class RateAnalysisDisplayComponent implements OnInit, OnDestroy {
     this.router.navigate(['/pages/files-upload']);
   }
 
-  // /* redirecToRateAnalysis() {
-  //  this.restApiService.comm_obj = this.boqSelected;
-  //  this.restApiService.comm_obj['from'] = 'boq_table';
-  //  this.router.navigate(['/pages/rate-analysis']);
-  //  }*/
-  //
-  // /* // http://192.168.0.205:9000/api/projects/all/visible[]=id&visible[]=name&appends[]=boq
-  //  public fileOverBase(e: any): void {
-  //  this.hasBaseDropZoneOver = e;
-  //  }
-  //
-  //  public fileOverAnother(e: any): void {
-  //  this.hasAnotherDropZoneOver = e;
-  //  }
-  //  */
 }
