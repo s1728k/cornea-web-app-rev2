@@ -152,7 +152,7 @@
                                             </select>
                                         </td>
                                         <td>{{itemRateAnalysis[i].materialRateAnalysis[j]['amount'] | nan | number : '2.2-3'}}</td>
-                                        <td>{{calculateQuantityDisplay(i, j)}}</td>
+                                        <td>{{calculateQuantityDisplay(i, j)  | nan | number: '2.2-3'}}</td>
                                         <td>{{itemRateAnalysis[i].materialRateAnalysis[j]['wastage']/100
                                         * itemRateAnalysis[i].materialRateAnalysis[j]['amount'] | nan | number: '2.2-3'}}</td>
                                     </tr>

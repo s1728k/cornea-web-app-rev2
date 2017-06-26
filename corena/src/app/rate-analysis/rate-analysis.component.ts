@@ -700,7 +700,18 @@ export class RateAnalysisComponent implements OnInit {
       dimenVar = this.itemRateAnalysis[i].labourRateAnalysis[j].thickness * dimenVar;
     }
     this.itemRateAnalysis[i].labourRateAnalysis[j].amount = this.itemRateAnalysis[i].labourRateAnalysis[j].rate;
+     this.addLabourTotal(i);
   }
+
+  addLabourTotal(index): void {
+  let totalLabour = 0;
+    this.itemRateAnalysis[index].labour_total = 0;
+    for (let amt of this.itemRateAnalysis[index].labourRateAnalysis) {
+        totalLabour = amt.amount + totalLabour;
+    }
+    this.itemRateAnalysis[index].labour_total = totalLabour;
+}
+
 
   /*labourCalc: LabourRateAnalysis[] = [];
    lCalc: LabourRateAnalysis = new LabourRateAnalysis;
