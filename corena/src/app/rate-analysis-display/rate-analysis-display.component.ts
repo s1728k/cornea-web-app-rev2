@@ -59,6 +59,9 @@ export class RateAnalysisDisplayComponent implements OnInit {
   cfList: any;
   cf_price = 0;
 
+  ddm:{}={};
+  ddl:{}={};
+
   gra_id:number=0;
 
   boqSelected: BoqNameIdRANameId;
