@@ -222,9 +222,6 @@ export class RateAnalysisDisplayComponent implements OnInit {
         this.addMaterialRateAnalysis(i);
         this.itemRateAnalysis[i].materialRateAnalysis[j].lineItem_material_id = this.lineItems[i]['materials'][j]['id'];
       }
-      console.log(this.itemRateAnalysis[i].materialRateAnalysis);
-      console.log(i);
-
 
       this.itemRateAnalysis[i].labourRateAnalysis=[];
       for (let j = 0; j < this.lineItems[i]['labours'].length; j++) {
@@ -241,10 +238,23 @@ export class RateAnalysisDisplayComponent implements OnInit {
       .subscribe(
         (value) => {value;
           this.gra_id=value.id;
+          console.log(this.gra_id);
           let temp;
+          let index;
           for (let i = 0; i < value.mainRateAnalysis.length; i++) {
             temp=this.itemRateAnalysis.find(x => x.lineItem_id === value.mainRateAnalysis[i].lineItem_id);
-            this.itemRateAnalysis[this.itemRateAnalysis.indexOf(temp)]=value.mainRateAnalysis[i];
+            index=this.itemRateAnalysis.indexOf(temp)
+            this.itemRateAnalysis[index]['id']=value.mainRateAnalysis[i]['id'];
+            this.itemRateAnalysis[index]['lineItem_id']=value.mainRateAnalysis[i]['lineItem_id'];
+            this.itemRateAnalysis[index]['labour_total']=value.mainRateAnalysis[i]['labour_total'];
+            this.itemRateAnalysis[index]['material_total']=value.mainRateAnalysis[i]['material_total'];
+            this.itemRateAnalysis[index]['profit_margin']=value.mainRateAnalysis[i]['profit_margin'];
+            this.itemRateAnalysis[index]['overhead_margin']=value.mainRateAnalysis[i]['overhead_margin'];
+            this.itemRateAnalysis[index]['grand_total']=value.mainRateAnalysis[i]['grand_total'];
+            this.itemRateAnalysis[index]['boq_id']=value.mainRateAnalysis[i]['boq_id'];
+            this.itemRateAnalysis[index]['gra_id']=value.mainRateAnalysis[i]['gra_id'];
+            this.itemRateAnalysis[index]['boq_id']=value.mainRateAnalysis[i]['boq_id'];
+
 
             for (let j = 0; j < value.mainRateAnalysis[i].materialRateAnalysis.length; j++) {
               temp=this.itemRateAnalysis[i].materialRateAnalysis.find(x => x.lineItem_material_id === value.mainRateAnalysis[i].materialRateAnalysis[j].lineItem_material_id);
