@@ -9,23 +9,38 @@
     <div class="col-md-12 overflow" style="height:20vh">
       <div class="row">
         <div class="col-md-12 flex-box">
-            <div *ngFor="let project of projectList; let i=index">
-          <md-card style="padding:0px; margin-right:30px; width:100%; border: 0px solid red;">
+            <div *ngFor="let project of projectList; let i=index" style="padding-right:.5em;">
+              <table>
+                <thead>
+                  <tr>
+                    <th><button md-button (click)="getBoqList(project)" class="full-width">{{project.name}}</button></th>
+                    <th class="index"><app-icon [iconName]="'ic_add_box_white_24px'" (click)="redirectToUploadScreen(project)"></app-icon></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let boq of projectList[i].boq">
+                    <td colspan="2"><button md-button (click)="updateBoqTable(boq)" class="full-width"> {{boq.name}}</button></td>
+                    <!-- <td class="index"><button md-button (click)="redirectToUploadScreen(project)"><app-icon [iconName]="'ic_add_box_black_24px'"></app-icon></button></td> -->
+                  </tr>
+                </tbody>
+              </table>
+<!--           <md-card style="padding:0px; margin-right:30px; width:100%; border: 0px solid red;">
             <md-list>
             <div class="flex-box">
-              <button md-button (click)="getBoqList(project)" class="full-width"><h4>{{project.name}}</h4></button><button md-button (click)="redirectToUploadScreen(project)"><app-icon [iconName]="'ic_add_box_black_24px'"></app-icon></button>
+              <button md-button (click)="getBoqList(project)" class="full-width"><h4>{{project.name}}</h4></button><app-icon [iconName]="'ic_add_box_black_24px'" (click)="redirectToUploadScreen(project)"></app-icon>
             </div>
               <md-list-item class="md-2-line" *ngFor="let boq of projectList[i].boq">
                 <button md-button (click)="updateBoqTable(boq)" class="full-width"> {{boq.name}}</button>
-<!--                 <button md-button (click)="redirectToUploadScreen(project)"><app-icon [iconName]="'ic_add_box_black_24px'"></app-icon></button> -->
+                <button md-button (click)="redirectToUploadScreen(project)"><app-icon [iconName]="'ic_add_box_black_24px'"></app-icon></button>
               </md-list-item>
             </md-list>
-          </md-card>
+          </md-card> -->
             </div>
         </div>
       </div>
     </div>
   </div>
+
 
   <div class="row">
     <div class="col-md-12">
@@ -36,45 +51,45 @@
   <div class="row">
     <div class="col-md-10"></div>
     <div class="col-md-2">
-      <button md-raised-button *ngIf="toggleCreateView" class="full-width" (click)="redirecToRateAnalysis()">View Rate Analysis</button>
-      <button md-raised-button *ngIf="!toggleCreateView" class="full-width" (click)="redirecToRateAnalysis()">Create Rate Analysis</button>
+      <button md-raised-button color='primary' *ngIf="toggleCreateView" class="full-width" (click)="redirecToRateAnalysis()">View Rate Analysis</button>
+      <button md-raised-button color='primary' *ngIf="!toggleCreateView" class="full-width" (click)="redirecToRateAnalysis()">Create Rate Analysis</button>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-      <md-card>
+<!--       <md-card> -->
         <table>
           <thead>
-          <tr>
-            <th width="20">Sr.No.</th>
-            <th width="80">Description</th>
-            <th width="20">Unit</th>
-            <th width="40">Quantity</th>
-            <th width="40">Rate</th>
-            <th width="40">Amount</th>
-            <th width="50">Drawing Reference</th>
-            <th width="40">Length</th>
-            <th width="40">Breadth</th>
-            <th width="40">Thickness</th>
-          </tr>
+            <tr>
+              <th width="5%">Sr.No.</th>
+              <th width="50%">Description</th>
+              <th width="5%">Unit</th>
+              <th width="5%">Quantity</th>
+              <th width="5%">Rate</th>
+              <th width="5%">Amount</th>
+              <th width="10%">Drawing Reference</th>
+              <th width="5%">Length</th>
+              <th width="5%">Breadth</th>
+              <th width="5%">Thickness</th>
+            </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let item of boqList">
-            <td>{{item.sr_no}}</td>
-            <td>{{item.description}}</td>
-            <td>{{item.unit}}</td>
-            <td>{{item.quantity}}</td>
-            <td>{{item.rate}}</td>
-            <td>{{item.amount}}</td>
-            <td>{{item.drawing_reference}}</td>
-            <td>{{item.length}}</td>
-            <td>{{item.breadth}}</td>
-            <td>{{item.thickness}}</td>
-          </tr>
+            <tr *ngFor="let item of boqList">
+              <td>{{item.sr_no}}</td>
+              <td>{{item.description}}</td>
+              <td>{{item.unit}}</td>
+              <td>{{item.quantity}}</td>
+              <td>{{item.rate}}</td>
+              <td>{{item.amount}}</td>
+              <td>{{item.drawing_reference}}</td>
+              <td>{{item.length}}</td>
+              <td>{{item.breadth}}</td>
+              <td>{{item.thickness}}</td>
+            </tr>
           </tbody>
         </table>
-      </md-card>
+<!--       </md-card> -->
     </div>
   </div>
 </div>

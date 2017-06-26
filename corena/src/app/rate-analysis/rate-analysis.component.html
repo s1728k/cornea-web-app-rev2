@@ -99,19 +99,18 @@
                         <thead>
                             <tr>
                                 <th width="2%" class="index">
-                                  <app-icon [iconName]="'ic_add_box_white_24px'" *ngIf="wastage!=0 && overhead != 0 && profit"
+                                  <app-icon [iconName]="'ic_add_box_white_24px'" *ngIf="wastage>0 && overhead > 0 && profit > 0"
                                             (click)="addMaterialRateAnalysis(i)"></app-icon>
                                 </th>
                                 <th width="3%">Sr.No</th>
                                 <th width="30%">Particular</th>
                                 <th colspan="3">Size (L x B x T)</th>
-                                <th width="5%">Nos</th>
+                                <th width="5%">Quantity</th>
                                 <th width="3%">Uom</th>
                                 <th width="5%">Wastage(%)</th>
                                 <th width="15%">Rate(INR)</th>
                                 <th width="7%">CF</th>
                                 <th width="10%">Amount(INR)</th>
-                                <th width="15%">Quantity</th>
                                 <th width="15%">Wastage(INR)</th>
                             </tr>
                             <tr>
@@ -127,8 +126,7 @@
                                 <th><input type="text" class="inp" name="rt" [(ngModel)]="lineItem.rate"></th>
                                 <th><input type="cf" class="inp" name="inp" [(ngModel)]="lineItem.cf"></th>
                                 <th><input type="text" class="inp" name="amt" [(ngModel)]="lineItem.amount"></th>
-                              <th></th>
-                              <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -169,11 +167,7 @@
                                     </select>
                                 </td>
                                 <td>{{itemRateAnalysis[i].materialRateAnalysis[j]['amount'] | nan | number : '2.2-3'}}</td>
-                              <td>{{itemRateAnalysis[i].materialRateAnalysis[j]['length']
-                                * itemRateAnalysis[i].materialRateAnalysis[j]['breadth']
-                                * itemRateAnalysis[i].materialRateAnalysis[j]['thickness']
-                                * itemRateAnalysis[i].materialRateAnalysis[j]['quantity']}}</td>
-                              <td>{{itemRateAnalysis[i].materialRateAnalysis[j]['wastage']/100
+                                <td>{{itemRateAnalysis[i].materialRateAnalysis[j]['wastage']/100
                                 * itemRateAnalysis[i].materialRateAnalysis[j]['amount'] | nan | number: '2.2-3'}}</td>
                             </tr>
                         </tbody>
@@ -185,7 +179,6 @@
                             <th width="40px;" class="index">
                               <app-icon [iconName]="'ic_add_box_white_24px'" (click)="addLabourRateAnalysis(i)"></app-icon>
                             </th>
-                    <!--         <th>Length</th> -->
                             <th>Name</th>
                             <th>Length</th>
                             <th>Breadth</th>
@@ -200,7 +193,6 @@
                             <td class="index">
                               <app-icon [iconName]="'ic_delete_white_24px'" (click)="deleteLabourRateAnalysis(i,j)"></app-icon>
                             </td>
-                    <!--         <td><input type="number" class="inp" placeholder="Length" name="Length" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['length']"></td> -->
                             <td>
                               <input mdInput placeholder="Labour" class="inp" type="text" [mdAutocomplete]="auto" #searchBox
                               (keyup)="searchLabours(searchBox.value)">
