@@ -474,7 +474,7 @@ export class RateAnalysisComponent implements OnInit {
   postItemRateAnalysis(i: number) {
 
     console.log('Entered postItemRateAnalysis');
-    const url = 'http://49.50.76.29/api/gra/new?appends[]=labourRateAnalysis&aappends[]=materialRateAnlysis';
+    const url = 'http://49.50.76.29/api/ra/new?appends[]=labourRateAnalysis&aappends[]=materialRateAnlysis';
     this.itemRateAnalysis[i].lineItem_id = this.lineItems[i]['id'];
     this.itemRateAnalysis[i].boq_id = this.lineItems[i]['boq_id'];
 

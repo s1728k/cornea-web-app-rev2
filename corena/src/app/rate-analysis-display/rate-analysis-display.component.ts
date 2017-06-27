@@ -238,7 +238,7 @@ export class RateAnalysisDisplayComponent implements OnInit {
     }
 
     console.log(this.itemRateAnalysis);
-    const url = 'HTTP://49.50.76.29:80/api/gra/' + String(gra.id) + '?appends[]=mainRateAnalysis&appends[]=materialRateAnalysis&appends[]=labourRateAnalysis'
+    const url = 'HTTP://49.50.76.29:80/api/ra/' + String(gra.id) + '?appends[]=mainRateAnalysis&appends[]=materialRateAnalysis&appends[]=labourRateAnalysis'
     // const url=Constants.BASE_URL_BOQ + Constants.SERVICE_NAME_GLOBAL_RATE_ANALYSIS + '/' + gra.id + Constants.QUERY_SYMBOL + Constants.APPENDS_QUERY_GRA_WITH_BOQ_ID
     this.restApiService.getRequest(url)
       .map(response => response.json().data[0])
