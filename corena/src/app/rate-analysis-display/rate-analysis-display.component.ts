@@ -302,35 +302,6 @@ export class RateAnalysisDisplayComponent implements OnInit {
     this.itemRateAnalysis[i].materialRateAnalysis.splice(j, 1);
   }
 
-  materialTotal(index) {
-
-    this.itemRateAnalysis[index].material_total = 0;
-    let amount;
-
-    for (let j = this.itemRateAnalysis[index].materialRateAnalysis.length - 1; j >= 0; j--) {
-
-      if (this.itemRateAnalysis[index].materialRateAnalysis[j]['thickness']){
-        this.itemRateAnalysis[index].materialRateAnalysis[j]['amount']=this.itemRateAnalysis[index].materialRateAnalysis[j]['length']*
-                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['breadth']*
-                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['thickness']*
-                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['quantity']*
-                                                                       (this.itemRateAnalysis[index].materialRateAnalysis[j]['wastage']*1/100+1)*
-                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['rate']+
-                                                                       this.cf_price
-      }else{
-        this.itemRateAnalysis[index].materialRateAnalysis[j]['amount']=this.itemRateAnalysis[index].materialRateAnalysis[j]['length']*
-                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['breadth']*
-                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['quantity']*
-                                                                       (this.itemRateAnalysis[index].materialRateAnalysis[j]['wastage']*1/100+1)*
-                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['rate']+
-                                                                       this.cf_price
-      }
-      this.itemRateAnalysis[index].material_total=this.itemRateAnalysis[index].material_total+this.itemRateAnalysis[index].materialRateAnalysis[j]['amount'];
-    }
-
-    this.grandTotal(index);
-  }
-
   updateRow(material, i, j) {
     console.log('Entered updateRow');
     this.itemRateAnalysis[i].materialRateAnalysis[j]['lineItem_id'] = this.lineItems[i]['id'];
@@ -358,6 +329,38 @@ export class RateAnalysisDisplayComponent implements OnInit {
     this.itemRateAnalysis[i].labourRateAnalysis[j]['lineItem_labour_id'] = labour['id'];
   }
 
+  materialTotal(index) {
+    console.log("Entered materialTotal")
+    this.itemRateAnalysis[index].material_total = 0;
+    let amount;
+
+    for (let j = this.itemRateAnalysis[index].materialRateAnalysis.length - 1; j >= 0; j--) {
+
+      if (this.itemRateAnalysis[index].materialRateAnalysis[j]['thickness']){
+        this.itemRateAnalysis[index].materialRateAnalysis[j]['amount']=this.itemRateAnalysis[index].materialRateAnalysis[j]['length']*
+                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['breadth']*
+                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['thickness']*
+                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['quantity']*
+                                                                       (this.itemRateAnalysis[index].materialRateAnalysis[j]['wastage']*1/100+1)*
+                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['rate']+
+                                                                       this.cf_price
+      }else{
+        this.itemRateAnalysis[index].materialRateAnalysis[j]['amount']=this.itemRateAnalysis[index].materialRateAnalysis[j]['length']*
+                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['breadth']*
+                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['quantity']*
+                                                                       (this.itemRateAnalysis[index].materialRateAnalysis[j]['wastage']*1/100+1)*
+                                                                       this.itemRateAnalysis[index].materialRateAnalysis[j]['rate']+
+                                                                       this.cf_price
+      }
+      this.itemRateAnalysis[index].materialRateAnalysis[j]['amount']=isNaN(this.itemRateAnalysis[index].materialRateAnalysis[j]['amount'])?0
+                                                                     :this.itemRateAnalysis[index].materialRateAnalysis[j]['amount'];
+      this.itemRateAnalysis[index].material_total=this.itemRateAnalysis[index].material_total+this.itemRateAnalysis[index].materialRateAnalysis[j]['amount'];
+      console.log(this.itemRateAnalysis[index].material_total)
+    }
+
+    this.grandTotal(index);
+  }
+
   labourTotal(i) {
     this.itemRateAnalysis[i].labour_total = 0;
     for (let j = 0; j < this.itemRateAnalysis[i].labourRateAnalysis.length; j++) {
@@ -371,9 +374,59 @@ export class RateAnalysisDisplayComponent implements OnInit {
                                                                    this.itemRateAnalysis[i].labourRateAnalysis[j]['breadth']*
                                                                    this.itemRateAnalysis[i].labourRateAnalysis[j]['rate'];
         }
+        this.itemRateAnalysis[i].labourRateAnalysis[j]['amount']=isNaN(this.itemRateAnalysis[i].labourRateAnalysis[j]['amount'])?0
+                                                                     :this.itemRateAnalysis[i].labourRateAnalysis[j]['amount'];
         this.itemRateAnalysis[i].labour_total = this.itemRateAnalysis[i].labour_total + this.itemRateAnalysis[i].labourRateAnalysis[j]['amount']
     }
     this.grandTotal(i);
+  }
+
+  overheadCurrection() {
+    console.log('Entered overheadCurrection');
+    for (let i = 0; i < this.itemRateAnalysis.length; i++) {
+      this.grandTotal(i);
+    }
+  }
+
+  profitCurrection() {
+    console.log('Entered profitCurrection');
+    for (let i = 0; i < this.itemRateAnalysis.length; i++) {
+      this.grandTotal(i);
+    }
+  }
+
+  wastageCurrection() {
+    console.log('Entered wastageCurrection');
+    for (let i = 0; i < this.itemRateAnalysis.length; i++) {
+      this.grandTotal(i);
+    }
+  }
+
+  grandTotal(i): void {
+    console.log('Entered grandTotal');
+    if (!this.itemRateAnalysis[i].labour_total) {
+      this.itemRateAnalysis[i].labour_total = 0;
+    }
+    console.log(this.itemRateAnalysis[i].labour_total);
+
+    this.itemRateAnalysis[i].profit_margin = 0;
+    this.itemRateAnalysis[i].overhead_margin = 0;
+    this.itemRateAnalysis[i].grand_total = 0;
+
+
+    this.itemRateAnalysis[i].profit_margin = (this.profit) / 100 * (this.itemRateAnalysis[i].labour_total + this.itemRateAnalysis[i].material_total);
+    console.log(this.itemRateAnalysis[i].profit_margin)
+    this.itemRateAnalysis[i].overhead_margin = (this.itemRateAnalysis[i].labour_total + this.itemRateAnalysis[i].material_total) * (this.overhead / 100);
+    this.itemRateAnalysis[i].grand_total = this.itemRateAnalysis[i].profit_margin +
+                                           this.itemRateAnalysis[i].overhead_margin +
+                                           this.itemRateAnalysis[i].labour_total +
+                                           this.itemRateAnalysis[i].material_total;
+
+    console.log(this.itemRateAnalysis[i].labour_total);
+    console.log(this.itemRateAnalysis[i].material_total);
+    console.log(this.itemRateAnalysis[i].profit_margin);
+    console.log(this.itemRateAnalysis[i].overhead_margin);
+
   }
 
   postItemRateAnalysis(i: number) {
@@ -500,52 +553,7 @@ export class RateAnalysisDisplayComponent implements OnInit {
 
   }
 
-  overheadCurrection() {
-    console.log('Entered overheadCurrection');
-    for (let i = 0; i < this.itemRateAnalysis.length; i++) {
-      this.grandTotal(i);
-    }
-  }
 
-  profitCurrection() {
-    console.log('Entered profitCurrection');
-    for (let i = 0; i < this.itemRateAnalysis.length; i++) {
-      this.grandTotal(i);
-    }
-  }
-
-  wastageCurrection() {
-    console.log('Entered wastageCurrection');
-    for (let i = 0; i < this.itemRateAnalysis.length; i++) {
-      this.grandTotal(i);
-    }
-  }
-
-  grandTotal(i): void {
-    console.log('Entered grandTotal');
-    if (!this.itemRateAnalysis[i].labour_total) {
-      this.itemRateAnalysis[i].labour_total = 0;
-    }
-
-    this.itemRateAnalysis[i].profit_margin = 0;
-    this.itemRateAnalysis[i].overhead_margin = 0;
-    this.itemRateAnalysis[i].grand_total = 0;
-
-
-    this.itemRateAnalysis[i].profit_margin =
-      (this.profit) / 100 * (this.itemRateAnalysis[i].labour_total + this.itemRateAnalysis[i].material_total);
-    this.itemRateAnalysis[i].overhead_margin =
-      (this.itemRateAnalysis[i].labour_total + this.itemRateAnalysis[i].material_total) * (this.overhead / 100);
-    this.itemRateAnalysis[i].grand_total =
-      (this.itemRateAnalysis[i].labour_total + this.itemRateAnalysis[i].material_total) * this.overhead / 100 +
-      +(this.itemRateAnalysis[i].labour_total + this.itemRateAnalysis[i].material_total) * this.profit / 100
-      + (this.itemRateAnalysis[i].labour_total + this.itemRateAnalysis[i].material_total);
-    console.log(this.itemRateAnalysis[i].labour_total);
-    console.log(this.itemRateAnalysis[i].material_total);
-    console.log(this.itemRateAnalysis[i].profit_margin);
-    console.log(this.itemRateAnalysis[i].overhead_margin);
-
-  }
 
 
 
