@@ -1,0 +1,14 @@
+<div class="row">
+  <h4 style="margin-left: 25px">Charts</h4>
+</div>
+<div class="row">
+  <ngx-charts-advanced-pie-chart
+    [view]="view"
+    [scheme]="colorScheme"
+    [results]="singleInd"
+    [gradient]="gradient"
+    (select)="updateIndList($event)">
+  </ngx-charts-advanced-pie-chart>
+</div>
+<div class="row" *ngIf="flagInd">
+  <app-icon [iconName]="'up-arrow'" (clicked)="flagInd=false"></app-icon>

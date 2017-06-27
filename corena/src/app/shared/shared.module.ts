@@ -14,6 +14,7 @@ import { PieChartComponent } from './components/charts/pie-chart/pie-chart.compo
 import { AdvancePieChartComponent } from './components/charts/advance-pie-chart/advance-pie-chart.component';
 import {AlertdialogComponent} from './components/alertdialog/alertdialog.component';
 
+
 @NgModule({
   imports: [
     CommonModule, NgxChartsModule,

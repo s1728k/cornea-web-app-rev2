@@ -37,6 +37,7 @@ import 'rxjs/add/operator/switchMap';
 import {DialogService} from 'app/shared/services/dialog/dialog.service';
 import {SpinnerloaderService} from 'app/services/spinner/spinnerloader.service';
 
+
 @Component({
   selector: 'app-rate-analysis',
   templateUrl: './rate-analysis.component.html',

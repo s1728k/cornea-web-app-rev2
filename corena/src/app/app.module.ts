@@ -45,6 +45,7 @@ import { ProjectComponent } from './project/project.component';
 import {LoaderService} from './services/loader/loader.service';
 import {LoaderComponent} from './services/loader/loader.component';
 import {SpinnerloaderService} from './services/spinner/spinnerloader.service';
+import {ReportComponent} from './shared/components/d3-charts/reportcomponent/report/report.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import {SpinnerloaderService} from './services/spinner/spinnerloader.service';
     CfComponent,
     RateAnalysisDisplayComponent,
     ProjectComponent,
-    LoaderComponent
+    LoaderComponent,
+    ReportComponent
   ],
   // provide modules throughout
   imports: [
