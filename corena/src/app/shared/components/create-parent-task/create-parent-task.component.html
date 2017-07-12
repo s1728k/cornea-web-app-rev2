@@ -1,15 +1,44 @@
 <div class="container-fluid">
 <div class="row">
   <div class="col-md-12">
-    <!--<md-input-container class="full-width">
-      <input mdInput placeholder="Select Task" class="inp" type="text" [mdAutocomplete]="projects"
-             [(ngModel)]="projectsTerm" (keyup)="searchProject(projectsTerm)">
-      <md-autocomplete #projects="mdAutocomplete">
-        <md-option *ngFor="let project of projects | async" [value]="project.name">
-          {{project.name}}
-        </md-option>
-      </md-autocomplete>
-    </md-input-container>-->
+
+      <md-input-container class="full-width">
+        <input mdInput placeholder="Line Item Name" class="inp" type="text" [mdAutocomplete]="lineItems"
+        [(ngModel)]="selectedLineItem.name" (keyup)="searchLineItems(selectedLineItem.name, selectedBoq.id)">
+        <md-autocomplete #lineItems="mdAutocomplete">
+          <md-option *ngFor="let lineItem of lineItemsSuggesions | async" [value]="lineItem.name" (click)="selectedID('line',lineItem.id)">
+            {{lineItem.name}}
+          </md-option>
+        </md-autocomplete>
+      </md-input-container>
+
   </div>
 </div>
+
+
+  <div class="row">
+    <div class="col-md-6">
+      <md-input-container class="full-width">
+        <input mdInput [mdDatepicker]="startdate" placeholder="Start Date"  class="full-width">
+        <button mdSuffix [mdDatepickerToggle]="startdate"></button>
+      </md-input-container>
+      <md-datepicker #startdate></md-datepicker>
+    </div>
+
+    <div class="col-md-6">
+      <md-input-container class="full-width">
+        <input mdInput [mdDatepicker]="enddate" placeholder="End Date"  class="full-width">
+        <button mdSuffix [mdDatepickerToggle]="enddate"></button>
+      </md-input-container>
+      <md-datepicker #startdate></md-datepicker>
+    </div>
+  </div>
+
+
+  <div class="row" style="margin-top: 5px;float: right">
+    <div class="col-md-12">
+      <button md-raised-button (click)="createTask()">Create</button>
+    </div>
+
+  </div>
 </div>
