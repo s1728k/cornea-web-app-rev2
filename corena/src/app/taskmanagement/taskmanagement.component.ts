@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import {RestApiService} from '../services/rest-api-service.service';
 
 // Models Imported
 import {ProjectResponseBOQUpload} from '../model/class/project-response';
 import {BOQTable} from '../model/class/boq-table.model';
 import { Task } from '../model/class/task.model';
+import { NameId } from '../model/class/id-n-name.model';
 
 // ------------http imports-------------------------------
 import {Observable} from 'rxjs/Observable';
@@ -21,22 +22,27 @@ import * as Constants from "../shared/constants.globals";
   templateUrl: './taskmanagement.component.html',
   styleUrls: ['./taskmanagement.component.css']
 })
-export class TaskmanagementComponent implements OnInit {
 
-  projects: Observable<ProjectResponseBOQUpload[]>;
-  searchLoad:Subject<string> = new Subject<string>(); // subject used to monitor projects observable
+export class TaskmanagementComponent implements OnInit, OnChanges {
 
-  // projects: Observable<ProjectResponseBOQUpload[]>;
-  // searchLoad:Subject<string> = new Subject<string>(); // subject used to monitor projects observable
+  projectsSuggesions: Observable<ProjectResponseBOQUpload[]>;
+  projectsSuggesionsLoad:Subject<string> = new Subject<string>(); // subject used to monitor projectsSuggesions observable
+
+  boqsSuggesions: Observable<BOQTable[]>;
+  boqsSuggesionsLoad:Subject<string> = new Subject<string>(); // subject used to monitor projectsSuggesions observable
 
   parentTasks: Task[]=[];
+
+  @Input() selectedProject: NameId = new NameId();
+  @Input() selectedBoq: NameId = new NameId();
+  @Input() selectedLineItem: NameId = new NameId();
 
   constructor(private restApiService: RestApiService) {
 
   }
 
   ngOnInit() {
-    this.projects = this.searchLoad
+    this.projectsSuggesions = this.projectsSuggesionsLoad
       .debounceTime(300)        // wait 300ms after each keystroke before considering the term
       .distinctUntilChanged()   // ignore if next search term is same as previous
       .switchMap(term => this.restApiService.search(term))
@@ -46,13 +52,34 @@ export class TaskmanagementComponent implements OnInit {
         return Observable.of<ProjectResponseBOQUpload[]>([]);
       });
 
+    this.boqsSuggesions = this.boqsSuggesionsLoad
+      .debounceTime(300)        // wait 300ms after each keystroke before considering the term
+      .distinctUntilChanged()   // ignore if next search term is same as previous
+      .switchMap(term => this.restApiService.search(term))
+      .catch(error => {
+        // TODO: add real error handling
+        console.log(error);
+        return Observable.of<BOQTable[]>([]);
+      });
+  }
+
+  ngOnChanges() {
+
   }
 
   searchProject(term){
     console.log("Entered searchProject")
     console.log(term)
     let url = 'http://49.50.76.29:8090/api/project/search?visible[]=id&visible[]=name&search='+ term +'&filter[]=name';
-    this.searchLoad.next(url)
+    this.projectsSuggesionsLoad.next(url)
+  }
+
+  searchBoq(term, proj_id){
+    console.log("Entered searchBoq")
+    console.log(term)
+    let url = 'http://49.50.76.29/api/boq/search?visible[]=id&visible[]=name&conditions[project_id]=' + String(proj_id) +
+              '&search='+ term +'&filter[]=name';
+    this.boqsSuggesionsLoad.next(url)
   }
 
 }

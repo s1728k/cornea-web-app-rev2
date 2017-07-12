@@ -7,9 +7,10 @@
             <div class="col-md-4">
               <md-input-container class="full-width">
                 <input mdInput placeholder="Project Name" class="inp" type="text" [mdAutocomplete]="projects"
-                       [(ngModel)]="projectsTerm" (keyup)="searchProject(projectsTerm)">
-                <md-autocomplete #projects="mdAutocomplete">
-                  <md-option *ngFor="let project of projects | async" [value]="project.name">
+                       [(ngModel)]="selectedProject.name"
+                       (keyup)="searchProject(selectedProject.name)">
+                  <md-autocomplete #projects="mdAutocomplete">
+                  <md-option *ngFor="let project of projectsSuggesions | async" [value]="project.name">
                     {{project.name}}
                   </md-option>
                 </md-autocomplete>
@@ -18,10 +19,10 @@
             <div class="col-md-4">
               <md-input-container class="full-width">
                 <input mdInput placeholder="Boq Name" class="inp" type="text" [mdAutocomplete]="projects"
-                       [(ngModel)]="projectsTerm" (keyup)="searchProject(projectsTerm)">
+                       [(ngModel)]="selectedBoq.name" (keyup)="searchBoq(selectedBoq.name, 15)">
                 <md-autocomplete #projects="mdAutocomplete">
-                  <md-option *ngFor="let project of projects | async" [value]="project.name">
-                    {{project.name}}
+                  <md-option *ngFor="let boq of boqsSuggesions | async" [value]="boq.name">
+                    {{boq.name}}
                   </md-option>
                 </md-autocomplete>
               </md-input-container>
@@ -29,9 +30,9 @@
             <div class="col-md-4">
               <md-input-container class="full-width">
                 <input mdInput placeholder="Line Item Name" class="inp" type="text" [mdAutocomplete]="projects"
-                       [(ngModel)]="projectsTerm" (keyup)="searchProject(projectsTerm)">
+                       [(ngModel)]="selectedLineItem.name" (keyup)="searchLineItem(selectedLineItem.name, selectedBoq.id)">
                 <md-autocomplete #projects="mdAutocomplete">
-                  <md-option *ngFor="let project of projects | async" [value]="project.name">
+                  <md-option *ngFor="let lineItem of lineItemsSuggesions | async" [value]="project.name">
                     {{project.name}}
                   </md-option>
                 </md-autocomplete>
