@@ -13,6 +13,8 @@ import {ChartsComponent} from "./components/charts/charts.component";
 import { PieChartComponent } from './components/charts/pie-chart/pie-chart.component';
 import { AdvancePieChartComponent } from './components/charts/advance-pie-chart/advance-pie-chart.component';
 import { SubtaskDialogComponent } from './components/subtask-dialog/subtask-dialog.component';
+import { CreateParentTaskComponent } from './components/create-parent-task/create-parent-task.component';
+import { GanttchartDialogComponent } from './components/ganttchart-dialog/ganttchart-dialog.component';
 
 @NgModule({
   imports: [
@@ -20,7 +22,7 @@ import { SubtaskDialogComponent } from './components/subtask-dialog/subtask-dial
     MaterialModule, MdNativeDateModule, MdButtonModule, FormsModule,
     DndModule.forRoot()
   ],
-  declarations: [IconsComponent, PaginationComponent, NanPipe, ChartsComponent, PieChartComponent, AdvancePieChartComponent, SubtaskDialogComponent],
+  declarations: [IconsComponent, PaginationComponent, NanPipe, ChartsComponent, PieChartComponent, AdvancePieChartComponent, SubtaskDialogComponent, CreateParentTaskComponent, GanttchartDialogComponent],
   exports: [DndModule, IconsComponent, PaginationComponent, NanPipe, ChartsComponent, PieChartComponent, AdvancePieChartComponent],
   entryComponents: [SubtaskDialogComponent]
 })

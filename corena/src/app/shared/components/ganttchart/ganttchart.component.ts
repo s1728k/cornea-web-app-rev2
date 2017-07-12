@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {Project, IGanttOptions, Zooming, Task} from '../../../lib';
 import {MdDialog} from '@angular/material';
 import {SubtaskDialogComponent} from '../subtask-dialog/subtask-dialog.component';
+import {GanttchartDialogComponent} from 'app/shared/components/ganttchart-dialog/ganttchart-dialog.component';
 
 @Component({
   selector: 'app-ganttchart',
@@ -191,5 +192,9 @@ export class GanttchartComponent {
 
   showDialog(){
     this.mdDialog.open(SubtaskDialogComponent);
+  }
+
+  showGannttChart(){
+    this.mdDialog.open(GanttchartDialogComponent);
   }
 }
