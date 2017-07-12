@@ -23,6 +23,7 @@ import {LineItem} from '../model/class/line-item.model';
 import {Material} from '../model/class/material.model';
 import {Labour} from '../model/class/labour.model';
 import {MaterialReportUsageList} from '../model/class/material-report-usage-list.model';
+import {UOM, UOMList, UOM1} from '../model/class/uom.model';
 
 // ------------http imports-------------------------------
 import {Observable} from 'rxjs/Observable';
@@ -74,6 +75,11 @@ export class RateAnalysisComponent implements OnInit {
   rateAnalysisList: GlobalRateAnalysis[] = [];
 
   lineItems: LineItem[];
+
+  newUom: UOM = new UOM();
+  uomArray: UOMList[]=[];
+  uomMaterial: UOMList[]=[];
+  uomLabour: UOMList[]=[];
 
   materialRateAnalysis: MaterialRateAnalysis;
 
@@ -149,12 +155,35 @@ export class RateAnalysisComponent implements OnInit {
       this.lineItems = this.restApiService.comm_obj['lineItems'];
       for (let i = 0; i < this.lineItems.length; i++) {
         this.addMainRateAnalysis();
+        this.uomArray.push(new UOMList());
+        this.getUomArray(this.lineItems[i].unit, i);
         // this.lineItems[i];
       }
       console.log(this.lineItems);
     }
     // this.getProjectList();
     // this.getMaterialReportUsageList();
+  }
+
+  getUomArray(uom: string, i: number): void{
+    console.log('Entered getUomArray');
+    this.newUom.unit=uom;
+    this.newUom.offset=1;
+
+    this.uomArray[i].uom.push(this.newUom);
+
+    console.log(this.uomArray)
+    // const url = 'http://49.50.76.29:12000/api/uom/all?conditions[0]=' + uom;
+    // this.restApiService.getRequest(url)
+    //   .map(response => response.json().data)
+    //   .subscribe((value) => {
+    //       console.log(value);
+    //       this.uomArray[i] = value;
+    //     },
+    //     (error: any) => {
+    //       console.log(error);
+    //     },
+    //   );
   }
 
   /* getProjectList(): void {
@@ -269,6 +298,8 @@ export class RateAnalysisComponent implements OnInit {
     console.log('Entered addMainRateAnalysis');
     this.itemRateAnalysis.push(new MainRateAnalysis());
     console.log(this.itemRateAnalysis);
+    this.uomMaterial.push(new UOMList());
+    this.uomLabour.push(new UOMList());
   }
 
   /* deleteMainRateAnalysis(i) {
@@ -279,6 +310,7 @@ export class RateAnalysisComponent implements OnInit {
 
   addMaterialRateAnalysis(index) {
     console.log('Entered addMaterialRateAnalysis');
+    this.uomMaterial[index].uom.push(new UOM());
     // if (this.lineItems[i]['title']){
     console.log(this.newRateAnalysis);
     this.itemRateAnalysis[index].materialRateAnalysis.push(new MaterialRateAnalysis());
@@ -291,7 +323,18 @@ export class RateAnalysisComponent implements OnInit {
 
   deleteMaterialRateAnalysis(i, j) {
     console.log('Entered deleteMaterialRateAnalysis');
+    this.uomMaterial[i].uom.splice(j, 1);
     this.itemRateAnalysis[i].materialRateAnalysis.splice(j, 1);
+  }
+
+  uomOffsetMaterial(uom, i, j): void{
+    this.uomMaterial[i].uom[j]=uom;
+    this.materialTotal(i);
+  }
+
+  uomOffsetLabour(uom, i, j): void{
+    this.uomLabour[i].uom[j]=uom;
+    this.labourTotal(i);
   }
 
   /**
@@ -314,10 +357,12 @@ export class RateAnalysisComponent implements OnInit {
 
   addLabourRateAnalysis(i) {
     this.itemRateAnalysis[i].labourRateAnalysis.push(new LabourRateAnalysis());
+    this.uomLabour[i].uom.push(new UOM());
   }
 
   deleteLabourRateAnalysis(i, j) {
     this.itemRateAnalysis[i].labourRateAnalysis.splice(j, 1);
+    this.uomLabour[i].uom.splice(j, 1);
   }
 
   updateLabourRow(labour, i, j) {
@@ -337,6 +382,7 @@ export class RateAnalysisComponent implements OnInit {
                                                                        this.itemRateAnalysis[index].materialRateAnalysis[j]['breadth']*
                                                                        this.itemRateAnalysis[index].materialRateAnalysis[j]['thickness']*
                                                                        this.itemRateAnalysis[index].materialRateAnalysis[j]['quantity']*
+                                                                       this.uomMaterial[index].uom[j].offset *
                                                                        (this.itemRateAnalysis[index].materialRateAnalysis[j]['wastage']*1/100+1)*
                                                                        this.itemRateAnalysis[index].materialRateAnalysis[j]['rate']+
                                                                        this.cf_price
@@ -344,6 +390,7 @@ export class RateAnalysisComponent implements OnInit {
         this.itemRateAnalysis[index].materialRateAnalysis[j]['amount']=this.itemRateAnalysis[index].materialRateAnalysis[j]['length']*
                                                                        this.itemRateAnalysis[index].materialRateAnalysis[j]['breadth']*
                                                                        this.itemRateAnalysis[index].materialRateAnalysis[j]['quantity']*
+                                                                       this.uomMaterial[index].uom[j].offset *
                                                                        (this.itemRateAnalysis[index].materialRateAnalysis[j]['wastage']*1/100+1)*
                                                                        this.itemRateAnalysis[index].materialRateAnalysis[j]['rate']+
                                                                        this.cf_price
@@ -363,10 +410,12 @@ export class RateAnalysisComponent implements OnInit {
           this.itemRateAnalysis[i].labourRateAnalysis[j]['amount']=this.itemRateAnalysis[i].labourRateAnalysis[j]['length']*
                                                                    this.itemRateAnalysis[i].labourRateAnalysis[j]['breadth']*
                                                                    this.itemRateAnalysis[i].labourRateAnalysis[j]['thickness']*
+                                                                   this.uomLabour[i].uom[j].offset *
                                                                    this.itemRateAnalysis[i].labourRateAnalysis[j]['rate'];
         }else{
           this.itemRateAnalysis[i].labourRateAnalysis[j]['amount']=this.itemRateAnalysis[i].labourRateAnalysis[j]['length']*
                                                                    this.itemRateAnalysis[i].labourRateAnalysis[j]['breadth']*
+                                                                   this.uomLabour[i].uom[j].offset *
                                                                    this.itemRateAnalysis[i].labourRateAnalysis[j]['rate'];
         }
         this.itemRateAnalysis[i].labourRateAnalysis[j]['amount']=isNaN(this.itemRateAnalysis[i].labourRateAnalysis[j]['amount'])?0

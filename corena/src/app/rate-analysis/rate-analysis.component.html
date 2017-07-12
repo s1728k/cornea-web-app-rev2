@@ -155,8 +155,14 @@
                                            [attr.Value]="1" [(ngModel)]="itemRateAnalysis[i].materialRateAnalysis[j]['thickness']" (change)="materialTotal(i)"></td>
                                 <td><input mdInput type="number" class="inp" name="qty"
                                            [(ngModel)]="itemRateAnalysis[i].materialRateAnalysis[j]['quantity']" (change)="materialTotal(i)"></td>
-                                <td><input mdInput type="text" class="inp" name="uom"
-                                           [(ngModel)]="itemRateAnalysis[i].materialRateAnalysis[j]['uom']" (change)="materialTotal(i)"></td>
+                                <td>
+                                  <!--<input mdInput type="text" class="inp" name="uom" [(ngModel)]="itemRateAnalysis[i].materialRateAnalysis[j]['uom']" (change)="materialTotal(i)">-->
+                                  <md-select class="inp" [(ngModel)]="itemRateAnalysis[i].materialRateAnalysis[j]['uom']" name="uom">
+                                    <md-option *ngFor="let uom of uomArray[i].uom" [value]="uom.uom" (click)="uomOffsetMaterial(uom, i, j)">
+                                      {{uom.uom}}
+                                    </md-option>
+                                  </md-select>
+                                </td>
                                 <td><input mdInput type="number" class="inp" name="wastage"
                                            [(ngModel)]="itemRateAnalysis[i].materialRateAnalysis[j]['wastage']"
                                             [attr.Value]="wastage" (change)="materialTotal(i)"></td>
@@ -211,7 +217,14 @@
                                        (change)="labourTotal(i)"></td>
                             <td><input type="number" class="inp" placeholder="Thickness" name="Thickness" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['thickness']"
                                        (change)="labourTotal(i)"></td>
-                            <td><input type="text" class="inp" placeholder="UOM" name="UOM" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['uom']"></td>
+                            <td>
+                              <!--<input type="text" class="inp" placeholder="UOM" name="UOM" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['uom']">-->
+                              <md-select class="inp" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['uom']" name="UOM">
+                                <md-option *ngFor="let uom of uomArray[i].uom" [value]="uom.uom" (click)="uomOffsetLabour(uom, i, j)">
+                                  {{uom.uom}}
+                                </md-option>
+                              </md-select>
+                            </td>
                             <td><input type="number" class="inp" placeholder="Rate" name="Rate" (keyup)="labourTotal(i)" [(ngModel)]="itemRateAnalysis[i].labourRateAnalysis[j]['rate']"
                                        (change)="labourTotal(i)"></td>
                             <td>{{itemRateAnalysis[i].labourRateAnalysis[j].amount | nan | number : '2.1-2'}}</td>
