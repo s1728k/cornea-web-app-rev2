@@ -68,6 +68,21 @@ td, th {
     font-size: 12px;
 }
 
+.greyborder td{
+  border: 1px solid lightgray;
+  text-align: left;
+  padding-left: 2px;
+  font-size: 12px;
+}
+
+.greyborder  th {
+  border: 1px solid lightgray;
+  text-align: left;
+  padding-left: 2px;
+  font-size: 12px;
+}
+
+
 .index {
     background-color: mat-color($candy-app-primary);
 }

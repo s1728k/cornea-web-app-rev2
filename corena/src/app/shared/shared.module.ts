@@ -22,5 +22,6 @@ import { SubtaskDialogComponent } from './components/subtask-dialog/subtask-dial
   ],
   declarations: [IconsComponent, PaginationComponent, NanPipe, ChartsComponent, PieChartComponent, AdvancePieChartComponent, SubtaskDialogComponent],
   exports: [DndModule, IconsComponent, PaginationComponent, NanPipe, ChartsComponent, PieChartComponent, AdvancePieChartComponent],
+  entryComponents: [SubtaskDialogComponent]
 })
 export class SharedModule { }

@@ -10,44 +10,50 @@
     </div>
     <hr/>
 
-    <div class="row">
-      <div class="md-col-12" >
-        <h4>Subtask Details</h4>
-      </div>
-    </div>
     <div class="row" style="text-align: left">
       <div class="col-md-12">
-        <table class="border">
-          <tr style="width: 100px; height: 40px">
+        <h4>Subtask Details</h4>
+        <table class="greyborder">
+          <tr style="width: 100px;height: 40px">
             <th>Description</th>
-            <td><input name="description" [(ngModel)]="taskmanagement.description" ></td>
+            <td>  <md-input-container class="full-width" >
+              <input  mdInput name="description" [(ngModel)]="taskmanagement.description" >
+            </md-input-container></td>
           </tr>
-          <tr style="width: 100px; height: 40px">
+          <tr style="width: 100px;height: 40px">
             <th>Parent Task Id</th>
-            <td><input name="parenttaskid" [(ngModel)]="taskmanagement.parenttaskid"></td>
+            <td>  <md-input-container class="full-width">
+              <input  mdInput name="parenttaskid" [(ngModel)]="taskmanagement.parenttaskid" width="100%">
+            </md-input-container></td>
           </tr>
-          <tr style="width: 100px; height: 40px">
+          <tr style="width: 100px;height: 40px">
             <th>Name</th>
             <td></td>
           </tr>
-          <tr style="width: 100px; height: 40px">
+          <tr style="width: 100px;height: 40px">
             <th>Start Date</th>
             <td> <md-input-container>
-              <input mdInput [mdDatepicker]="picker" placeholder="Start Date" name="datepicker" [(ngModel)]="taskmanagement.startDate">
+              <input mdInput [mdDatepicker]="picker" placeholder="Choose a date">
               <button mdSuffix [mdDatepickerToggle]="picker"></button>
             </md-input-container>
               <md-datepicker #picker></md-datepicker> </td>
           </tr>
-          <tr style="width: 100px; height: 40px">
+          <tr style="width: 100px;height: 40px">
             <th>End Date</th>
             <td> <md-input-container>
-              <input mdInput [mdDatepicker]="picker1" placeholder="End Date" name="datepicker" [(ngModel)]="taskmanagement.endDate">
+              <input mdInput [mdDatepicker]="picker1" placeholder="End Date" name="datepicker" >
               <button mdSuffix [mdDatepickerToggle]="picker1"></button>
             </md-input-container>
               <md-datepicker #picker1></md-datepicker> </td>
           </tr>
         </table>
       </div>
+    </div>
+    <div class="row" style="margin-top: 5px;float: right">
+      <div class="col-md-12">
+        <button md-raised-button (click)="okbutton()">Ok</button>
+      </div>
+
     </div>
   </div>
 </div>

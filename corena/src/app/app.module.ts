@@ -43,6 +43,7 @@ import { CfComponent } from './cf/cf.component';
 import { RateAnalysisDisplayComponent } from './rate-analysis-display/rate-analysis-display.component';
 import { ProjectComponent } from './project/project.component';
 import { TaskmanagementComponent } from './taskmanagement/taskmanagement.component';
+import {SubtaskDialogComponent} from "./shared/components/subtask-dialog/subtask-dialog.component";
 
 @NgModule({
   declarations: [
