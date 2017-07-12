@@ -1,0 +1,23 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <md-card>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-6">
+              <input mdInput placeholder="Project Name" class="inp" type="text" [mdAutocomplete]="project" [(ngModel)]="selectedProject">
+              <md-autocomplete #ramenu="mdAutocomplete">
+                <md-option *ngFor="let project of projects" [value]="project.name" (click)="getBoqList(project)">
+                  {{project.name}}
+                </md-option>
+              </md-autocomplete>
+            </div>
+            <div class="col-md-6">
+
+            </div>
+          </div>
+        </div>
+      </md-card>
+    </div>
+  </div>
+</div>

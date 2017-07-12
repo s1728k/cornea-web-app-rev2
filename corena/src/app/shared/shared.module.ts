@@ -12,6 +12,7 @@ import {PaginationComponent} from "./components/pagination/pagination.component"
 import {ChartsComponent} from "./components/charts/charts.component";
 import { PieChartComponent } from './components/charts/pie-chart/pie-chart.component';
 import { AdvancePieChartComponent } from './components/charts/advance-pie-chart/advance-pie-chart.component';
+import { SubtaskDialogComponent } from './components/subtask-dialog/subtask-dialog.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,7 @@ import { AdvancePieChartComponent } from './components/charts/advance-pie-chart/
     MaterialModule, MdNativeDateModule, MdButtonModule, FormsModule,
     DndModule.forRoot()
   ],
-  declarations: [IconsComponent, PaginationComponent, NanPipe, ChartsComponent, PieChartComponent, AdvancePieChartComponent],
+  declarations: [IconsComponent, PaginationComponent, NanPipe, ChartsComponent, PieChartComponent, AdvancePieChartComponent, SubtaskDialogComponent],
   exports: [DndModule, IconsComponent, PaginationComponent, NanPipe, ChartsComponent, PieChartComponent, AdvancePieChartComponent],
 })
 export class SharedModule { }

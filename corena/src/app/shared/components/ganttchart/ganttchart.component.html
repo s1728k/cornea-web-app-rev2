@@ -1,4 +1,3 @@
-<h1>Angular 2 Gantt Demo</h1>
 <md-card style="width:100%;">
 <gantt [project]="project" [options]="options" (onGridRowClick)="gridRowClicked($event)"></gantt>
 </md-card>
@@ -51,6 +50,11 @@
   <button md-raised-button (click)="createTask(taskStatus)">Create Task</button>
   <button md-raised-button (click)="updateTasks()">Update Tasks Percent Complete</button>
   <button md-raised-button (click)="loadBigDataSet()">Load big dataset</button>
+
+   <!-- <h1>Output</h1>
+    <p>{{ project | json }}</p>-->
+
+
   </md-card>
 
 </div>

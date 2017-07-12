@@ -35,7 +35,7 @@ import {RouterModule, Router}  from '@angular/router';
 export class PagesComponent implements OnInit {
 
   links: any[] = ['Dashboard',
-    ['Project', 'Projects', 'BOQ', 'Rate Analysis', 'Project Hierarchy', 'GanttChart', 'Upload Files', 'Materials', 'Labour', 'CF-Factor'],
+    ['Project', 'Projects', 'BOQ', 'Rate Analysis', 'Project Hierarchy', 'Gantt Chart', 'Upload Files', 'Materials', 'Labour', 'CF-Factor'],
     ['Purchase Order', 'Request For Quotation', 'Supplier Quotation'],
     ['Site', 'Indent'],
     'Accounts',

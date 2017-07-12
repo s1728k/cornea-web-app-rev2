@@ -16,7 +16,7 @@ export class GanttchartComponent {
     },
     zooming: Zooming[Zooming.days]
   };
-
+ // Dataset
   project: Project = {
     'id': '001',
     'name': 'Angular2 Gantt',

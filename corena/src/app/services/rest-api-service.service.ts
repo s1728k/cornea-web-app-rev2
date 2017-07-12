@@ -67,12 +67,12 @@ export class RestApiService {
    * @param url2
    * @returns {any}
    */
-  getObservableFJ(url1: string, url2: string): Observable<any> {
+/*  getObservableFJ(url1: string, url2: string): Observable<any> {
     return Observable.forkJoin(
       this.http.get(url1).map((res: Response) => res.json().data),
       this.http.get(url2).map((res: Response) => res.json().data)
     );
-  }
+  }*/
 
   search(url: string): Observable<{}[]> {
     // this.url='http://49.50.76.29/api/material/search?search=' + term + '&filter[]=name&filter[]=srno&filter[]=brand'
