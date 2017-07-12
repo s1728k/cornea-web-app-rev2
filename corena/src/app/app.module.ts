@@ -42,7 +42,7 @@ import { LabourComponent } from './labour/labour.component';
 import { CfComponent } from './cf/cf.component';
 import { RateAnalysisDisplayComponent } from './rate-analysis-display/rate-analysis-display.component';
 import { ProjectComponent } from './project/project.component';
-import { TaskmanagementComponent } from './taskmanagement/taskmanagement.component';
+
 import {SubtaskDialogComponent} from "./shared/components/subtask-dialog/subtask-dialog.component";
 
 @NgModule({
@@ -60,7 +60,6 @@ import {SubtaskDialogComponent} from "./shared/components/subtask-dialog/subtask
     CfComponent,
     RateAnalysisDisplayComponent,
     ProjectComponent,
-    TaskmanagementComponent,
   ],
   // provide modules throughout
   imports: [

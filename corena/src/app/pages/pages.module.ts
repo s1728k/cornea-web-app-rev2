@@ -18,11 +18,12 @@ import { PagesComponent } from './pages.component';
 import {SharedModule} from '../shared/';
 
 import {NextCompComponent} from "../next-comp/next-comp.component";
+import {TaskmanagementComponent} from "../taskmanagement/taskmanagement.component";
 
 @NgModule({
   imports: [CommonModule, FormsModule, ReactiveFormsModule, MaterialModule, MdNativeDateModule, MdButtonModule, NgbModule,
   FileUploadModule, DndModule.forRoot(), SharedModule, routing],
-  declarations: [PagesComponent, FileUploadComponent, ProjectHierarchyComponent, PopupDialog, RaPopupDialog, NextCompComponent],
+  declarations: [PagesComponent, FileUploadComponent, ProjectHierarchyComponent, PopupDialog, RaPopupDialog, NextCompComponent, TaskmanagementComponent],
   exports: [SharedModule, ReactiveFormsModule],
   entryComponents: [PopupDialog, RaPopupDialog]
 })

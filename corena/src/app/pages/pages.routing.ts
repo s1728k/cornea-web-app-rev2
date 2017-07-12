@@ -12,6 +12,7 @@ import {MaterialComponent} from '../material/material.component';
 import {LabourComponent} from '../labour/labour.component';
 import {CfComponent} from '../cf/cf.component';
 import {ProjectComponent} from '../project/project.component';
+import {TaskmanagementComponent} from "../taskmanagement/taskmanagement.component";
 
 export const routes: Routes = [
   {
@@ -30,6 +31,7 @@ export const routes: Routes = [
       {path: 'labour', component: LabourComponent},
       {path: 'cf-factor', component: CfComponent},
       {path: 'projects', component: ProjectComponent},
+      {path: 'task-management', component: TaskmanagementComponent},
     ]
   }
 ];
