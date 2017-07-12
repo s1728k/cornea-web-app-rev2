@@ -4,16 +4,38 @@
       <md-card>
         <div class="container-fluid">
           <div class="row">
-            <div class="col-md-6">
-              <input mdInput placeholder="Project Name" class="inp" type="text" [mdAutocomplete]="project" [(ngModel)]="selectedProject">
-              <md-autocomplete #ramenu="mdAutocomplete">
-                <md-option *ngFor="let project of projects" [value]="project.name" (click)="getBoqList(project)">
-                  {{project.name}}
-                </md-option>
-              </md-autocomplete>
+            <div class="col-md-4">
+              <md-input-container class="full-width">
+                <input mdInput placeholder="Project Name" class="inp" type="text" [mdAutocomplete]="projects"
+                       [(ngModel)]="projectsTerm" (keyup)="searchProject(projectsTerm)">
+                <md-autocomplete #projects="mdAutocomplete">
+                  <md-option *ngFor="let project of projects | async" [value]="project.name">
+                    {{project.name}}
+                  </md-option>
+                </md-autocomplete>
+              </md-input-container>
             </div>
-            <div class="col-md-6">
-
+            <div class="col-md-4">
+              <md-input-container class="full-width">
+                <input mdInput placeholder="Boq Name" class="inp" type="text" [mdAutocomplete]="projects"
+                       [(ngModel)]="projectsTerm" (keyup)="searchProject(projectsTerm)">
+                <md-autocomplete #projects="mdAutocomplete">
+                  <md-option *ngFor="let project of projects | async" [value]="project.name">
+                    {{project.name}}
+                  </md-option>
+                </md-autocomplete>
+              </md-input-container>
+            </div>
+            <div class="col-md-4">
+              <md-input-container class="full-width">
+                <input mdInput placeholder="Line Item Name" class="inp" type="text" [mdAutocomplete]="projects"
+                       [(ngModel)]="projectsTerm" (keyup)="searchProject(projectsTerm)">
+                <md-autocomplete #projects="mdAutocomplete">
+                  <md-option *ngFor="let project of projects | async" [value]="project.name">
+                    {{project.name}}
+                  </md-option>
+                </md-autocomplete>
+              </md-input-container>
             </div>
           </div>
         </div>
