@@ -5,7 +5,7 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-md-12 float-right">
-              <button md-raised-button >Add Task</button>
+              <button md-raised-button (click)="addParentTask()">Add Task</button>
               <button md-raised-button >Gantt Chart</button>
             </div>
           </div>
@@ -64,7 +64,18 @@
       </ng-container>
       <div class="col-md-4">
         <md-card >
-          gfdgsdfgs
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-12 float-right bborder zero-padding">
+                <button md-button (click)="createChildTask(task)">Create Child Task</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                gfdgsdfgs
+              </div>
+            </div>
+          </div>
         </md-card>
       </div>
     </ng-container>

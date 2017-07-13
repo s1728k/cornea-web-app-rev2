@@ -1,6 +1,9 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import {RestApiService} from '../services/rest-api-service.service';
 
+import {MdDialog} from '@angular/material';
+import {SubtaskDialogComponent} from '../shared/components/subtask-dialog/subtask-dialog.component';
+
 // Models Imported
 import {ProjectResponseBOQUpload} from '../model/class/project-response';
 import {BOQTable} from '../model/class/boq-table.model';
@@ -16,6 +19,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import * as Constants from "../shared/constants.globals";
+
 
 @Component({
   selector: 'app-taskmanagement',
@@ -41,7 +45,7 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
   selectedBoq: NameId = new NameId();
   selectedLineItem: NameId = new NameId();
 
-  constructor(private restApiService: RestApiService) {
+  constructor(private restApiService: RestApiService, private mdDialog: MdDialog) {
 
   }
 
@@ -118,6 +122,15 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
       '&search='+ term +'&filter[]=name';
     this.boqsSuggesionsLoad.next(url)
     this.selectedBoq=boq_id;
+  }
+
+  addParentTask() {
+
+  }
+
+  createChildTask(task) {
+    console.log('entered createChildTask');
+    this.mdDialog.open(SubtaskDialogComponent);
   }
 
 }
