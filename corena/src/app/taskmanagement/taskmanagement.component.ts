@@ -3,6 +3,7 @@ import {RestApiService} from '../services/rest-api-service.service';
 
 import {MdDialog} from '@angular/material';
 import {SubtaskDialogComponent} from '../shared/components/subtask-dialog/subtask-dialog.component';
+import {GanttchartDialogComponent} from "../shared/components/ganttchart-dialog/ganttchart-dialog.component";
 
 // Models Imported
 import {ProjectResponseBOQUpload} from '../model/class/project-response';
@@ -19,6 +20,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import * as Constants from "../shared/constants.globals";
+
 
 
 @Component({
@@ -126,6 +128,11 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
 
   addParentTask() {
 
+  }
+
+  showGanttChart() {
+    console.log('entered showGanttChart');
+    this.mdDialog.open(GanttchartDialogComponent);
   }
 
   createChildTask(task) {
