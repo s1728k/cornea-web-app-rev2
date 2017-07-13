@@ -15,6 +15,7 @@ import {AdvancePieChartComponent} from './components/charts/advance-pie-chart/ad
 import {SubtaskDialogComponent} from './components/subtask-dialog/subtask-dialog.component';
 import {CreateParentTaskComponent} from './components/create-parent-task/create-parent-task.component';
 import {GanttchartDialogComponent} from './components/ganttchart-dialog/ganttchart-dialog.component';
+import {ShowCompleteTaskDialogComponent} from "./components/show-complete-task-dialog/show-complete-task-dialog.component";
 
 @NgModule({
   imports: [
@@ -22,9 +23,9 @@ import {GanttchartDialogComponent} from './components/ganttchart-dialog/ganttcha
     MaterialModule, MdNativeDateModule, MdButtonModule, FormsModule,
     DndModule.forRoot()
   ],
-  declarations: [IconsComponent, PaginationComponent, NanPipe, ChartsComponent, PieChartComponent, AdvancePieChartComponent, SubtaskDialogComponent, CreateParentTaskComponent, GanttchartDialogComponent],
+  declarations: [IconsComponent, PaginationComponent, NanPipe, ChartsComponent, PieChartComponent, AdvancePieChartComponent, SubtaskDialogComponent, CreateParentTaskComponent, GanttchartDialogComponent, ShowCompleteTaskDialogComponent],
   exports: [DndModule, IconsComponent, PaginationComponent, NanPipe, ChartsComponent, PieChartComponent, AdvancePieChartComponent],
-  entryComponents: [SubtaskDialogComponent, CreateParentTaskComponent]
+  entryComponents: [SubtaskDialogComponent, CreateParentTaskComponent, ShowCompleteTaskDialogComponent]
 })
 export class SharedModule {
 }

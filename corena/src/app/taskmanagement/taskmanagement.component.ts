@@ -20,7 +20,8 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import * as Constants from "../shared/constants.globals";
-
+import {CreateParentTaskComponent} from "app/shared/components/create-parent-task/create-parent-task.component";
+import {ShowCompleteTaskDialogComponent} from "../shared/components/show-complete-task-dialog/show-complete-task-dialog.component";
 
 
 @Component({
@@ -129,16 +130,17 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
   }
 
   addParentTask() {
-    alert("Add Parent Task Popup Shall Come Soon");
+    this.mdDialog.open(CreateParentTaskComponent);
   }
 
   showGanttChart() {
     console.log('entered showGanttChart');
-    this.mdDialog.open(GanttchartDialogComponent);
+    alert('Show GanttChart Task Popup Shall Come Soon \n ' );
   }
 
-  showParentTask(task){
-    alert("Show Parent Task Popup Shall Come Soon \n task id: " + task.id);
+  showParentTask(data: any){
+    this.mdDialog.open(ShowCompleteTaskDialogComponent, {data: data});
+    // alert("Show Parent Task Popup Shall Come Soon \n task id: " + task.id);
   }
 
   createChildTask(task) {

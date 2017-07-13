@@ -51,7 +51,20 @@ export class CreateParentTaskComponent implements OnInit {
   }
 
   createParentTask() {
-
+      this.parentTasks.push(this.newTask);
+    /*const url = 'http://49.50.76.29:8090/api/task/new';
+    // console.log(this.newProject);
+    this.restApiService.postRequest(url, this.parentTasks)
+      .map(res => res.json().data[0])
+      .subscribe(
+        (value: BOQTable) => {
+          this.parentTasks = value;
+        },
+        (err: any) => {
+          console.error(err);
+        }
+      );
+    this.dialogRef.close(true);*/
   }
 
   selectedID(id) {
