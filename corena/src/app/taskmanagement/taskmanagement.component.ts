@@ -31,11 +31,15 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
   boqsSuggesions: Observable<BOQTable[]>;
   boqsSuggesionsLoad:Subject<string> = new Subject<string>(); // subject used to monitor projectsSuggesions observable
 
+  lineItemsSuggesions: Observable<BOQTable[]>;
+  lineItemsSuggesionsLoad:Subject<string> = new Subject<string>(); // subject used to monitor projectsSuggesions observable
+
+  newTask: Task = new Task();
   parentTasks: Task[]=[];
 
-  @Input() selectedProject: NameId = new NameId();
-  @Input() selectedBoq: NameId = new NameId();
-  @Input() selectedLineItem: NameId = new NameId();
+  selectedProject: NameId = new NameId();
+  selectedBoq: NameId = new NameId();
+  selectedLineItem: NameId = new NameId();
 
   constructor(private restApiService: RestApiService) {
 
@@ -61,10 +65,35 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
         console.log(error);
         return Observable.of<BOQTable[]>([]);
       });
+
+    for (let i=0; i<10; i++){
+      this.parentTasks.push(new Task());
+    }
+    console.log(this.parentTasks.length);
   }
 
   ngOnChanges() {
 
+  }
+
+  selectedID(type, id){
+    switch (type) {
+      case "proj":
+        this.selectedProject.id=id;
+        break;
+
+      case "boq":
+        this.selectedBoq.id=id;
+        break;
+
+      case "line":
+        this.selectedLineItem.id=id;
+        break;
+
+      default:
+        // code...
+        break;
+    }
   }
 
   searchProject(term){
@@ -80,6 +109,15 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
     let url = 'http://49.50.76.29/api/boq/search?visible[]=id&visible[]=name&conditions[project_id]=' + String(proj_id) +
               '&search='+ term +'&filter[]=name';
     this.boqsSuggesionsLoad.next(url)
+  }
+
+  searchLineItems(term, boq_id) {
+    console.log("Entered searchLineItems")
+    console.log(term)
+    let url = 'http://49.50.76.29/api/boq/search?visible[]=id&visible[]=name&conditions[project_id]=' + String(boq_id) +
+      '&search='+ term +'&filter[]=name';
+    this.boqsSuggesionsLoad.next(url)
+    this.selectedBoq=boq_id;
   }
 
 }
