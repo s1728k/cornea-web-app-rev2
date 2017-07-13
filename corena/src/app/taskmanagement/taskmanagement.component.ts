@@ -73,9 +73,9 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
       });
 
     for (let i=0; i<10; i++){
-      this.newTask.id=1;
-      this.newTask.name = "New Task"
-      this.parentTasks.push(this.newTask);
+      this.parentTasks.push(new Task());
+      this.parentTasks[i].id=i+1;
+      this.parentTasks[i].name="New Task";
     }
     console.log(this.parentTasks.length);
   }
@@ -129,7 +129,7 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
   }
 
   addParentTask() {
-
+    alert("Add Parent Task Popup Shall Come Soon");
   }
 
   showGanttChart() {
@@ -137,9 +137,17 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
     this.mdDialog.open(GanttchartDialogComponent);
   }
 
+  showParentTask(task){
+    alert("Show Parent Task Popup Shall Come Soon \n task id: " + task.id);
+  }
+
   createChildTask(task) {
     console.log('entered createChildTask');
     this.mdDialog.open(SubtaskDialogComponent);
+  }
+
+  showChildTask(parent_task_id, child_task_id){
+    alert("Show Child Task Popup Shall Come Soon \n Task Id: " + parent_task_id.id + " Sub Task Id: " + child_task_id.id);
   }
 
 }

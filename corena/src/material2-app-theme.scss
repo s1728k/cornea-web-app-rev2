@@ -159,6 +159,36 @@ table.total {
   padding: 0px;
 }
 
+//ul.sub-task li{list-style-type:none;}
+//ul.sub-task li:before{content:'\00b7'; font-size:100px; line-height:24px; vertical-align:middle;}
+
+ul.sub-task li {
+  color: red;
+  font-size: 30px;
+  line-height: 24px;
+  vertical-align:middle;
+  list-style-type: square;
+}
+
+ul.sub-task li > Span {
+  color: black;
+  font-size: 14px;
+  line-height: 24px;
+  vertical-align:middle;
+}
+
+ul.sub-task li > Span:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: red;
+}
+
+span.parent-task:hover{
+  text-decoration: underline;
+  cursor: pointer;
+  color: red;
+}
+
 /* this section is panels used in project heirarchy */
 .panel-danger .panel-heading{
     background-color: mat-color($candy-app-warn);
@@ -217,32 +247,6 @@ table.total {
 
 /* end of css for file-upload-- */
 
-/* css for pagination */
-li{
-  padding: 10px;
-  border: 1px solid mat-color($candy-app-primary);
-}
-
-li.active{
-    border: 1px solid mat-color($candy-app-primary);
-    color: white;
-    background-color: mat-color($candy-app-primary) !important;
-}
-
-li:hover{
-  cursor: pointer;
-  color: white;
-  background-color: mat-color($candy-app-primary) !important;
-}
-
-li:hover .inpwidth{
-  color: black;
-}
-
-     /* Prevent double borders */
-ul li:not(:last-child) {
-    border-right: none;
-}
 
 .inpwidth {
   width:3em;
