@@ -1,6 +1,7 @@
 <div class="container-fluid">
   <div class="dialogbox" >
     <div class="row" style="text-align: center">
+
       <div class="col-md-11">
         <h3>Create Parent Task</h3>
       </div>
@@ -26,12 +27,12 @@
     <div class="row">
       <div class="col-md-6">
         <md-input-container class="full-width">
-          <input  mdInput name="name" [(ngModel)]="newTask.name" placeholder="Enter Name">
+          <input  mdInput name="name" [(ngModel)]="newTask.name" placeholder="Enter Name" required>
         </md-input-container>
       </div>
       <div class="col-md-6">
         <md-input-container class="full-width">
-          <input  mdInput name="description" [(ngModel)]="newTask.description" placeholder="Enter Description">
+          <input  mdInput name="description" [(ngModel)]="newTask.description" placeholder="Enter Description" required>
         </md-input-container>
       </div>
     </div>
@@ -39,7 +40,7 @@
     <div class="row">
       <div class="col-md-6">
         <md-input-container class="full-width">
-          <input mdInput [mdDatepicker]="startdate1" placeholder="Start Date"  class="full-width">
+          <input mdInput [mdDatepicker]="startdate1" placeholder="Start Date"  class="full-width" (click)="checkStartDate()">
           <button mdSuffix [mdDatepickerToggle]="startdate1"></button>
         </md-input-container>
         <md-datepicker #startdate1></md-datepicker>
@@ -47,7 +48,7 @@
 
       <div class="col-md-6">
         <md-input-container class="full-width">
-          <input mdInput [mdDatepicker]="enddate1" placeholder="End Date" class="full-width">
+          <input mdInput [mdDatepicker]="enddate1" placeholder="End Date" class="full-width"   (click)="checkEndDate()">
           <button mdSuffix [mdDatepickerToggle]="enddate1"></button>
         </md-input-container>
         <md-datepicker #enddate1></md-datepicker>

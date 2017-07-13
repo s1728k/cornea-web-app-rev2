@@ -18,6 +18,12 @@ export class SubtaskDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+
+
+  }
+
+  okbutton() {
+    this.dialogRef.close(true);
   }
 
 }

@@ -22,6 +22,7 @@ import 'rxjs/add/operator/switchMap';
 import * as Constants from "../shared/constants.globals";
 import {CreateParentTaskComponent} from "app/shared/components/create-parent-task/create-parent-task.component";
 import {ShowCompleteTaskDialogComponent} from "../shared/components/show-complete-task-dialog/show-complete-task-dialog.component";
+import {ShowSubtaskDialogComponent} from "../shared/components/show-subtask-dialog/show-subtask-dialog.component";
 
 
 @Component({
@@ -149,7 +150,8 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
   }
 
   showChildTask(parent_task_id, child_task_id){
-    alert("Show Child Task Popup Shall Come Soon \n Task Id: " + parent_task_id.id + " Sub Task Id: " + child_task_id.id);
+    this.mdDialog.open(ShowSubtaskDialogComponent);
+    // alert("Show Child Task Popup Shall Come Soon \n Task Id: " + parent_task_id.id + " Sub Task Id: " + child_task_id.id);
   }
 
 }

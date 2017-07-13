@@ -27,6 +27,7 @@ export class CreateParentTaskComponent implements OnInit {
 
   newTask: Task = new Task();
   parentTasks: Task[] = [];
+
   constructor(@Inject(MD_DIALOG_DATA) public data: any, public dialogRef: MdDialogRef<CreateParentTaskComponent>, private restApiService: RestApiService) {
 
   }
@@ -51,20 +52,21 @@ export class CreateParentTaskComponent implements OnInit {
   }
 
   createParentTask() {
-      this.parentTasks.push(this.newTask);
+    this.parentTasks.push(this.newTask);
     /*const url = 'http://49.50.76.29:8090/api/task/new';
-    // console.log(this.newProject);
-    this.restApiService.postRequest(url, this.parentTasks)
-      .map(res => res.json().data[0])
-      .subscribe(
-        (value: BOQTable) => {
-          this.parentTasks = value;
-        },
-        (err: any) => {
-          console.error(err);
-        }
-      );
-    this.dialogRef.close(true);*/
+     // console.log(this.newProject);
+     this.restApiService.postRequest(url, this.parentTasks)
+     .map(res => res.json().data[0])
+     .subscribe(
+     (value: BOQTable) => {
+     this.parentTasks = value;
+     },
+     (err: any) => {
+     console.error(err);
+     }
+     );
+     this.dialogRef.close(true);*/
+    this.dialogRef.close(true);
   }
 
   selectedID(id) {
@@ -82,4 +84,23 @@ export class CreateParentTaskComponent implements OnInit {
     console.log(url);
   }
 
+  checkEndDate() {
+    console.log('entering endDate function');
+    if (this.newTask.end < this.newTask.start) {
+      alert('End date should be greater than start date');
+    }
+    else{
+    }
+  }
+
+  checkStartDate(){
+    console.log('entering startDate function');
+    if (this.newTask.start > this.newTask.end) {
+      alert('Start date should be less than end date');
+    }
+    else{
+    }
+  }
 }
+
+
