@@ -15,9 +15,9 @@
         <h4>Enter Subtask Details</h4>
         <table class="greyborder">
           <tr style="width: 100px;height: 40px">
-            <th>Description</th>
-            <td>  <md-input-container class="full-width" >
-              <input  mdInput name="description" [(ngModel)]="newTask.description" >
+            <th>Name</th>
+            <td><md-input-container class="full-width">
+              <input  mdInput name="name" [(ngModel)]="newTask.name" width="100%">
             </md-input-container></td>
           </tr>
           <tr style="width: 100px;height: 40px">
@@ -27,10 +27,11 @@
             </md-input-container></td>
           </tr>
           <tr style="width: 100px;height: 40px">
-            <th>Name</th>
-            <td><md-input-container class="full-width">
-              <input  mdInput name="name" [(ngModel)]="newTask.name" width="100%">
+            <th>Description</th>
+            <td>  <md-input-container class="full-width" >
+              <input  mdInput name="description" [(ngModel)]="newTask.description" >
             </md-input-container></td>
+
           </tr>
           <tr style="width: 100px;height: 40px">
             <th>Start Date</th>
