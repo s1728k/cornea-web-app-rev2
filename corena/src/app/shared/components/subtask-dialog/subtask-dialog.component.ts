@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MD_DIALOG_DATA, MdDialogRef} from '@angular/material';
 
 // Models Imported
-import {Task} from "../../../model/class/task.model";
+import {Task} from '../../../model/class/task.model';
 
 @Component({
   selector: 'app-subtask-dialog',
