@@ -44,6 +44,7 @@ import { RateAnalysisDisplayComponent } from './rate-analysis-display/rate-analy
 import { ProjectComponent } from './project/project.component';
 
 import {SubtaskDialogComponent} from "./shared/components/subtask-dialog/subtask-dialog.component";
+import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import {SubtaskDialogComponent} from "./shared/components/subtask-dialog/subtask
     CfComponent,
     RateAnalysisDisplayComponent,
     ProjectComponent,
+    TestComponent,
   ],
   // provide modules throughout
   imports: [

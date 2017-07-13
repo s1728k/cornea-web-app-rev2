@@ -41,6 +41,7 @@ export class PagesComponent implements OnInit {
     'Accounts',
     'Finance',
     ['HR', 'Register New Employee', 'Attendence Sheet', 'Performance Stats'],
+    'Test'
   ];
   up: any[] = [false,
     [false, false, false, false, false, false, false, false, false, false, false],
@@ -49,6 +50,7 @@ export class PagesComponent implements OnInit {
     false,
     false,
     [false, false, false, false],
+    false
   ];
 
   redirects: any[] = ['under-construnction',
@@ -58,6 +60,7 @@ export class PagesComponent implements OnInit {
     'under-construnction',
     'under-construnction',
     ['HR', 'under-construnction', 'under-construnction', 'under-construnction'],
+    'test'
   ];
 
   constructor(private router: Router) {
