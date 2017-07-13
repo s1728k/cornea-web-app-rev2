@@ -73,7 +73,9 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
       });
 
     for (let i=0; i<10; i++){
-      this.parentTasks.push(new Task());
+      this.newTask.id=1;
+      this.newTask.name = "New Task"
+      this.parentTasks.push(this.newTask);
     }
     console.log(this.parentTasks.length);
   }

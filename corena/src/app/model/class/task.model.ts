@@ -11,6 +11,7 @@ export class Task {
   start: string;
   end: string;p
   percent_complete: number;
+  childTask: Task[]=[];
   constructor(values: Object = {}){
     Object.assign(this, values);
   }

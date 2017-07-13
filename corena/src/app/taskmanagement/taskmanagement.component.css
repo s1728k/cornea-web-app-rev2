@@ -1,0 +1,8 @@
+md-card.task {
+  padding:10px;
+  border-radius: 10px;
+  height: 200px;
+}
+.task-height{
+  height: 150px;
+}

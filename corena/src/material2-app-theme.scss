@@ -91,10 +91,6 @@ td, th {
   background-color: mat-color($candy-app-warn);
 }
 
-md-card{
-    padding-top: 0px;
-}
-
 md-chip {
   min-width: 200px;
 }
@@ -131,7 +127,8 @@ table.total {
 }
 
 .float-right{
-    float: right
+    float: right;
+    text-align: end;
 }
 
 .align-right{
@@ -152,6 +149,14 @@ table.total {
 
 .b-margin{
     margin-bottom:10px;
+}
+
+.bborder{
+    border-bottom: 1px solid mat-color($candy-app-primary);
+}
+
+.zero-padding{
+  padding: 0px;
 }
 
 /* this section is panels used in project heirarchy */

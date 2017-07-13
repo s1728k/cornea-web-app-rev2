@@ -1,3 +1,61 @@
-<p>
-  ganttchart-dialog works!
-</p>
+<!--<md-card style="width:100%;">-->
+  <!--<gantt [project]="project" [options]="options" (onGridRowClick)="gridRowClicked($event)"></gantt>-->
+<!--</md-card>-->
+
+<!--<div *ngIf="project">-->
+  <!--<h1>Project</h1>-->
+  <!--&lt;!&ndash;Project input Field&ndash;&gt;-->
+  <!--<md-input-container  style="margin-left: 20px">-->
+    <!--<input mdInput type="text" [(ngModel)]="project.name" placeholder="Project Name">-->
+  <!--</md-input-container>-->
+  <!--<md-card style="width:100%;">-->
+    <!--<md-card-content>-->
+      <!--<table>-->
+        <!--<thead>-->
+        <!--&lt;!&ndash;Table Row Field&ndash;&gt;-->
+        <!--<tr>-->
+          <!--<th width="40px;">Id</th>-->
+          <!--<th width="60px;">Name</th>-->
+          <!--<th width="30px;">Tree Path</th>-->
+          <!--<th width="30px;">Percent Complete</th>-->
+          <!--<th width="50px;">State Date</th>-->
+          <!--<th width="200px;">End Date</th>-->
+        <!--</tr>-->
+        <!--</thead>-->
+        <!--<tbody>-->
+        <!--<tr *ngFor="let task of project.tasks">-->
+          <!--<td><input style="width:100%" type="text" [(ngModel)]="task.id"  /></td>-->
+          <!--<td><input style="width:100%" type="text" [(ngModel)]="task.name" /></td>-->
+          <!--<td><input type="width:100%" type="text" [(ngModel)]="task.treePath" /></td>-->
+          <!--<td><input type="number" [(ngModel)]="task.percentComplete" min="0" max="100" name="percentComplete"/>-->
+          <!--<td><input type="text" [(ngModel)]="task.start"/></td>-->
+          <!--<td><input type="text" [(ngModel)]="task.end"/></td>-->
+        <!--</tr>-->
+        <!--</tbody>-->
+      <!--</table>-->
+    <!--</md-card-content>-->
+  <!--</md-card>-->
+
+  <!--<h1>Playground</h1>-->
+  <!--<md-card style="width:100%;">-->
+    <!--<label style="margin-left: 20px">Task Status:</label>-->
+    <!--&lt;!&ndash;Drop Down Field&ndash;&gt;-->
+    <!--<select #taskStatus>-->
+      <!--<option>Error</option>-->
+      <!--<option>Warning</option>-->
+      <!--<option>Information</option>-->
+      <!--<option>Completed</option>-->
+    <!--</select>-->
+    <!--&lt;!&ndash;Material Desing Button&ndash;&gt;-->
+    <!--<button md-raised-button (click)="createTask(taskStatus)">Create Task</button>-->
+    <!--<button md-raised-button (click)="updateTasks()">Update Tasks Percent Complete</button>-->
+    <!--<button md-raised-button (click)="loadBigDataSet()">Load big dataset</button>-->
+
+    <!--&lt;!&ndash; <h1>Output</h1>-->
+     <!--<p>{{ project | json }}</p>&ndash;&gt;-->
+    <!--<button md-raised-button (click)="showDialog()">Show Dialog</button>-->
+    <!--<button md-raised-button (click)="showGannttChart()">Show GanttChart</button>-->
+
+  <!--</md-card>-->
+
+<!--</div>-->
