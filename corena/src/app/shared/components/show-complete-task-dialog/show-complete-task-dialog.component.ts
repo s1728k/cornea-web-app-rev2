@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MD_DIALOG_DATA, MdDialogRef} from "@angular/material";
 
 @Component({
   selector: 'app-show-complete-task-dialog',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShowCompleteTaskDialogComponent implements OnInit {
 
-  constructor() { }
+  constructor(@Inject(MD_DIALOG_DATA) public data: any, public dialogRef: MdDialogRef<ShowCompleteTaskDialogComponent>) { }
 
   ngOnInit() {
   }
