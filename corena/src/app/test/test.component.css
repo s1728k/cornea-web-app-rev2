@@ -1,0 +1,30 @@
+.test-border{
+  border: 1px solid red;
+}
+.side_nav_row{
+  display: flex;
+  border-top: 1px solid red;
+}
+.first_row{
+  border-top: 0px solid red;
+}
+div.side_nav_row:hover{
+  width: 200px !important;
+}
+div.side_nav_row:hover > span{
+  display:block !important;
+}
+
+.hide-view{
+ display: none;
+}
+.icon-view{
+  width: 50px;
+}
+.icon-view > span{
+  display: none;
+}
+.icon-view:hover > span{
+  display: block;
+  width: 300px;
+}
