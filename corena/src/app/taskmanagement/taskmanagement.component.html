@@ -74,7 +74,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-12 zero-padding overflow task-height">
+              <div class="col-md-12 zero-padding overflow task-height flexcroll">
                 <ul class="sub-task">
                   <ng-container *ngFor="let child_task of parentTasks; let j=index">
                     <li (click)="showChildTask(task,child_task)"><span>Sub Task {{child_task.id}}</span></li>
