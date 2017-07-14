@@ -2,9 +2,10 @@
 <gantt [project]="project" [options]="options" (onGridRowClick)="gridRowClicked($event)"></gantt>
 </md-card>
 
+<!--
 <div *ngIf="project">
   <h1>Project</h1>
-  <!--Project input Field-->
+  &lt;!&ndash;Project input Field&ndash;&gt;
   <md-input-container  style="margin-left: 20px">
     <input mdInput type="text" [(ngModel)]="project.name" placeholder="Project Name">
   </md-input-container>
@@ -12,7 +13,7 @@
     <md-card-content>
   <table>
     <thead>
-    <!--Table Row Field-->
+    &lt;!&ndash;Table Row Field&ndash;&gt;
     <tr>
       <th width="40px;">Id</th>
       <th width="60px;">Name</th>
@@ -39,24 +40,25 @@
   <h1>Playground</h1>
   <md-card style="width:100%;">
   <label style="margin-left: 20px">Task Status:</label>
-    <!--Drop Down Field-->
+    &lt;!&ndash;Drop Down Field&ndash;&gt;
   <select #taskStatus>
     <option>Error</option>
     <option>Warning</option>
     <option>Information</option>
     <option>Completed</option>
   </select>
-    <!--Material Desing Button-->
+    &lt;!&ndash;Material Desing Button&ndash;&gt;
   <button md-raised-button (click)="createTask(taskStatus)">Create Task</button>
   <button md-raised-button (click)="updateTasks()">Update Tasks Percent Complete</button>
   <button md-raised-button (click)="loadBigDataSet()">Load big dataset</button>
 
-   <!-- <h1>Output</h1>
-    <p>{{ project | json }}</p>-->
-   <!-- <button md-raised-button (click)="showDialog()">Show Dialog</button>
+   &lt;!&ndash; <h1>Output</h1>
+    <p>{{ project | json }}</p>&ndash;&gt;
+   &lt;!&ndash; <button md-raised-button (click)="showDialog()">Show Dialog</button>
     <button md-raised-button (click)="showGannttChart()">Show GanttChart</button>
-    <button md-raised-button (click)="showTask()">Show ParentTask</button>-->
+    <button md-raised-button (click)="showTask()">Show ParentTask</button>&ndash;&gt;
 
   </md-card>
 
 </div>
+-->

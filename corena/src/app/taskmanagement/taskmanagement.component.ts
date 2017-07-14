@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import {Component, OnInit, OnChanges, Input} from '@angular/core';
 import {RestApiService} from '../services/rest-api-service.service';
 
 import {MdDialog} from '@angular/material';
@@ -8,8 +8,8 @@ import {GanttchartDialogComponent} from "../shared/components/ganttchart-dialog/
 // Models Imported
 import {ProjectResponseBOQUpload} from '../model/class/project-response';
 import {BOQTable} from '../model/class/boq-table.model';
-import { Task } from '../model/class/task.model';
-import { NameId } from '../model/class/id-n-name.model';
+import {Task} from '../model/class/task.model';
+import {NameId} from '../model/class/id-n-name.model';
 
 // ------------http imports-------------------------------
 import {Observable} from 'rxjs/Observable';
@@ -23,6 +23,7 @@ import * as Constants from "../shared/constants.globals";
 import {CreateParentTaskComponent} from "app/shared/components/create-parent-task/create-parent-task.component";
 import {ShowCompleteTaskDialogComponent} from "../shared/components/show-complete-task-dialog/show-complete-task-dialog.component";
 import {ShowSubtaskDialogComponent} from "../shared/components/show-subtask-dialog/show-subtask-dialog.component";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -34,22 +35,22 @@ import {ShowSubtaskDialogComponent} from "../shared/components/show-subtask-dial
 export class TaskmanagementComponent implements OnInit, OnChanges {
 
   projectsSuggesions: Observable<ProjectResponseBOQUpload[]>;
-  projectsSuggesionsLoad:Subject<string> = new Subject<string>(); // subject used to monitor projectsSuggesions observable
+  projectsSuggesionsLoad: Subject<string> = new Subject<string>(); // subject used to monitor projectsSuggesions observable
 
   boqsSuggesions: Observable<BOQTable[]>;
-  boqsSuggesionsLoad:Subject<string> = new Subject<string>(); // subject used to monitor projectsSuggesions observable
+  boqsSuggesionsLoad: Subject<string> = new Subject<string>(); // subject used to monitor projectsSuggesions observable
 
   lineItemsSuggesions: Observable<BOQTable[]>;
-  lineItemsSuggesionsLoad:Subject<string> = new Subject<string>(); // subject used to monitor projectsSuggesions observable
+  lineItemsSuggesionsLoad: Subject<string> = new Subject<string>(); // subject used to monitor projectsSuggesions observable
 
   newTask: Task = new Task();
-  parentTasks: Task[]=[];
+  parentTasks: Task[] = [];
 
   selectedProject: NameId = new NameId();
   selectedBoq: NameId = new NameId();
   selectedLineItem: NameId = new NameId();
 
-  constructor(private restApiService: RestApiService, private mdDialog: MdDialog) {
+  constructor(private restApiService: RestApiService, private mdDialog: MdDialog, private router: Router) {
 
   }
 
@@ -74,11 +75,11 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
         return Observable.of<BOQTable[]>([]);
       });
 
-    for (let i=0; i<10; i++){
+    for (let i = 0; i < 10; i++) {
       this.parentTasks.push(new Task());
-      this.parentTasks[i].id=i+1;
-      this.parentTasks[i].name="New Task";
-      this.parentTasks[i].description = "this is the description for the task " + String(i+1);
+      this.parentTasks[i].id = i + 1;
+      this.parentTasks[i].name = "New Task";
+      this.parentTasks[i].description = "this is the description for the task " + String(i + 1);
       this.parentTasks[i].start = '27/02/1987'
       this.parentTasks[i].end = '12/2/2017'
     }
@@ -89,18 +90,18 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
 
   }
 
-  selectedID(type, id){
+  selectedID(type, id) {
     switch (type) {
       case "proj":
-        this.selectedProject.id=id;
+        this.selectedProject.id = id;
         break;
 
       case "boq":
-        this.selectedBoq.id=id;
+        this.selectedBoq.id = id;
         break;
 
       case "line":
-        this.selectedLineItem.id=id;
+        this.selectedLineItem.id = id;
         break;
 
       default:
@@ -109,18 +110,18 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
     }
   }
 
-  searchProject(term){
+  searchProject(term) {
     console.log("Entered searchProject")
     console.log(term)
-    let url = 'http://49.50.76.29:8090/api/project/search?visible[]=id&visible[]=name&search='+ term +'&filter[]=name';
+    let url = 'http://49.50.76.29:8090/api/project/search?visible[]=id&visible[]=name&search=' + term + '&filter[]=name';
     this.projectsSuggesionsLoad.next(url)
   }
 
-  searchBoq(term, proj_id){
+  searchBoq(term, proj_id) {
     console.log("Entered searchBoq")
     console.log(term)
     let url = 'http://49.50.76.29/api/boq/search?visible[]=id&visible[]=name&conditions[project_id]=' + String(proj_id) +
-              '&search='+ term +'&filter[]=name';
+      '&search=' + term + '&filter[]=name';
     this.boqsSuggesionsLoad.next(url)
   }
 
@@ -128,9 +129,9 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
     console.log("Entered searchLineItems")
     console.log(term)
     let url = 'http://49.50.76.29/api/boq/search?visible[]=id&visible[]=name&conditions[project_id]=' + String(boq_id) +
-      '&search='+ term +'&filter[]=name';
+      '&search=' + term + '&filter[]=name';
     this.boqsSuggesionsLoad.next(url)
-    this.selectedBoq=boq_id;
+    this.selectedBoq = boq_id;
   }
 
   addParentTask() {
@@ -139,10 +140,10 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
 
   showGanttChart() {
     console.log('entered showGanttChart');
-    alert('Show GanttChart Task Popup Shall Come Soon \n ' );
+    this.router.navigate(['/pages/ganttchart']);
   }
 
-  showParentTask(data: any){
+  showParentTask(data: any) {
     this.mdDialog.open(ShowCompleteTaskDialogComponent, {data: data});
     // alert("Show Parent Task Popup Shall Come Soon \n task id: " + task.id);
   }
@@ -152,7 +153,7 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
     this.mdDialog.open(SubtaskDialogComponent);
   }
 
-  showChildTask(parent_task_id, child_task_id){
+  showChildTask(parent_task_id, child_task_id) {
     this.mdDialog.open(ShowSubtaskDialogComponent, {data: child_task_id});
     // alert("Show Child Task Popup Shall Come Soon \n Task Id: " + parent_task_id.id + " Sub Task Id: " + child_task_id.id);
   }

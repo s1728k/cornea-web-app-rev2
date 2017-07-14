@@ -23,7 +23,7 @@ export class GanttchartComponent {
  // Dataset
   project: Project = {
     'id': '001',
-    'name': 'Angular2 Gantt',
+    'name': 'Gantt Chart',
     'startDate': new Date('2017-02-27T08:32:09.6972999Z'),
     'tasks': [
       {
