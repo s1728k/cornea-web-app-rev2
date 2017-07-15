@@ -1,19 +1,20 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-12">
+      <form (ngSubmit)="addParentTask()" #addTask="ngForm">
       <md-card>
         <div class="container-fluid">
           <div class="row">
             <div class="col-md-12 float-right">
-              <button md-raised-button (click)="addParentTask()">Add Task</button>
+              <button md-raised-button [disabled]="!addTask.valid">Add Task</button>
               <button md-raised-button (click)="showGanttChart()">Gantt Chart</button>
             </div>
           </div>
           <div class="row">
             <div class="col-md-5">
               <md-input-container class="full-width">
-                <input mdInput placeholder="Project Name" class="inp" type="text" [mdAutocomplete]="projects"
-                       [(ngModel)]="selectedProject.name"
+                <input mdInput placeholder="Project Name" class="inp" type="text" [mdAutocomplete]="projects" name="projectName"
+                       [(ngModel)]="selectedProject.name" required
                        (keyup)="searchProject(selectedProject.name)">
                   <md-autocomplete #projects="mdAutocomplete">
                   <md-option *ngFor="let project of projectsSuggesions | async" [value]="project.name" (click)="selectedID('proj',project.id)">
@@ -27,7 +28,7 @@
             </div>
             <div class="col-md-5">
               <md-input-container class="full-width">
-                <input mdInput placeholder="Boq Name" class="inp" type="text" [mdAutocomplete]="boqs"
+                <input mdInput placeholder="Boq Name" class="inp" type="text" [mdAutocomplete]="boqs" name="selectedBoqName" required
                        [(ngModel)]="selectedBoq.name" (keyup)="searchBoq(selectedBoq.name, 15)">
                 <md-autocomplete #boqs="mdAutocomplete">
                   <md-option *ngFor="let boq of boqsSuggesions | async" [value]="boq.name" (click)="selectedID('boq',boq.id)">
@@ -50,6 +51,7 @@
           </div>
         </div>
       </md-card>
+      </form>
     </div>
   </div>
 
