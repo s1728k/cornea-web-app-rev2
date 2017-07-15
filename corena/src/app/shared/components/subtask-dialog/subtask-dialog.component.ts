@@ -22,7 +22,7 @@ export class SubtaskDialogComponent implements OnInit {
 
   }
 
-  okbutton() {
+  createSubTask() {
     this.dialogRef.close(true);
   }
 

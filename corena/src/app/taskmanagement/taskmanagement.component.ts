@@ -3,7 +3,7 @@ import {RestApiService} from '../services/rest-api-service.service';
 
 import {MdDialog} from '@angular/material';
 import {SubtaskDialogComponent} from '../shared/components/subtask-dialog/subtask-dialog.component';
-import {GanttchartDialogComponent} from "../shared/components/ganttchart-dialog/ganttchart-dialog.component";
+import {GanttchartDialogComponent} from '../shared/components/ganttchart-dialog/ganttchart-dialog.component';
 
 // Models Imported
 import {ProjectResponseBOQUpload} from '../model/class/project-response';
@@ -19,11 +19,11 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
-import * as Constants from "../shared/constants.globals";
-import {CreateParentTaskComponent} from "app/shared/components/create-parent-task/create-parent-task.component";
-import {ShowCompleteTaskDialogComponent} from "../shared/components/show-complete-task-dialog/show-complete-task-dialog.component";
-import {ShowSubtaskDialogComponent} from "../shared/components/show-subtask-dialog/show-subtask-dialog.component";
-import {Router} from "@angular/router";
+import * as Constants from '../shared/constants.globals';
+import {CreateParentTaskComponent} from 'app/shared/components/create-parent-task/create-parent-task.component';
+import {ShowCompleteTaskDialogComponent} from '../shared/components/show-complete-task-dialog/show-complete-task-dialog.component';
+import {ShowSubtaskDialogComponent} from '../shared/components/show-subtask-dialog/show-subtask-dialog.component';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -78,10 +78,10 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
     for (let i = 0; i < 10; i++) {
       this.parentTasks.push(new Task());
       this.parentTasks[i].id = i + 1;
-      this.parentTasks[i].name = "New Task";
-      this.parentTasks[i].description = "this is the description for the task " + String(i + 1);
-      this.parentTasks[i].start = '27/02/1987'
-      this.parentTasks[i].end = '12/2/2017'
+      this.parentTasks[i].name = 'New Task';
+      this.parentTasks[i].description = 'this is the description for the task ' + String(i + 1);
+      this.parentTasks[i].start = '27/02/1987';
+      this.parentTasks[i].end = '12/2/2017';
     }
     console.log(this.parentTasks.length);
   }
@@ -92,15 +92,15 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
 
   selectedID(type, id) {
     switch (type) {
-      case "proj":
+      case 'proj':
         this.selectedProject.id = id;
         break;
 
-      case "boq":
+      case 'boq':
         this.selectedBoq.id = id;
         break;
 
-      case "line":
+      case 'line':
         this.selectedLineItem.id = id;
         break;
 
@@ -111,14 +111,14 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
   }
 
   searchProject(term) {
-    console.log("Entered searchProject")
+    console.log('Entered searchProject')
     console.log(term)
     let url = 'http://49.50.76.29:8090/api/project/search?visible[]=id&visible[]=name&search=' + term + '&filter[]=name';
     this.projectsSuggesionsLoad.next(url)
   }
 
   searchBoq(term, proj_id) {
-    console.log("Entered searchBoq")
+    console.log('Entered searchBoq')
     console.log(term)
     let url = 'http://49.50.76.29/api/boq/search?visible[]=id&visible[]=name&conditions[project_id]=' + String(proj_id) +
       '&search=' + term + '&filter[]=name';
@@ -126,7 +126,7 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
   }
 
   searchLineItems(term, boq_id) {
-    console.log("Entered searchLineItems")
+    console.log('Entered searchLineItems')
     console.log(term)
     let url = 'http://49.50.76.29/api/boq/search?visible[]=id&visible[]=name&conditions[project_id]=' + String(boq_id) +
       '&search=' + term + '&filter[]=name';
@@ -135,7 +135,7 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
   }
 
   addParentTask() {
-    this.mdDialog.open(CreateParentTaskComponent);
+    this.mdDialog.open(CreateParentTaskComponent, {disableClose: true, hasBackdrop: true});
   }
 
   showGanttChart() {
@@ -144,18 +144,18 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
   }
 
   showParentTask(data: any) {
-    this.mdDialog.open(ShowCompleteTaskDialogComponent, {data: data});
-    // alert("Show Parent Task Popup Shall Come Soon \n task id: " + task.id);
+    this.mdDialog.open(ShowCompleteTaskDialogComponent, {data: data, disableClose: true, hasBackdrop: true});
+    // alert('Show Parent Task Popup Shall Come Soon \n task id: ' + task.id);
   }
 
   createChildTask(task) {
     console.log('entered createChildTask');
-    this.mdDialog.open(SubtaskDialogComponent);
+    this.mdDialog.open(SubtaskDialogComponent, {disableClose: true, hasBackdrop: true});
   }
 
   showChildTask(parent_task_id, child_task_id) {
-    this.mdDialog.open(ShowSubtaskDialogComponent, {data: child_task_id});
-    // alert("Show Child Task Popup Shall Come Soon \n Task Id: " + parent_task_id.id + " Sub Task Id: " + child_task_id.id);
+    this.mdDialog.open(ShowSubtaskDialogComponent, {data: child_task_id, disableClose: true, hasBackdrop: true});
+    // alert('Show Child Task Popup Shall Come Soon \n Task Id: ' + parent_task_id.id + ' Sub Task Id: ' + child_task_id.id);
   }
 
 }

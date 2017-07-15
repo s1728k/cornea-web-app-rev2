@@ -9,7 +9,7 @@ export class Task {
   name: string;
   resource: string;
   start: string;
-  end: string;p
+  end: string;
   percent_complete: number;
   childTask: Task[]=[];
   constructor(values: Object = {}){

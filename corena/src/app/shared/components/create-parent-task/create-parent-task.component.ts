@@ -24,7 +24,6 @@ export class CreateParentTaskComponent implements OnInit {
   lineItemSuggestions: Observable<BOQTable[]>;
   lineItemSuggestionsLoad: Subject<string> = new Subject<string>();
   selectedLineItem: NameId = new NameId();
-
   newTask: Task = new Task();
   parentTasks: Task[] = [];
 
@@ -84,23 +83,7 @@ export class CreateParentTaskComponent implements OnInit {
     console.log(url);
   }
 
-  checkEndDate() {
-    console.log('entering endDate function');
-    if (this.newTask.end < this.newTask.start) {
-      alert('End date should be greater than start date');
-    }
-    else{
-    }
-  }
 
-  checkStartDate(){
-    console.log('entering startDate function');
-    if (this.newTask.start > this.newTask.end) {
-      alert('Start date should be less than end date');
-    }
-    else{
-    }
-  }
 }
 
 

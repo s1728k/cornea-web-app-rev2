@@ -1,5 +1,6 @@
 <div class="container-fluid">
   <div class="dialogbox" >
+    <form (ngSubmit)="createParentTask()" #parentTaskDialogForm="ngForm">
     <div class="row" style="text-align: center">
 
       <div class="col-md-11">
@@ -12,7 +13,7 @@
     <div class="row">
       <div class="col-md-12">
         <md-input-container class="full-width">
-          <input mdInput placeholder="Select Task" class="inp" type="text" [mdAutocomplete]="lineItems"
+          <input mdInput placeholder="Select Task" class="inp" type="text" [mdAutocomplete]="lineItems" required name="selectedLineItem"
                  [(ngModel)]="selectedLineItem.name" (keyup)="searchLineItems(selectedLineItem.name, selectedBoq.id)">
           <md-autocomplete #lineItems="mdAutocomplete">
             <md-option *ngFor="let lineItem of lineItemSuggestions | async" [value]="lineItem.name" (click)="selectedID('line',lineItem.id)">
@@ -40,7 +41,7 @@
     <div class="row">
       <div class="col-md-6">
         <md-input-container class="full-width">
-          <input mdInput [mdDatepicker]="startdate1" placeholder="Start Date"  class="full-width" (click)="checkStartDate()">
+          <input mdInput [mdDatepicker]="startdate1" placeholder="Start Date"  class="full-width" [(ngModel)]="newTask.start" required name="startDate">
           <button mdSuffix [mdDatepickerToggle]="startdate1"></button>
         </md-input-container>
         <md-datepicker #startdate1></md-datepicker>
@@ -48,7 +49,7 @@
 
       <div class="col-md-6">
         <md-input-container class="full-width">
-          <input mdInput [mdDatepicker]="enddate1" placeholder="End Date" class="full-width"   (click)="checkEndDate()">
+          <input mdInput [mdDatepicker]="enddate1" placeholder="End Date" class="full-width"   [(ngModel)]="newTask.end" required name="endDate">
           <button mdSuffix [mdDatepickerToggle]="enddate1"></button>
         </md-input-container>
         <md-datepicker #enddate1></md-datepicker>
@@ -57,9 +58,11 @@
 
     <div class="row" style="margin-top: 5px;float: right">
       <div class="col-md-12">
-        <button md-raised-button (click)="createParentTask()">Create Task</button>
+        <button md-raised-button (click)="createParentTask()" [disabled]="!parentTaskDialogForm.valid">Create Task</button>
       </div>
 
     </div>
+    </form>
   </div>
+
 </div>
