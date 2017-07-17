@@ -1,4 +1,4 @@
-/* li{
+ li{
   padding: 10px;
   border: 1px solid #009688;
 }
@@ -32,4 +32,3 @@ ul li:not(:last-child) {
     display: inline-flex;
     margin: 0px;
 }
-*/

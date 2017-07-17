@@ -7,3 +7,7 @@ p{
   color: #000000;
 }
 
+.example-margin {
+  margin: 0 10px;
+  width: 100%;
+}

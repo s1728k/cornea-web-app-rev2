@@ -1,17 +1,22 @@
-import {Component} from '@angular/core';
-import {Project, IGanttOptions, Zooming, Task} from '../../../lib';
+import {Component, OnInit} from '@angular/core';
+import {Project, IGanttOptions, Zooming} from '../../../lib';
 import {MdDialog} from '@angular/material';
 import {SubtaskDialogComponent} from '../subtask-dialog/subtask-dialog.component';
 import {GanttchartDialogComponent} from 'app/shared/components/ganttchart-dialog/ganttchart-dialog.component';
-import {CreateParentTaskComponent} from "../create-parent-task/create-parent-task.component";
+import {CreateParentTaskComponent} from '../create-parent-task/create-parent-task.component';
+import {RestApiService} from '../../../services/rest-api-service.service';
+import * as Constants from '../../../shared/constants.globals';
+import {Task} from 'app/model/class/task.model';
 
 @Component({
   selector: 'app-ganttchart',
   templateUrl: './ganttchart.component.html',
   styleUrls: ['./ganttchart.component.css']
 })
-export class GanttchartComponent {
+export class GanttchartComponent implements OnInit {
 
+  url: string;
+  public taskList: Task[];
   // Default options
   options: IGanttOptions = {
     scale: {
@@ -20,7 +25,7 @@ export class GanttchartComponent {
     },
     zooming: Zooming[Zooming.days]
   };
- // Dataset
+  // Dataset
   project: Project = {
     'id': '001',
     'name': 'Gantt Chart',
@@ -90,8 +95,23 @@ export class GanttchartComponent {
   };
 
 
-  constructor(private mdDialog: MdDialog) {
+  constructor(private mdDialog: MdDialog, private restApiService: RestApiService) {
 
+    this.url = Constants.BASE_URL_PROJECT + '';
+  }
+
+  ngOnInit(): void {
+    this.restApiService.getRequest(this.url)
+      .map(res => res.json().data)
+      .subscribe(
+        (value: Task[]) => {
+          this.taskList = value;
+          console.log(value);
+        },
+        (err: any) => {
+          console.error(err);
+        }
+      );
   }
 
   groupData(array: any[], f: any): any[] {
@@ -191,15 +211,15 @@ export class GanttchartComponent {
     console.log(event);
   }
 
-  showDialog(){
+  showDialog() {
     this.mdDialog.open(SubtaskDialogComponent);
   }
 
-  showGannttChart(){
+  showGannttChart() {
     this.mdDialog.open(GanttchartDialogComponent);
   }
 
-  showTask(){
+  showTask() {
     this.mdDialog.open(CreateParentTaskComponent);
 
   }

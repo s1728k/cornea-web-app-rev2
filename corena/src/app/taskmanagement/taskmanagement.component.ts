@@ -80,8 +80,8 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
       this.parentTasks[i].id = i + 1;
       this.parentTasks[i].name = 'New Task';
       this.parentTasks[i].description = 'this is the description for the task ' + String(i + 1);
-      this.parentTasks[i].start = '27/02/1987';
-      this.parentTasks[i].end = '12/2/2017';
+      this.parentTasks[i].start = new Date('February 5, 2005 10:13:00');
+      this.parentTasks[i].end = new Date('March 5, 2005 10:13:00');
     }
     console.log(this.parentTasks.length);
   }
@@ -111,22 +111,22 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
   }
 
   searchProject(term) {
-    console.log('Entered searchProject')
-    console.log(term)
+    console.log('Entered searchProject');
+    console.log(term);
     let url = 'http://49.50.76.29:8090/api/project/search?visible[]=id&visible[]=name&search=' + term + '&filter[]=name';
-    this.projectsSuggesionsLoad.next(url)
+    this.projectsSuggesionsLoad.next(url);
   }
 
   searchBoq(term, proj_id) {
-    console.log('Entered searchBoq')
-    console.log(term)
+    console.log('Entered searchBoq');
+    console.log(term);
     let url = 'http://49.50.76.29/api/boq/search?visible[]=id&visible[]=name&conditions[project_id]=' + String(proj_id) +
       '&search=' + term + '&filter[]=name';
-    this.boqsSuggesionsLoad.next(url)
+    this.boqsSuggesionsLoad.next(url);
   }
 
   searchLineItems(term, boq_id) {
-    console.log('Entered searchLineItems')
+    console.log('Entered searchLineItems');
     console.log(term)
     let url = 'http://49.50.76.29/api/boq/search?visible[]=id&visible[]=name&conditions[project_id]=' + String(boq_id) +
       '&search=' + term + '&filter[]=name';
@@ -140,6 +140,8 @@ export class TaskmanagementComponent implements OnInit, OnChanges {
 
   showGanttChart() {
     console.log('entered showGanttChart');
+    this.restApiService.projectId = this.selectedProject.id;
+    this.restApiService.boqId = this.selectedBoq.id;
     this.router.navigate(['/pages/ganttchart']);
   }
 

@@ -8,8 +8,8 @@ export class Task {
   parent_task_id: number;
   name: string;
   resource: string;
-  start: string;
-  end: string;
+  start: Date;
+  end: Date;
   percent_complete: number;
   childTask: Task[]=[];
   constructor(values: Object = {}){

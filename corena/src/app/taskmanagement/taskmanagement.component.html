@@ -29,7 +29,7 @@
             <div class="col-md-5">
               <md-input-container class="full-width">
                 <input mdInput placeholder="Boq Name" class="inp" type="text" [mdAutocomplete]="boqs" name="selectedBoqName" required
-                       [(ngModel)]="selectedBoq.name" (keyup)="searchBoq(selectedBoq.name, 15)">
+                       [(ngModel)]="selectedBoq.name" (keyup)="searchBoq(selectedBoq.name, selectedProject.id)">
                 <md-autocomplete #boqs="mdAutocomplete">
                   <md-option *ngFor="let boq of boqsSuggesions | async" [value]="boq.name" (click)="selectedID('boq',boq.id)">
                     {{boq.name}}

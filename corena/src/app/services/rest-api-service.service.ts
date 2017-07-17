@@ -22,6 +22,8 @@ export class RestApiService {
   public additionParameter: number;
   public additionParameterKey: string;
   public uploadServiceName: string;
+  public projectId: number;
+  public boqId: number;
 
   /**
    * constructor to inject

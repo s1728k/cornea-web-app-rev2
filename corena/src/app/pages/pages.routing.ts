@@ -14,6 +14,7 @@ import {CfComponent} from '../cf/cf.component';
 import {ProjectComponent} from '../project/project.component';
 import {TaskmanagementComponent} from "../taskmanagement/taskmanagement.component";
 import {TestComponent} from "../test/test.component";
+import {PurchaseorderlistComponent} from "../purchaseorderlist/purchaseorderlist.component";
 
 export const routes: Routes = [
   {
@@ -33,6 +34,7 @@ export const routes: Routes = [
       {path: 'cf-factor', component: CfComponent},
       {path: 'projects', component: ProjectComponent},
       {path: 'task-management', component: TaskmanagementComponent},
+      {path: 'purchase-order-list', component: PurchaseorderlistComponent},
       {path: 'test', component: TestComponent},
     ]
   }

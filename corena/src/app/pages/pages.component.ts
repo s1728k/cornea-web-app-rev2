@@ -36,7 +36,7 @@ export class PagesComponent implements OnInit {
 
   links: any[] = ['Dashboard',
     ['Project', 'Projects', 'BOQ', 'Rate Analysis', 'Project Hierarchy', 'Gantt Chart', 'Upload Files', 'Materials', 'Labour', 'CF-Factor', 'Task Management'],
-    ['Purchase Order', 'Request For Quotation', 'Supplier Quotation'],
+    ['Purchase Order', 'Purchase Order List', 'Request For Quotation', 'Supplier Quotation'],
     ['Site', 'Indent'],
     'Accounts',
     'Finance',
@@ -45,7 +45,7 @@ export class PagesComponent implements OnInit {
   ];
   up: any[] = [false,
     [false, false, false, false, false, false, false, false, false, false, false],
-    [false, false, false],
+    [false, false, false, false],
     [false, false],
     false,
     false,
@@ -54,8 +54,8 @@ export class PagesComponent implements OnInit {
   ];
 
   redirects: any[] = ['under-construnction',
-    ['', 'projects', 'boq-tables', 'rate-analysis-display', 'project-hierarchy', 'ganttchart', 'files-upload', 'materials', 'labour', 'cf-factor', 'task-management' ],
-    ['Purchase Order', 'under-construnction', 'under-construnction'],
+    ['', 'projects', 'boq-tables', 'rate-analysis-display', 'project-hierarchy', 'ganttchart', 'files-upload', 'materials', 'labour', 'cf-factor', 'task-management'],
+    ['Purchase Order', 'purchase-order-list', 'under-construnction', 'under-construnction'],
     ['Site', 'under-construnction'],
     'under-construnction',
     'under-construnction',

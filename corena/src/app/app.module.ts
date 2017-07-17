@@ -45,6 +45,7 @@ import { ProjectComponent } from './project/project.component';
 
 import {SubtaskDialogComponent} from "./shared/components/subtask-dialog/subtask-dialog.component";
 import { TestComponent } from './test/test.component';
+import { PurchaseorderlistComponent } from './purchaseorderlist/purchaseorderlist.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { TestComponent } from './test/test.component';
     RateAnalysisDisplayComponent,
     ProjectComponent,
     TestComponent,
+    PurchaseorderlistComponent,
   ],
   // provide modules throughout
   imports: [
